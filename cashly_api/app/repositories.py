@@ -19,6 +19,10 @@ class Repository(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def get_one_by():
+        raise NotImplementedError
+
+    @abstractmethod
     def list():
         raise NotImplementedError
 
@@ -44,6 +48,13 @@ class SpendRepository(Repository):
     def get(self, spend_id: str) -> typing.Union[models.Spend, None]:
         with self._db.session_factory() as session:
             spend = session.query(models.Spend).get(spend_id)
+
+            return spend
+
+    def get_one_by(self, *args, **kwargs) -> typing.Union[models.Spend, None]:
+        with self._db.session_factory() as session:
+            spend = session.query(models.Spend) \
+                           .filter_by(*args, **kwargs).first()
 
             return spend
 
@@ -82,6 +93,13 @@ class SpendCategoryRepository(Repository):
 
             return spend_category
 
+    def get_one_by(self, *args, **kwargs) -> typing.Union[models.SpendCategory, None]:
+        with self._db.session_factory() as session:
+            spend_category = session.query(models.SpendCategory) \
+                                    .filter_by(*args, **kwargs).first()
+
+            return spend_category
+
     def list(self) -> typing.List[models.SpendCategory]:
         with self._db.session_factory() as session:
             spend_categories = session.query(models.SpendCategory).all()
@@ -94,3 +112,4 @@ class SpendCategoryRepository(Repository):
             session.commit()
 
         return spend_category
+                    

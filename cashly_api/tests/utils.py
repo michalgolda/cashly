@@ -3,7 +3,9 @@ from app.database import Database
 
 
 class TestDatabase:
-    database = Database("sqlite:///./test.db")
+    def __init__(self):
+        self.database = Database("sqlite:///./test.db")
+        self.database.create_database()
 
     def get_database(self) -> Database:
         return self.database
