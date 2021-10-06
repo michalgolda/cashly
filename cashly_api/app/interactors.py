@@ -83,7 +83,13 @@ class SpendCategoryInteractor(Interactor):
 
 class CreateSpendCategoryInteractor(SpendCategoryInteractor):
     def execute(self, spend_category: schemas.SpendCategoryCreate) -> models.SpendCategory:
-        # TODO: Implement check whether spend category name is already used
+        spend_category_name_is_already_used = self._spend_category_repo.get_one_by(name=spend_category.name)
+
+        if spend_category_name_is_already_used:
+            raise LogicException(
+                ("You have tried create spend "
+                "category name but name is already used")
+            )
 
         created_spend_category = self._spend_category_repo.add(spend_category)
 

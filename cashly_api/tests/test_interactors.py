@@ -9,6 +9,7 @@ def test_create_spend_category_interactor(mocker):
         "app.repositories.SpendCategoryRepository"
     )
 
+    mock_spend_category_repo.get_one_by.return_value = None
     mock_spend_category_repo.add.return_value = mock_spend_category
 
     interactor = interactors.CreateSpendCategoryInteractor(
@@ -23,9 +24,19 @@ def test_create_spend_category_interactor(mocker):
 
     assert created_spend_category == mock_spend_category
 
-@pytest.mark.skip(reason="This feature is not implemeneted")
 def test_create_spend_category_interactor_when_spend_category_name_is_already_used(mocker):
-    pass
+    mock_spend_category = mocker.MagicMock(name="Food")
+    
+    mock_spend_category_repo = mocker.patch("app.repositories.SpendCategoryRepository")
+
+    mock_spend_category_repo.get_one_by.return_value = mock_spend_category
+
+    interactor = interactors.CreateSpendCategoryInteractor(
+        spend_category_repo=mock_spend_category_repo
+    )
+
+    with pytest.raises(interactors.LogicException):
+        interactor.execute(mock_spend_category)
 
 def test_delete_spend_category_interactor(mocker):
     mock_spend_category = mocker.MagicMock(id="123")
