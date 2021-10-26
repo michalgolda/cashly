@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders sidebar component 1`] = `
+<nav
+  class="sc-hKwDye bcwUzE"
+>
+  <button
+    class="sc-dkPtRN VNSFh"
+  >
+    Wydatki
+  </button>
+  <button
+    class="sc-dkPtRN VNSFh"
+  >
+    Kategorie wydatków
+  </button>
+</nav>
+`;
