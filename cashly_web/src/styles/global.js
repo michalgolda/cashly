@@ -11,6 +11,7 @@ const GlobalStyle = createGlobalStyle`
         color: ${({ theme }) => theme.colors.primary};
         font-family: ${({ theme }) => theme.font.family};
         font-weight: ${({ theme }) => theme.font.weights.regular};
+        background-color: ${({ theme }) => theme.colors.background};
     }
 `;
 
