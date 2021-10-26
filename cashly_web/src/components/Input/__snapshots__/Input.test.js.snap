@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders input component 1`] = `
+<div
+  class="sc-bdvvtL gnllsT"
+>
+  <input
+    class="sc-dkPtRN kHWYqx"
+    data-testid="input"
+    type="text"
+  />
+</div>
+`;
+
+exports[`renders input component with label 1`] = `
+<div
+  class="sc-bdvvtL gnllsT"
+>
+  <label
+    class="sc-gsDKAQ iOutxc"
+    data-testid="label"
+  >
+    Example label
+  </label>
+  <input
+    class="sc-dkPtRN kHWYqx"
+    data-testid="input"
+    type="text"
+  />
+</div>
+`;
