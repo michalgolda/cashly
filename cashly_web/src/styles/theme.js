@@ -1,8 +1,13 @@
 const theme = {
     colors: {
-        primary: "#011627",
-        secondary: "#fff",
-        grey: "#CDCDCD"
+        primary500: "#212529",
+        primary400: "#1e2125",
+        primary300: "#373b3e",
+        gray500: "#ebebeb",
+        gray400: "#eeeeee",
+        gray300: "#f0f0f0",
+        background: "#f0faff",
+        white: "#fff"
     },
     font: {
         family: "'Montserrat', sans-seri",
