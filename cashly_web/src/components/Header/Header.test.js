@@ -5,10 +5,8 @@ import withTheme from "../../utilities/withTheme";
 test("renders header component", () => {
     const { container } = render(withTheme(Header));
 
-    const headingElm = screen.getByText("Cashly");
+    const headerElm = screen.getByText("Cashly");
 
-    expect(headingElm).toBeInTheDocument();
-    expect(headingElm.nodeName).toBe("P");
-
+    expect(headerElm).toBeInTheDocument();
     expect(container.firstChild).toMatchSnapshot();
 });
