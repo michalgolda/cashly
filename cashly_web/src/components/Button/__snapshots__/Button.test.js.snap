@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders button component as link 1`] = `
+<a
+  class="sc-bdvvtL fscJpZ"
+>
+  Hello, World!
+</a>
+`;
+
+exports[`renders default variant of button component 1`] = `
+<button
+  class="sc-bdvvtL loGXrD"
+>
+  Hello, World!
+</button>
+`;
