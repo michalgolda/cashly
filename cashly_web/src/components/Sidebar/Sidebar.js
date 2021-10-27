@@ -4,8 +4,9 @@ import { Button } from "../../components";
 const StyledContainer = styled.nav`
     display: grid;
     max-width: 300px;
+    min-width: 256px;
     grid-row-gap: 1rem;
-    height: calc(100vh - 67px);
+    height: calc(100vh - 73px);
     grid-auto-rows: min-content;
     padding: 1rem 2rem 1rem 2rem;
     border-right: 1px solid ${({ theme }) => theme.colors.gray500};
