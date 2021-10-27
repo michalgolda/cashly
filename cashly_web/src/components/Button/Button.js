@@ -10,6 +10,7 @@ const buttonStyleSizes = {
 const buttonStyleVariants = {
     primary: css`
         color: ${({ theme }) => theme.colors.white};
+        border: 2px solid ${({ theme }) => theme.colors.primary400};
         background-color: ${({ theme }) => theme.colors.primary400};
 
         &:hover { background-color: ${({ theme }) => theme.colors.primary500}; }
