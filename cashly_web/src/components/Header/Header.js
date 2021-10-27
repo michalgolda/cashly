@@ -9,6 +9,7 @@ const StyledContainer = styled.div`
 `;
 
 const StyledText = styled.p`
+    color: ${({ theme }) => theme.colors.primary400};
     font-size: ${({ theme }) => theme.font.sizes.h2};
     font-weight: ${({ theme }) => theme.font.weights.bold};
 `;
