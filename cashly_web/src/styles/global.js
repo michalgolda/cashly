@@ -10,8 +10,8 @@ const GlobalStyle = createGlobalStyle`
     body {
         color: ${({ theme }) => theme.colors.primary};
         font-family: ${({ theme }) => theme.font.family};
+        background-color: ${({ theme }) => theme.colors.white};
         font-weight: ${({ theme }) => theme.font.weights.regular};
-        background-color: ${({ theme }) => theme.colors.background};
     }
 `;
 
