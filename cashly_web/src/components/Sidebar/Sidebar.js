@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Button } from "../../components";
+import NavButton from "./NavButton/NavButton";
 
 const StyledContainer = styled.nav`
     display: grid;
@@ -15,8 +15,8 @@ const StyledContainer = styled.nav`
 export default function Sidebar() {
     return (
         <StyledContainer>
-            <Button size="small" variant="primaryOutline" fullWidth>Wydatki</Button>
-            <Button size="small" variant="primaryOutline" fullWidth>Kategorie wydatków</Button>
+            <NavButton to="/spendings">Wydatki</NavButton>
+            <NavButton to="/categories">Kategorie wydatków</NavButton>
         </StyledContainer>
     );
 }
