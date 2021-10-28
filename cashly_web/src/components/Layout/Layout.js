@@ -9,6 +9,11 @@ const StyledContainer = styled.div`
     grid-template-columns: auto 1fr;
 `;
 
+const StyledContent = styled.div`
+    width: 100%;
+    height: auto;
+    padding: 2.5rem;
+`;
 
 function Layout({ children }) {
     return (
@@ -16,7 +21,7 @@ function Layout({ children }) {
             <Header />
             <StyledContainer>
                 <Sidebar />
-                <div>{children}</div>
+                <StyledContent>{children}</StyledContent>
             </StyledContainer>
         </>
     );
