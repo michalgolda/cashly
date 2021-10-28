@@ -3,6 +3,7 @@ const theme = {
         primary500: "#212529",
         primary400: "#1e2125",
         primary300: "#373b3e",
+        gray600: "#a5a5a5",
         gray500: "#ebebeb",
         gray400: "#eeeeee",
         gray300: "#f0f0f0",
