@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Layout, Button } from "../components";
+import { Layout, Button, ExpenseList } from "../components";
 
 const StyledHeader = styled.div`
     width: 100%;
@@ -25,7 +25,32 @@ const StyledButton = styled(Button)`
     min-width: fit-content;
 `;
 
+const StyledWrapper = styled.div`margin: 2rem 0 2rem 0;`;
+
 export default function Spendings() {
+    const fakeData = [
+        {
+            id: "1",
+            spend_category: {
+                id: "1",
+                name: "asdf",
+                color: "#f00"
+            },
+            amount: 12.00,
+            created_at: "12.10.2021"
+        },
+        {
+            id: "2",
+            spend_category: {
+                id: "2",
+                name: "abcd",
+                color: "#f00"
+            },
+            amount: 3.23,
+            created_at: "09.12.2023"
+        }
+    ];
+
     return (
         <Layout>
             <StyledHeader>
@@ -40,6 +65,9 @@ export default function Spendings() {
                 </StyledTextWrapper>
                 <StyledButton variant="primaryOutline">Dodaj wydatek</StyledButton>
             </StyledHeader>
+            <StyledWrapper>
+                <ExpenseList data={fakeData} />
+            </StyledWrapper>
         </Layout>
     );
 }
