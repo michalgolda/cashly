@@ -4,6 +4,7 @@ import Button from "./Button/Button";
 import Layout from "./Layout/Layout";
 import Router from "./Router/Router";
 import Sidebar from "./Sidebar/Sidebar";
+import ExpenseList from "./ExpenseList/ExpenseList";
 
 export { 
     Input,
@@ -11,5 +12,6 @@ export {
     Button, 
     Layout,
     Router,
-    Sidebar 
+    Sidebar,
+    ExpenseList
 };
