@@ -7,6 +7,12 @@ const theme = {
         gray500: "#ebebeb",
         gray400: "#eeeeee",
         gray300: "#f0f0f0",
+        blue500: "#4361ee",
+        blue400: "#5671f0", 
+        blue300: "#7b90f3",
+        red500: "#e6004c",
+        red400: "#ff0054",
+        red300: "#ff1a65",
         white: "#fff"
     },
     font: {
