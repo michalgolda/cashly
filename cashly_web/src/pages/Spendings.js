@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Layout, Button, ExpenseList, Section } from "../components";
+import { Layout, Button, ExpenseList, Section, Page } from "../components";
 
 const StyledButton = styled(Button)`
     height: min-content;
@@ -33,21 +33,23 @@ export default function Spendings() {
     ];
 
     return (
-        <Layout>
-            <Section
-                title="Lista wydatków"
-                description={`
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                    Fusce dui nulla, facilisis eu imperdiet non, rhoncus quis nibh. 
-                    Praesent rutrum viverra iaculis. 
-                    Phasellus commodo orci vitae venenatis consequat.
-                `}
-            >
-                <StyledButton variant="primaryOutline">Dodaj wydatek</StyledButton>
-            </Section>
-            <StyledWrapper>
-                <ExpenseList data={fakeData} />
-            </StyledWrapper>
-        </Layout>
+        <Page title="Cashly - Wydatki">
+            <Layout>
+                <Section
+                    title="Lista wydatków"
+                    description={`
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Fusce dui nulla, facilisis eu imperdiet non, rhoncus quis nibh. 
+                        Praesent rutrum viverra iaculis. 
+                        Phasellus commodo orci vitae venenatis consequat.
+                    `}
+                >
+                    <StyledButton variant="primaryOutline">Dodaj wydatek</StyledButton>
+                </Section>
+                <StyledWrapper>
+                    <ExpenseList data={fakeData} />
+                </StyledWrapper>
+            </Layout>
+        </Page>
     );
 }
