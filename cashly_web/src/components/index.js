@@ -1,4 +1,5 @@
 import Input from "./Input/Input";
+import Page from "./Page/Page";
 import Header from "./Header/Header";
 import Button from "./Button/Button";
 import Layout from "./Layout/Layout";
@@ -10,6 +11,7 @@ import ExpenseList from "./ExpenseList/ExpenseList";
 import CategoryList from "./CategoryList/CategoryList";
 
 export { 
+    Page,
     Input,
     Header, 
     Button, 

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Layout, Section, Button, CategoryList } from "../components";
+import { Layout, Section, Button, CategoryList, Page } from "../components";
 
 const StyledButton = styled(Button)`
     width: fit-content;
@@ -23,21 +23,23 @@ export default function SpendCategories() {
     ];
 
     return (
-        <Layout>
-            <Section
-                title="Lista kategorii"
-                description={`
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                    Fusce dui nulla, facilisis eu imperdiet non, rhoncus quis nibh. 
-                    Praesent rutrum viverra iaculis. 
-                    Phasellus commodo orci vitae venenatis consequat.
-                `}
-            >
-                <StyledButton variant="primaryOutline">Dodaj kategorie</StyledButton>
-            </Section>
-            <StyledWrapper>
-                <CategoryList data={fakeData} />
-            </StyledWrapper>
-        </Layout>
+        <Page title="Cashly - Kategorie">
+            <Layout>
+                <Section
+                    title="Lista kategorii"
+                    description={`
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Fusce dui nulla, facilisis eu imperdiet non, rhoncus quis nibh. 
+                        Praesent rutrum viverra iaculis. 
+                        Phasellus commodo orci vitae venenatis consequat.
+                    `}
+                >
+                    <StyledButton variant="primaryOutline">Dodaj kategorie</StyledButton>
+                </Section>
+                <StyledWrapper>
+                    <CategoryList data={fakeData} />
+                </StyledWrapper>
+            </Layout>
+        </Page>
     );
 }
