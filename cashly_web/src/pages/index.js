@@ -1,5 +1,5 @@
 import NotFound from "./NotFound";
-import Spendings from "./Spendings";
-import SpendCategories from "./SpendCategories";
+import Expenses from "./Expenses";
+import Categories from "./Categories";
 
-export { NotFound, Spendings, SpendCategories };
+export { NotFound, Expenses, Categories };

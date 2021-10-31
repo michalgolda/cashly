@@ -10,7 +10,7 @@ export default function NotFound() {
                 <h1>Strona, której szukasz nie istnieje.</h1>
                 <StyledLinkButton 
                     size="medium"
-                    to="/spendings" 
+                    to="/expenses" 
                     variant="primary" 
                 >
                     Strona główna

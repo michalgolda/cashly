@@ -1,21 +1,21 @@
 import { Redirect } from "react-router";
-import { NotFound, Spendings, SpendCategories } from "./pages"
+import { NotFound, Expenses, Categories } from "./pages"
 
 const routes = [
     {
         path: "/",
         exact: true,
-        component: () => <Redirect to="/spendings" />
+        component: () => <Redirect to="/expenses" />
     },
     {
         exact: true,
-        path: "/spendings",
-        component: Spendings
+        path: "/expenses",
+        component: Expenses
     },
     {
         exact: true,
         path: "/categories",
-        component: SpendCategories
+        component: Categories
     },
     {
         path: "*",

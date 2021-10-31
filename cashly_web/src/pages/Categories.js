@@ -1,42 +1,32 @@
 import styled from "styled-components";
-import { Layout, Button, ExpenseList, Section, Page } from "../components";
+import { Layout, Section, Button, CategoryList, Page } from "../components";
 
 const StyledButton = styled(Button)`
+    width: fit-content;
     height: min-content;
-    min-width: fit-content;
 `;
 
 const StyledWrapper = styled.div`margin: 2rem 0 2rem 0;`;
 
-export default function Spendings() {
+export default function Categories() {
     const fakeData = [
         {
             id: "1",
-            spend_category: {
-                id: "1",
-                name: "asdf",
-                color: "#f00"
-            },
-            amount: 12.00,
-            created_at: "12.10.2021"
+            name: "test1",
+            color: "#f00"
         },
         {
             id: "2",
-            spend_category: {
-                id: "2",
-                name: "abcd",
-                color: "#f00"
-            },
-            amount: 3.23,
-            created_at: "09.12.2023"
+            name: "test2",
+            color: "#f00"
         }
     ];
 
     return (
-        <Page title="Cashly - Wydatki">
+        <Page title="Cashly - Kategorie">
             <Layout>
                 <Section
-                    title="Lista wydatków"
+                    title="Lista kategorii"
                     description={`
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
                         Fusce dui nulla, facilisis eu imperdiet non, rhoncus quis nibh. 
@@ -44,10 +34,10 @@ export default function Spendings() {
                         Phasellus commodo orci vitae venenatis consequat.
                     `}
                 >
-                    <StyledButton variant="primaryOutline">Dodaj wydatek</StyledButton>
+                    <StyledButton variant="primaryOutline">Dodaj kategorie</StyledButton>
                 </Section>
                 <StyledWrapper>
-                    <ExpenseList data={fakeData} />
+                    <CategoryList data={fakeData} />
                 </StyledWrapper>
             </Layout>
         </Page>
