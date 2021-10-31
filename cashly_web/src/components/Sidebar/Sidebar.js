@@ -15,7 +15,7 @@ const StyledContainer = styled.nav`
 export default function Sidebar() {
     return (
         <StyledContainer>
-            <NavButton to="/spendings">Wydatki</NavButton>
+            <NavButton to="/expenses">Wydatki</NavButton>
             <NavButton to="/categories">Kategorie wydatków</NavButton>
         </StyledContainer>
     );
