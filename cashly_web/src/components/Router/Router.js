@@ -1,17 +1,19 @@
 import PropTypes from "prop-types";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 function Router({ routes }) {
     return (
         <BrowserRouter>
-            {routes.map(({ path, exact, component }, index) => (
-                <Route 
-                    key={index}
-                    path={path} 
-                    exact={exact}
-                    component={component} 
-                />
-            ))}
+            <Switch>
+                {routes.map(({ path, exact, component }, index) => (
+                    <Route 
+                        key={index}
+                        path={path} 
+                        exact={exact}
+                        component={component} 
+                    />
+                ))}
+            </Switch>
         </BrowserRouter>
     );
 }

@@ -1,5 +1,5 @@
 import { Redirect } from "react-router";
-import { Spendings, SpendCategories } from "./pages"
+import { NotFound, Spendings, SpendCategories } from "./pages"
 
 const routes = [
     {
@@ -16,6 +16,10 @@ const routes = [
         exact: true,
         path: "/categories",
         component: SpendCategories
+    },
+    {
+        path: "*",
+        component: NotFound
     }
 ];
 
