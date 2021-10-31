@@ -18,5 +18,6 @@ export {
     Section,
     Sidebar,
     LinkButton,
+    ExpenseList,
     CategoryList
 };
