@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 const StyledListItem = styled.li`
+    border-radius: 2px;
     text-align: center;
     padding: .5rem 1rem .5rem 1rem;
     background-color: ${({ color }) => color};
