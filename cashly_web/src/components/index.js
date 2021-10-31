@@ -5,6 +5,7 @@ import Layout from "./Layout/Layout";
 import Router from "./Router/Router";
 import Sidebar from "./Sidebar/Sidebar";
 import ExpenseList from "./ExpenseList/ExpenseList";
+import CategoryList from "./CategoryList/CategoryList";
 
 export { 
     Input,
@@ -13,5 +14,5 @@ export {
     Layout,
     Router,
     Sidebar,
-    ExpenseList
+    CategoryList
 };
