@@ -1,5 +1,13 @@
+import { useQuery } from "react-query";
 import styled from "styled-components";
-import { Layout, Button, ExpenseList, Section, Page } from "../components";
+import { getAllExpenses } from "../queries";
+import {
+    Page,
+    Error,
+    Layout,
+    Button,
+    Section,
+    ExpenseList } from "../components";
 
 const StyledButton = styled(Button)`
     height: min-content;
@@ -9,28 +17,7 @@ const StyledButton = styled(Button)`
 const StyledWrapper = styled.div`margin: 2rem 0 2rem 0;`;
 
 export default function Expenses() {
-    const fakeData = [
-        {
-            id: "1",
-            spend_category: {
-                id: "1",
-                name: "asdf",
-                color: "#f00"
-            },
-            amount: 12.00,
-            created_at: "12.10.2021"
-        },
-        {
-            id: "2",
-            spend_category: {
-                id: "2",
-                name: "abcd",
-                color: "#f00"
-            },
-            amount: 3.23,
-            created_at: "09.12.2023"
-        }
-    ];
+    const { data, isLoading, isError } = useQuery("expenses", getAllExpenses);
 
     return (
         <Page title="Cashly - Wydatki">
@@ -47,7 +34,17 @@ export default function Expenses() {
                     <StyledButton variant="primaryOutline">Dodaj wydatek</StyledButton>
                 </Section>
                 <StyledWrapper>
-                    <ExpenseList data={fakeData} />
+                    {isError ? (
+                        <Error message={`
+                        Wystąpił nieoczekiwany błąd podczas ładowania listy wydatków.
+                        Autor aplikacji został poinformany o błędzie i postara się go jak najszybciej naprawić. 
+                        `} />
+                    ) : (
+                        <ExpenseList 
+                            data={data} 
+                            showLoader={isLoading} 
+                        />
+                    )}
                 </StyledWrapper>
             </Layout>
         </Page>
