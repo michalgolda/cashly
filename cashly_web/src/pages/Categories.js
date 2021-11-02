@@ -1,26 +1,23 @@
+import { useQuery } from "react-query";
 import styled from "styled-components";
-import { Layout, Section, Button, CategoryList, Page } from "../components";
+import { getAllCategories } from "../queries";
+import { 
+    Page,
+    Error,
+    Layout, 
+    Button, 
+    Section,
+    CategoryList } from "../components";
 
 const StyledButton = styled(Button)`
-    width: fit-content;
+    min-width: fit-content;
     height: min-content;
 `;
 
 const StyledWrapper = styled.div`margin: 2rem 0 2rem 0;`;
 
 export default function Categories() {
-    const fakeData = [
-        {
-            id: "1",
-            name: "test1",
-            color: "#f00"
-        },
-        {
-            id: "2",
-            name: "test2",
-            color: "#f00"
-        }
-    ];
+    const { data, isLoading, isError } = useQuery("categories", getAllCategories);
 
     return (
         <Page title="Cashly - Kategorie">
@@ -37,7 +34,17 @@ export default function Categories() {
                     <StyledButton variant="primaryOutline">Dodaj kategorie</StyledButton>
                 </Section>
                 <StyledWrapper>
-                    <CategoryList data={fakeData} />
+                    {isError ? (
+                        <Error message={`
+                            Wystąpił nieoczekiwany błąd podczas ładowania listy kategorii.
+                            Autor aplikacji został poinformany o błędzie i postara się go jak najszybciej naprawić.
+                        `} />
+                    ) : (
+                        <CategoryList 
+                            data={data}
+                            showLoader={isLoading}
+                        />
+                    )}
                 </StyledWrapper>
             </Layout>
         </Page>
