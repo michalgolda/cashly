@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import CategoryListItem from "./CategoryListItem/CategoryListItem";
+import CategoryListItemLoader from "./CategoryListItemLoader/CategoryListItemLoader";
 
 const StyledList = styled.ul`
     display: grid;
@@ -10,17 +11,21 @@ const StyledList = styled.ul`
     grid-template-columns: repeat(auto-fill, 10rem);
 `;
 
-function CategoryList({ data }) {
+function CategoryList({ data, showLoader }) {
     return (
         <StyledList>
-            {data.map(({ id, name, color }, index) => (
-                <CategoryListItem 
-                    id={id}
-                    key={index}
-                    name={name}
-                    color={color}
-                />
-            ))}
+            {showLoader ? (
+                <CategoryListItemLoader />
+            ) : (
+                data.map(({ id, name, color }, index) => (
+                    <CategoryListItem 
+                        id={id}
+                        key={index}
+                        name={name}
+                        color={color}
+                    />
+                ))
+            )}
         </StyledList>
     );
 }
@@ -32,7 +37,8 @@ CategoryList.propTypes = {
             name: PropTypes.string,
             color: PropTypes.string
         })
-    )
+    ),
+    showLoader: PropTypes.bool.isRequired
 };
 
 export default CategoryList;
