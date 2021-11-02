@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import ExpenseListItem from "./ExpenseListItem/ExpenseListItem";
+import ExpenseListItemLoader from "./ExpenseListItemLoader/ExpenseListItemLoader";
 
 const StyledList = styled.ul`
     display: grid;
@@ -9,18 +10,22 @@ const StyledList = styled.ul`
     grid-auto-rows: auto;
 `;
 
-function ExpenseList({ data }) {
+function ExpenseList({ data, showLoader }) {
     return (
         <StyledList>
-            {data.map(({ id, amount, spend_category, created_at }, index) => (
-                <ExpenseListItem
-                    id={id}
-                    key={index}
-                    amount={amount}
-                    createdAt={created_at}
-                    category={spend_category}
-                />
-            ))}
+            {showLoader ? (
+                <ExpenseListItemLoader />
+            ) : (
+                data.map(({ id, amount, spend_category, created_at }, index) => (
+                    <ExpenseListItem
+                        id={id}
+                        key={index}
+                        amount={amount}
+                        createdAt={created_at}
+                        category={spend_category}
+                    />
+                ))
+            )}
         </StyledList>
     );
 }
@@ -37,7 +42,8 @@ ExpenseList.propTypes = {
             }),
             created_at: PropTypes.string
         })
-    )
+    ),
+    showLoader: PropTypes.bool.isRequired
 };
 
 export default ExpenseList;
