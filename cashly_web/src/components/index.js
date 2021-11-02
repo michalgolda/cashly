@@ -1,5 +1,6 @@
 import Input from "./Input/Input";
 import Page from "./Page/Page";
+import Error from "./Error/Error";
 import Header from "./Header/Header";
 import Button from "./Button/Button";
 import Layout from "./Layout/Layout";
@@ -13,6 +14,7 @@ import CategoryList from "./CategoryList/CategoryList";
 export { 
     Page,
     Input,
+    Error,
     Header, 
     Button, 
     Layout,
