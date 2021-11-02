@@ -27,6 +27,7 @@ const StyledCurrency = styled(StyledText)`width: fit-content;`;
 const StyledCategory = styled(StyledText)`
     transition: .5s;
     overflow: hidden;
+    border-radius: 2px;
     text-align: center;
     margin: 0 .5rem 0 .5rem;
     text-overflow: ellipsis;
