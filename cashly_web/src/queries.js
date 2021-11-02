@@ -7,3 +7,10 @@ export async function getAllCategories() {
 
     return data;
 }
+
+export async function getAllExpenses() {
+    const response = await axios.get(`${config.apiURL}/spendings/`);
+    const data = await response.data;
+
+    return data;
+}
