@@ -1,3 +1,4 @@
+import { ReactQueryDevtools } from "react-query/devtools";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ThemeProvider } from "styled-components";
 import { theme, GlobalStyle } from "./styles";
@@ -13,6 +14,7 @@ function App() {
                 <GlobalStyle />
                 <Router routes={routes} />
             </ThemeProvider>
+            {config.reactQueryDevtools && <ReactQueryDevtools />}
         </QueryClientProvider>
     );
 }
