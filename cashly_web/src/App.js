@@ -4,6 +4,7 @@ import { ThemeProvider } from "styled-components";
 import { theme, GlobalStyle } from "./styles";
 import { Router } from "./components";
 import routes from "./routes";
+import config from "./config";
 
 const queryClient = new QueryClient();
 
