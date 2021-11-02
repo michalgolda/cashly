@@ -28,14 +28,12 @@ const StyledCategory = styled(StyledText)`
     transition: .5s;
     overflow: hidden;
     text-align: center;
-    background-color: ${({ color }) => color};
     margin: 0 .5rem 0 .5rem;
     text-overflow: ellipsis;
     padding: .5rem 1rem .5rem 1rem;
+    background-color: ${({ color }) => color};
     color: ${({ theme }) => theme.colors.white}; 
     font-size: ${({ theme }) => theme.font.sizes.h5};
-
-    &:hover { width: 12rem; }
 `;
 
 const StyledCreatedAt = styled(StyledText)`
