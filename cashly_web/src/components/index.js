@@ -1,5 +1,6 @@
-import Input from "./Input/Input";
 import Page from "./Page/Page";
+import Modal from "./Modal/Modal";
+import Input from "./Input/Input";
 import Error from "./Error/Error";
 import Header from "./Header/Header";
 import Button from "./Button/Button";
@@ -14,6 +15,7 @@ import CategoryList from "./CategoryList/CategoryList";
 export { 
     Page,
     Input,
+    Modal,
     Error,
     Header, 
     Button, 
