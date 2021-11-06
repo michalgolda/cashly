@@ -45,12 +45,12 @@ const StyledModalCloseButton = styled.button`
     font-size: ${({ theme }) => theme.font.sizes.h4};
 `;
 
-function Modal({ children }) {
+function Modal({ children, onClose }) {
     return (
         <StyledWrapper>
             <StyledModal>
                 <StyledModalHeader>
-                    <StyledModalCloseButton>
+                    <StyledModalCloseButton onClick={onClose}>
                         <FontAwesomeIcon icon={faTimes} />
                     </StyledModalCloseButton>
                 </StyledModalHeader>
@@ -62,6 +62,9 @@ function Modal({ children }) {
     );
 }
 
-Modal.propTypes = { children: PropTypes.node.isRequired };
+Modal.propTypes = { 
+    onClose: PropTypes.func.isRequired,
+    children: PropTypes.node.isRequired 
+};
 
 export default Modal;
