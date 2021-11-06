@@ -1,7 +1,8 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button } from "../../components";
 
 const StyledWrapper = styled.div`
     top: 0;
@@ -16,8 +17,6 @@ const StyledWrapper = styled.div`
 
 const StyledModal = styled.div`
     width: 100%;
-    padding: .5rem;
-    min-width: 256px;
     max-width: 512px;
     border-radius: 2px;
     background-color: ${({ theme }) => theme.colors.white};
@@ -25,17 +24,23 @@ const StyledModal = styled.div`
 
 const StyledModalHeader = styled.div`
     display: flex;
+    padding: .5rem;
     justify-content: flex-end;
+    border-bottom: 2px solid ${({ theme }) => theme.colors.gray300};
 `;
 
-const StyledModalBody = styled.div`padding: .5rem 0 .5rem 0;`;
+const StyledModalBody = styled.div`
+    padding: .5rem;
+    max-height: 60vh;
+`;
 
-const StyledModalCloseButton = styled.button`
+const StyledModalCloseButton = styled(props => <Button {...props} />)`
+    padding: 0;
     border: none;
-    outline: none;
-    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: transparent;
-    font-size: ${({ theme }) => theme.font.sizes.h4};
 `;
 
 function Modal({ children }) {
@@ -43,9 +48,9 @@ function Modal({ children }) {
         <StyledWrapper>
             <StyledModal>
                 <StyledModalHeader>
-                    <StyledModalCloseButton 
-                        size="small"
-                        variant="primaryOutline" 
+                    <StyledModalCloseButton
+                        size="large"
+                        variant="secondary"
                     >
                         <FontAwesomeIcon icon={faTimes} />
                     </StyledModalCloseButton>
