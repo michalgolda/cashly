@@ -11,7 +11,7 @@ const StyledWrapper = styled.div`
     position: fixed;
     align-items: center;
     justify-content: center;
-    background-color: rgb(30, 33, 37, .5);
+    background-color: rgb(30, 33, 37, .75);
 `;
 
 const StyledModal = styled.div`
@@ -45,8 +45,8 @@ const StyledModalCloseButton = styled.button`
     font-size: ${({ theme }) => theme.font.sizes.h4};
 `;
 
-function Modal({ children, onClose }) {
-    return (
+function Modal({ children, show, onClose }) {
+    return show && (
         <StyledWrapper>
             <StyledModal>
                 <StyledModalHeader>
@@ -63,6 +63,7 @@ function Modal({ children, onClose }) {
 }
 
 Modal.propTypes = { 
+    show: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired 
 };
