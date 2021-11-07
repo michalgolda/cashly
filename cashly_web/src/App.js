@@ -1,10 +1,12 @@
+import { theme, GlobalStyle } from "./styles";
+import { ThemeProvider } from "styled-components";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ThemeProvider } from "styled-components";
-import { theme, GlobalStyle } from "./styles";
-import { Router } from "./components";
+import { Provider as NiceModalProvider } from "@ebay/nice-modal-react";
+
 import routes from "./routes";
 import config from "./config";
+import { Router } from "./components";
 
 const queryClient = new QueryClient();
 
@@ -12,8 +14,10 @@ function App() {
     return (
         <QueryClientProvider client={queryClient}>
             <ThemeProvider theme={theme}>
-                <GlobalStyle />
-                <Router routes={routes} />
+                <NiceModalProvider>
+                    <GlobalStyle />
+                    <Router routes={routes} />
+                </NiceModalProvider>
             </ThemeProvider>
             {config.reactQueryDevtools && <ReactQueryDevtools />}
         </QueryClientProvider>
