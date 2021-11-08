@@ -1,5 +1,7 @@
-import styled from "styled-components";
+import PropTypes from "prop-types";
 import styled, { css } from "styled-components";
+
+
 const inputStyleTypes = {
     color: css`
         padding: 0;
@@ -12,7 +14,6 @@ const inputStyleTypes = {
     `
 };
 
-const StyledContainer = styled.div`display: table-caption;`;
 const StyledContainer = styled.div`display: grid;`;
 
 const StyledLabel = styled.label`
@@ -33,16 +34,32 @@ const StyledInput = styled.input`
     font-family: ${({ theme }) => theme.font.family};
     font-weight: ${({ theme }) => theme.font.weights.semiBold};
     border: 2px solid ${({ theme }) => theme.colors.primary400};
+
     ${({ type }) => inputStyleTypes[type]};
 `;
 
-export default function Input(props) {
-    const { labelText } = props;
+const StyledErrorText = styled.p`
+    padding: .5rem;
+    color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => theme.colors.red300};
+    font-weight: ${({ theme }) => theme.font.weights.semiBold};
+`;
+
+function Input(props) {
+    const { labelText, errorText } = props;
     
     return (
         <StyledContainer>
             {labelText && <StyledLabel data-testid="label">{labelText}</StyledLabel>}
             <StyledInput {...props} data-testid="input" />
+            {errorText && <StyledErrorText>{errorText}</StyledErrorText>}
         </StyledContainer>
     );
 }
+
+Input.propTypes = {
+    labelText: PropTypes.string,
+    errorText: PropTypes.string
+};
+
+export default Input;
