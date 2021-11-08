@@ -1,8 +1,10 @@
 import styled from "styled-components";
 
 const StyledContainer = styled.div`display: table-caption;`;
+const StyledContainer = styled.div`display: grid;`;
 
 const StyledLabel = styled.label`
+    width: fit-content;
     height: min-content;
     padding: .5rem 1rem .5rem 1rem;
     color: ${({ theme }) => theme.colors.white};
