@@ -1,4 +1,16 @@
 import styled from "styled-components";
+import styled, { css } from "styled-components";
+const inputStyleTypes = {
+    color: css`
+        padding: 0;
+        width: 100%;
+        height: 46px;
+        cursor: pointer;
+
+        &::-webkit-color-swatch { border: none; }
+        &::-webkit-color-swatch-wrapper { padding: 0; }
+    `
+};
 
 const StyledContainer = styled.div`display: table-caption;`;
 const StyledContainer = styled.div`display: grid;`;
@@ -21,6 +33,7 @@ const StyledInput = styled.input`
     font-family: ${({ theme }) => theme.font.family};
     font-weight: ${({ theme }) => theme.font.weights.semiBold};
     border: 2px solid ${({ theme }) => theme.colors.primary400};
+    ${({ type }) => inputStyleTypes[type]};
 `;
 
 export default function Input(props) {
