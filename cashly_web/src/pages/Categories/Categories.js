@@ -1,13 +1,18 @@
 import { useQuery } from "react-query";
 import styled from "styled-components";
-import { getAllCategories } from "../queries";
+import { useModal } from "@ebay/nice-modal-react";
+
+import { getAllCategories } from "../../queries";
 import { 
     Page,
     Error,
     Layout, 
     Button, 
     Section,
-    CategoryList } from "../components";
+    CategoryList 
+} from "../../components";
+import AddCategoryModal from "./AddCategoryModal/AddCategoryModal";
+
 
 const StyledButton = styled(Button)`
     min-width: fit-content;
@@ -17,6 +22,7 @@ const StyledButton = styled(Button)`
 const StyledWrapper = styled.div`margin: 2rem 0 2rem 0;`;
 
 export default function Categories() {
+    const addCategoryModal = useModal(AddCategoryModal);
     const { data, isLoading, isError } = useQuery("categories", getAllCategories);
 
     return (
@@ -31,7 +37,12 @@ export default function Categories() {
                         Phasellus commodo orci vitae venenatis consequat.
                     `}
                 >
-                    <StyledButton variant="primaryOutline">Dodaj kategorie</StyledButton>
+                    <StyledButton 
+                        variant="primaryOutline"
+                        onClick={() => addCategoryModal.show()}
+                    >
+                        Dodaj kategorie
+                    </StyledButton>
                 </Section>
                 <StyledWrapper>
                     {isError ? (
