@@ -2,8 +2,11 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 const StyledListItem = styled.li`
+    overflow: hidden;
     border-radius: 2px;
     text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     padding: .5rem 1rem .5rem 1rem;
     background-color: ${({ color }) => color};
     color: ${({ theme }) => theme.colors.white};
