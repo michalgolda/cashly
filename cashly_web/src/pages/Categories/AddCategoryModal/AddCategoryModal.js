@@ -1,8 +1,10 @@
 import * as yup from "yup";
 import { useFormik } from "formik";
 import styled from "styled-components";
+import { useMutation, useQueryClient } from "react-query";
 import NiceModal, { useModal } from "@ebay/nice-modal-react";
 
+import { createExpenseCategory } from "../../../mutations";
 import { Modal, Button, Input } from "../../../components";
 
 
@@ -23,6 +25,17 @@ const StyledForm = styled.form`margin-top: .5rem;`;
 export default NiceModal.create(() => {
 	const modal = useModal();
 
+	const queryClient = useQueryClient();
+
+	const mutation = useMutation(createExpenseCategory, {
+		onSuccess: () => {
+			modal.hide();
+
+			queryClient.invalidateQueries("categories");
+		},
+		onError: (error) => !error.response && modal.hide()
+	});
+
 	const validationSchema = yup.object().shape({
 		name: yup.string()
 			.required("Nazwa kategorii jest wymagana.")
@@ -34,8 +47,16 @@ export default NiceModal.create(() => {
 			name: "",
 			color: "#30ff37"
 		},
-		onSubmit(values) {
-			console.log(values);
+		onSubmit(values, { setSubmitting, setFieldError }) {
+			const existingCategories = queryClient.getQueryData("categories");
+			const categoryNameIsAlreadyUsed = existingCategories.find(
+				({ name: categoryName }) => categoryName === values.name
+			);
+			
+			if (categoryNameIsAlreadyUsed) {
+				setSubmitting(false);
+				setFieldError("name", "Podana nazwa jest już w użyciu.");
+			} else { mutation.mutate(values); }
 		},
 		validationSchema
 	});
