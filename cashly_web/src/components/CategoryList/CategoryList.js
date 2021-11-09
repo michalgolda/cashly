@@ -8,7 +8,7 @@ const StyledList = styled.ul`
     list-style: none;
     grid-row-gap: 1rem;
     grid-column-gap: 1rem;
-    grid-template-columns: repeat(auto-fill, 10rem);
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
 `;
 
 function CategoryList({ data, showLoader }) {
