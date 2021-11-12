@@ -8,6 +8,7 @@ import Layout from "./Layout/Layout";
 import Router from "./Router/Router";
 import Sidebar from "./Sidebar/Sidebar";
 import Informer from "./Informer/Informer";
+import Skeleton from "./Skeleton/Skeleton";
 import IconButton from "./IconButton/IconButton";
 import LinkButton from "./LinkButton/LinkButton";
 import ExpenseList from "./ExpenseList/ExpenseList";
@@ -25,4 +26,5 @@ export {
     Section,
     Sidebar,
     Informer, 
+    Skeleton,
     IconButton,
