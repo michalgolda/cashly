@@ -16,5 +16,11 @@ export async function deleteExpenseCategory(expenseCategoryId) {
 	return response;
 }
 
+export async function createExpense(data) {
+	const requestURL = `${config.apiURL}/spendings/`;
+	const response = await axios.post(requestURL, data);
+
+	return response;
+}
 	return response;
 }
