@@ -1,87 +1,99 @@
 import PropTypes from "prop-types";
 import styled, { css } from "styled-components";
 
-const buttonStyleSizes = {
-    small: css`font-size: ${({ theme }) => theme.font.sizes.h6};`,
-    medium: css`font-size: ${({ theme }) => theme.font.sizes.h5};`,
-    large: css`font-size: ${({ theme }) => theme.font.sizes.h4};`
-};
 
-const buttonStyleVariants = {
-    primary: css`
-        color: ${({ theme }) => theme.colors.white};
-        border: 2px solid ${({ theme }) => theme.colors.primary400};
-        background-color: ${({ theme }) => theme.colors.primary400};
-
-        &:hover { background-color: ${({ theme }) => theme.colors.primary500}; }
-        
-        &:active { background-color: ${({ theme }) => theme.colors.primary300}; }
-    `,
-    primaryOutline: css`
-        color: ${({ theme }) => theme.colors.primary400};
-        background-color: ${({ theme }) => theme.colors.white};
-        border: 2px solid ${({ theme }) => theme.colors.primary400};
-
-        &:hover { 
-            color: ${({ theme }) => theme.colors.white};
-            background-color: ${({ theme }) => theme.colors.primary500}; 
-        }
-
-        &:active {
-            color: ${({ theme }) => theme.colors.white};
-            background-color: ${({ theme }) => theme.colors.primary300};
-        }
-    `
-};
-
-const StyledButton = styled.button`
+const StyledBaseButton = styled.button`
     border: none;
     outline: none;
-    display: block;
     cursor: pointer;
-    transition: .15s;
+    line-height: 1.5;
+    padding: 6px 16px;
+    position: relative;
     border-radius: 2px;
-    display: inline-block;
-    padding: .5rem 1.5rem .5rem 1.5rem;
-    font-family: ${({ theme }) => theme.font.family};
-    font-weight: ${({ theme }) => theme.font.weights.semiBold};
+    align-items: center;
+    display: inline-flex;
+    min-width: max-content;
+    justify-content: center;
+    font-size: ${({ theme }) => theme.fontSizes.h5};
+    font-family: ${({ theme }) => theme.fontFamily};
+    transition: ${({ theme }) => theme.defaultTransition};
+    font-weight: ${({ theme }) => theme.fontWeights.regular};
 
-    
-    ${({ size }) => buttonStyleSizes[size]};
-    ${({ variant }) => buttonStyleVariants[variant]};
+    &:hover { background-color: ${({ theme }) => theme.colors.primary500}; }
+    &:active { background-color: ${({ theme }) => theme.colors.primary300}; }
 
     ${({ fullWidth }) => fullWidth && css`width: 100%;`};
-    ${({ as }) => as === "a" && css`text-align: center; text-decoration: none;`};
 `;
 
+const StyledPrimaryButton = styled(StyledBaseButton)`
+    color: white;
+    background-color: ${({ theme }) => theme.colors.primary400};
+`;
+
+const StyledPrimaryOutlined = styled(StyledBaseButton)`
+    padding: 5px 15px;
+    background-color: transparent;
+    border: 1px solid ${({ theme }) => theme.colors.primary400};
+
+    &:hover { color: white; }
+`;
+
+const StyledTextButton = styled(StyledBaseButton)`
+    background-color: transparent;
+    color: ${({ theme }) => theme.colors.primary400};
+
+    &:hover { background-color: ${({ theme }) => theme.colors.gray100}; }
+    &:active { background-color: ${({ theme }) => theme.colors.gray300}; }
+`;
+
+const StyledBaseIconWrapper = styled.span`display: inherit;`;
+
+const StyledStartIconWrapper = styled(StyledBaseIconWrapper)`margin-right: 16px;`;
+
+const StyledEndIconWrapper = styled(StyledBaseIconWrapper)`margin-left: 16px;`;
+
+const mappedButtonVariants = {
+    "text": StyledTextButton,
+    "primary": StyledPrimaryButton,
+    "primaryOutlined": StyledPrimaryOutlined
+};
+
 function Button(props) {
-    const { children, variant, size, as } = props;
+    const { children, variant, startIcon, endIcon } = props;
+    const ButtonVariant = mappedButtonVariants[variant];
 
     return (
-        <StyledButton
-            as={as}
-            size={size} 
-            variant={variant}
-            {...props}
-        >
+        <ButtonVariant {...props}>
+            {startIcon && (
+                <StyledStartIconWrapper>
+                    {startIcon}
+                </StyledStartIconWrapper>
+            )}
             {children}
-        </StyledButton>
+            {endIcon && (
+                <StyledEndIconWrapper>
+                    {endIcon}
+                </StyledEndIconWrapper>
+            )}
+        </ButtonVariant>
     );
 }
 
-Button.defaultProps = {
-    as: "button",
-    size: "medium",
-    fullWidth: false,
-    variant: "primary" 
+Button.propTypes = {
+    children: PropTypes.node,
+    fullWidth: PropTypes.bool,
+    endIcon: PropTypes.element,
+    startIcon: PropTypes.element,
+    variant: PropTypes.oneOf([
+        "text",
+        "primary", 
+        "primaryOutlined"
+    ])
 };
 
-Button.propTypes = {
-    fullWidth: PropTypes.bool,
-    children: PropTypes.node.isRequired,
-    as: PropTypes.oneOf(["button", "a"]),
-    size: PropTypes.oneOf(["small", "medium", "large"]),
-    variant: PropTypes.oneOf(["primary", "primaryOutline"])
+Button.defaultProps = {
+    fullWidth: false,
+    variant: "primary"
 };
 
 export default Button;
