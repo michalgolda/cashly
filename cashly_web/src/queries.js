@@ -1,15 +1,18 @@
 import axios from "axios";
 import config from "./config";
 
-export async function getAllCategories() {
-    const response = await axios.get(`${config.apiURL}/spend-categories/`);
+
+export async function getAllExpenseCategories() {
+    const requestURL = `${config.apiURL}/spend-categories/`;
+    const response = await axios.get(requestURL);
     const data = await response.data;
 
     return data;
 }
 
 export async function getAllExpenses() {
-    const response = await axios.get(`${config.apiURL}/spendings/`);
+    const requestURL = `${config.apiURL}/spendings/`;
+    const response = await axios.get(requestURL);
     const data = await response.data;
 
     return data;
