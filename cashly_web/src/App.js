@@ -3,10 +3,12 @@ import { ThemeProvider } from "styled-components";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider as NiceModalProvider } from "@ebay/nice-modal-react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import routes from "./routes";
 import config from "./config";
-import { Router } from "./components";
+import { Layout } from "./components";
+
 
 const queryClient = new QueryClient();
 
@@ -16,7 +18,20 @@ function App() {
             <ThemeProvider theme={theme}>
                 <NiceModalProvider>
                     <GlobalStyle />
-                    <Router routes={routes} />
+                    <Router>    
+                        <Layout>
+                            <Switch>
+                                {routes.map(({ path, exact, component }, index) => (
+                                    <Route 
+                                        key={index}
+                                        path={path} 
+                                        exact={exact}
+                                        component={component} 
+                                    />
+                                ))}
+                            </Switch>
+                        </Layout>
+                    </Router>
                 </NiceModalProvider>
             </ThemeProvider>
             {config.reactQueryDevtools && <ReactQueryDevtools />}
