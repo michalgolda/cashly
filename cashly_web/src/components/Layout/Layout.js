@@ -1,29 +1,30 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { Header, Sidebar } from "../../components";
 
-const StyledContainer = styled.div`
-    width: 100vw; 
+import { Sidebar } from "../../components";
+
+
+const StyledLayout = styled.div`
     height: auto;
-    display: grid;
-    grid-template-columns: auto 1fr;
+    display: flex;
+    flex-direction: row;
 `;
 
-const StyledContent = styled.div`
+const StyledContentWrapper = styled.div`
     width: 100%;
-    height: auto;
-    padding: 2.5rem;
+    display: flex;
+    margin-left: 256px;
+    flex-direction: column;
 `;
 
 function Layout({ children }) {
     return (
-        <>
-            <Header />
-            <StyledContainer>
-                <Sidebar />
-                <StyledContent>{children}</StyledContent>
-            </StyledContainer>
-        </>
+        <StyledLayout>
+            <Sidebar />
+            <StyledContentWrapper>
+                {children}
+            </StyledContentWrapper>
+        </StyledLayout>
     );
 }
 
