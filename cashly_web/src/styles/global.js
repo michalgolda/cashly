@@ -1,5 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 
+
 const GlobalStyle = createGlobalStyle`
     * {
         margin: 0;
@@ -8,10 +9,12 @@ const GlobalStyle = createGlobalStyle`
     }
 
     body {
-        color: ${({ theme }) => theme.colors.primary};
-        font-family: ${({ theme }) => theme.font.family};
-        background-color: ${({ theme }) => theme.colors.white};
-        font-weight: ${({ theme }) => theme.font.weights.regular};
+        font-size: 16px;
+        line-height: 1.6;
+        font-family: ${({ theme }) => theme.fontFamily};
+        color: ${({ theme }) => theme.colors.primary400};
+        background-color: ${({ theme }) => theme.colors.gray200};
+        font-weight: ${({ theme }) => theme.fontWeights.regular};
     }
 `;
 
