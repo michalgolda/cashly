@@ -15,9 +15,8 @@ const theme = {
         red300: "#ff1a65",
         white: "#fff"
     },
-    font: {
-        family: "'Montserrat', sans-seri",
-        sizes: {
+    fontFamily: "'Sora', sans-serif",
+    fontSizes: {
             h1: "2.488rem",
             h2: "2.074rem",
             h3: "1.728rem",
@@ -25,14 +24,12 @@ const theme = {
             h5: "1.2rem",
             h6: ".833rem"
         },
-        weights: {
-            light: "300",
-            regular: "400",
-            medium: "500",
-            semiBold: "600",
-            bold: "700"
-        }
-    }
+    fontWeights: {
+        regular: 400,
+        semiBold: 600,
+        bold: 700,
+        extraBold: 800
+    },
 }
 
 export default theme;
