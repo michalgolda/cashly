@@ -30,6 +30,7 @@ const theme = {
         bold: 700,
         extraBold: 800
     },
+    defaultTransition: "all .25s"
 }
 
 export default theme;
