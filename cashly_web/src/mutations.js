@@ -9,11 +9,12 @@ export async function createExpenseCategory(data) {
 	return response;
 }
 
-export async function createExpenseCategory(newExpenseCategoryData) {
-	const response = await axios.post(
-		`${config.apiURL}/spend-categories/`, 
-		newExpenseCategoryData
-	);
+export async function deleteExpenseCategory(expenseCategoryId) {
+	const requestURL = `${config.apiURL}/spend-categories/${expenseCategoryId}/`;
+	const response = await axios.delete(requestURL);
+
+	return response;
+}
 
 	return response;
 }
