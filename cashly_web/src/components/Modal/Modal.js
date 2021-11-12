@@ -3,69 +3,73 @@ import styled from "styled-components";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+
 const StyledWrapper = styled.div`
     top: 0;
-    width: 100vw;
+    width: 100%;
+    z-index: 999;
     height: 100vh;
     display: flex;
     position: fixed;
     align-items: center;
     justify-content: center;
-    background-color: rgb(30, 33, 37, .75);
+    background-color: rgb(47, 50, 55, .75);
 `;
 
 const StyledModal = styled.div`
     width: 100%;
+    height: auto;
     max-width: 512px;
     border-radius: 2px;
-    background-color: ${({ theme }) => theme.colors.white};
+    background-color: white;
+    margin: -128px 32px 32px 32px;
+    border: 1px solid ${({ theme }) => theme.colors.gray400};
 `;
 
 const StyledModalHeader = styled.div`
+    padding: 15px;
     display: flex;
-    padding: .5rem;
-    justify-content: flex-end;
-    border-bottom: 2px solid ${({ theme }) => theme.colors.gray300};
+    justify-content: right;
+    border-bottom: 1px solid ${({ theme }) => theme.colors.gray400};
 `;
 
-const StyledModalBody = styled.div`
-    padding: .5rem;
-    max-height: 60vh;
-`;
-
-const StyledModalCloseButton = styled.button`
-    padding: 0;
+const StyledHideModalButton = styled.span`
     border: none;
-    display: flex;
     outline: none;
     cursor: pointer;
-    align-items: center;
-    justify-content: center;
+    display: inherit;
+    user-select: none;
     background-color: transparent;
-    font-size: ${({ theme }) => theme.font.sizes.h4};
+    font-size: ${({ theme }) => theme.fontSizes.h4};
+    transition: ${({ theme }) => theme.defaultTransition};
+
+    &:hover { color: ${({ theme }) => theme.colors.primary500}; }
+    &:active { color: ${({ theme }) => theme.colors.primary300}; }
 `;
 
-function Modal({ children, show, onClose }) {
+const StyledModalBody = styled.div`padding: 15px;`;
+
+function Modal({ className, children, show, onHide }) {
     return show && (
         <StyledWrapper>
-            <StyledModal>
+            <StyledModal className={className}>
                 <StyledModalHeader>
-                    <StyledModalCloseButton onClick={onClose}>
+                    <StyledHideModalButton onClick={onHide}>
                         <FontAwesomeIcon icon={faTimes} />
-                    </StyledModalCloseButton>
+                    </StyledHideModalButton>
                 </StyledModalHeader>
-                <StyledModalBody>
-                    {children}
-                </StyledModalBody>
+                <StyledModalBody>{children}</StyledModalBody>
             </StyledModal>
         </StyledWrapper>
     );
 }
 
-Modal.propTypes = { 
-    show: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
-    children: PropTypes.node.isRequired 
+Modal.propTypes = {
+    show: PropTypes.bool,
+    onHide: PropTypes.func,
+    children: PropTypes.node
 };
+
+Modal.defaultProps = { show: false };
 
 export default Modal;
