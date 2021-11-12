@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
 
+
 function Page({ children, title }) {
     return (
         <>
