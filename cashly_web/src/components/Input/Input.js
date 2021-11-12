@@ -2,64 +2,89 @@ import PropTypes from "prop-types";
 import styled, { css } from "styled-components";
 
 
-const inputStyleTypes = {
-    color: css`
-        padding: 0;
-        width: 100%;
-        height: 46px;
-        cursor: pointer;
+const StyledWrapper = styled.div`
+    width: 256px;
+    display: flex;
+    flex-direction: column;
 
-        &::-webkit-color-swatch { border: none; }
-        &::-webkit-color-swatch-wrapper { padding: 0; }
-    `
-};
+    ${({ fullWidth }) => fullWidth && css`width: 100%;`}
 
-const StyledContainer = styled.div`display: grid;`;
-
-const StyledLabel = styled.label`
-    width: fit-content;
-    height: min-content;
-    padding: .5rem 1rem .5rem 1rem;
-    color: ${({ theme }) => theme.colors.white};
-    font-size: ${({ theme }) => theme.font.sizes.h6};
-    font-weight: ${({ theme }) => theme.font.weights.semiBold};
-    background-color: ${({ theme }) => theme.colors.primary400};
+    &:focus-within {
+        ${".inputLabel"} {
+            color: white;
+            background-color: ${({ theme }) => theme.colors.primary400};
+        }
+    }
 `;
 
 const StyledInput = styled.input`
+    width: 100%;
     outline: none;
-    border-radius: 2px;
-    padding: .5rem 1rem .5rem 1rem;
-    font-size: ${({ theme }) => theme.font.sizes.h5};
-    font-family: ${({ theme }) => theme.font.family};
-    font-weight: ${({ theme }) => theme.font.weights.semiBold};
-    border: 2px solid ${({ theme }) => theme.colors.primary400};
-
-    ${({ type }) => inputStyleTypes[type]};
+    line-height: 1.5;
+    padding: 5px 15px;
+    background-color: white;
+    font-size: ${({ theme }) => theme.fontSizes.h5};
+    font-family: ${({ theme }) => theme.fontFamily};
+    color: ${({ theme }) => theme.colors.primary400};
+    font-weight: ${({ theme }) => theme.fontWeights.regular};
+    border: 1px solid ${({ theme }) => theme.colors.primary400};
+    border-bottom-left-radius: ${({ isError }) => isError ? "0" : "2px"};
+    border-bottom-right-radius: ${({ isError }) => isError ? "0" : "2px"};
+    border-top-left-radius: ${({ labelText }) => labelText ? "0" : "2px"};
+    border-top-right-radius: ${({ labelText }) => labelText ? "0" : "2px"};
 `;
 
-const StyledErrorText = styled.p`
-    padding: .5rem;
-    color: ${({ theme }) => theme.colors.white};
-    background-color: ${({ theme }) => theme.colors.red300};
-    font-weight: ${({ theme }) => theme.font.weights.semiBold};
+const StyledLabel = styled.label`
+    padding: 3px 8px;
+    width: fit-content;
+    background-color: white;
+    border-radius: 2px 2px 0 0;
+    border-bottom: none !important;
+    font-size: ${({ theme }) => theme.fontSizes.h6};
+    color: ${({ theme }) => theme.colors.primary400};
+    transition: ${({ theme }) => theme.defaultTransition};
+    font-weight: ${({ theme }) => theme.fontWeights.semiBold};
+    border: 1px solid ${({ theme }) => theme.colors.primary400};
+`;
+
+const StyledError = styled.p`
+    color: white;
+    padding: 6px 8px;
+    text-align: left;
+    word-break: break-word;
+    border-radius: 0 0 2px 2px;
+    font-size: ${({ theme }) => theme.fontSizes.h6};
+    background-color: ${({ theme }) => theme.colors.red400};
+    font-weight: ${({ theme }) => theme.fontWeights.semiBold};
 `;
 
 function Input(props) {
-    const { labelText, errorText } = props;
-    
+    const { className, fullWidth, labelText, error } = props;
+    const isError = Boolean(error);
+
     return (
-        <StyledContainer>
-            {labelText && <StyledLabel data-testid="label">{labelText}</StyledLabel>}
-            <StyledInput {...props} data-testid="input" />
-            {errorText && <StyledErrorText>{errorText}</StyledErrorText>}
-        </StyledContainer>
+        <StyledWrapper fullWidth={fullWidth}>
+            {labelText && (
+                <StyledLabel className="inputLabel">
+                    {labelText}
+                </StyledLabel>
+            )}
+            <StyledInput
+                className={className}
+                isError={isError}
+                {...props} 
+            />
+            {error && <StyledError>{error}</StyledError>}
+        </StyledWrapper>
     );
-}
+} 
 
 Input.propTypes = {
-    labelText: PropTypes.string,
-    errorText: PropTypes.string
+    error: PropTypes.string,
+    fullWidth: PropTypes.bool,
+    labelText: PropTypes.string
 };
+
+Input.defaultProps = { fullWidth: false };
 
 export default Input;
