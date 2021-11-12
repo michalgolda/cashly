@@ -22,5 +22,10 @@ export async function createExpense(data) {
 
 	return response;
 }
+
+export async function deleteExpense(expenseId) {
+	const requestURL = `${config.apiURL}/spendings/${expenseId}/`;
+	const response = await axios.delete(requestURL);
+
 	return response;
 }
