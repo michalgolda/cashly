@@ -1,21 +1,21 @@
 import styled from "styled-components";
-import { Layout, LinkButton, Page } from "../components";
 
-const StyledLinkButton = styled(LinkButton)`margin-top: 1rem;`;
+import { Page, LinkButton, Informer } from "../components";
+import NotFoundIllustration from "../assets/notFound.svg";
+
+
+const StyledWrapper = styled.div`margin: 128px auto;`;
 
 export default function NotFound() {
     return (
         <Page title="Cashly - 404">
-            <Layout>
-                <h1>Strona, której szukasz nie istnieje.</h1>
-                <StyledLinkButton 
-                    size="medium"
-                    to="/expenses" 
-                    variant="primary" 
-                >
-                    Strona główna
-                </StyledLinkButton>
-            </Layout>
+            <StyledWrapper>
+                <Informer
+                    illustrationSource={NotFoundIllustration}
+                    bottomElement={<LinkButton to="/">Strona główna</LinkButton>}
+                    text="Strona, której szukasz nie istnieje lub została przeniesiona"
+                />
+            </StyledWrapper>
         </Page>
     );
 }
