@@ -7,7 +7,7 @@ import Button from "./Button/Button";
 import Layout from "./Layout/Layout";
 import Router from "./Router/Router";
 import Sidebar from "./Sidebar/Sidebar";
-import Section from "./Section/Section";
+import Informer from "./Informer/Informer";
 import LinkButton from "./LinkButton/LinkButton";
 import ExpenseList from "./ExpenseList/ExpenseList";
 import CategoryList from "./CategoryList/CategoryList";
@@ -23,7 +23,4 @@ export {
     Router,
     Section,
     Sidebar,
-    LinkButton,
-    ExpenseList,
-    CategoryList
-};
+    Informer, 
