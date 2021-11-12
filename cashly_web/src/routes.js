@@ -1,5 +1,7 @@
 import { Redirect } from "react-router";
-import { NotFound, Expenses, Categories } from "./pages"
+
+import { Expenses, Categories, NotFound } from "./pages";
+
 
 const routes = [
     {
