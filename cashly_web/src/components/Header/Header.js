@@ -1,23 +1,64 @@
+import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const StyledContainer = styled.div`
-    width: 100%;
+
+const StyledHeader = styled.header`
     height: auto;
-    text-align: center;
-    padding: 1rem 2rem 1rem 2rem;
-    border-bottom: 1px solid ${({ theme }) => theme.colors.gray500};
+    padding: 64px;
+    background-color: white;
+    border-bottom: 1px solid ${({ theme }) => theme.colors.gray400};
 `;
 
-const StyledText = styled.p`
-    color: ${({ theme }) => theme.colors.primary400};
-    font-size: ${({ theme }) => theme.font.sizes.h2};
-    font-weight: ${({ theme }) => theme.font.weights.bold};
+const StyledWrapper = styled.div`
+    display: flex;
+    margin: 0 auto;
+    max-width: 1024px;
+    align-items: center;
+    justify-content: space-between;
 `;
 
-export default function Header() {
+const StyledDescription = styled.p`
+    margin-top: 4px;
+    color: ${({ theme }) => theme.colors.gray600};
+    font-size: ${({ theme }) => theme.fontSizes.h5};
+`;
+
+const StyledLeftContentWrapper = styled.div`
+    display: flex;
+    margin-right: 32px;
+    flex-direction: column;
+`;
+
+const StyledRightContentWrapper = styled.div`margin-left: 8px;`;
+
+function Header(props) {
+    const { title, description, rightElement } = props;
+
     return (
-        <StyledContainer>
-            <StyledText>Cashly</StyledText>
-        </StyledContainer>
+        <StyledHeader {...props}>
+            <StyledWrapper>
+                <StyledLeftContentWrapper>
+                    {title && <h1>{title}</h1>}
+                    {description && (
+                        <StyledDescription>
+                            {description}
+                        </StyledDescription>
+                    )}
+                </StyledLeftContentWrapper>
+                {rightElement && (
+                    <StyledRightContentWrapper>
+                        {rightElement}
+                    </StyledRightContentWrapper>
+                )}
+            </StyledWrapper>
+        </StyledHeader>
     );
 }
+
+Header.propTypes = {
+    description: PropTypes.string,
+    rightElement: PropTypes.element,
+    title: PropTypes.string.isRequired
+};
+
+export default Header;
