@@ -1,11 +1,7 @@
-from fastapi import FastAPI
-from fastapi.testclient import TestClient
-
-from tests.utils import TestDatabase
-
 from app import create_app, models
 from app.dependencies import get_database
-
+from fastapi.testclient import TestClient
+from tests.utils import TestDatabase
 
 app = create_app()
 test_db = TestDatabase()
@@ -13,268 +9,281 @@ client = TestClient(app)
 
 app.dependency_overrides[get_database] = test_db.get_database
 
-def test_create_spend_category():
-	with test_db as db:
-		with db.session_factory() as session:
-			session.query(models.SpendCategory).delete()
-			session.commit()
 
-	response = client.post(
-		"/spend-categories/",
-		json={"name": "Food", "color": "#f00"}
-	)
-	assert response.status_code == 201
+def test_create_expense_category():
+    with test_db as db:
+        with db.session_factory() as session:
+            session.query(models.ExpenseCategory).delete()
+            session.commit()
 
-	response_data = response.json()
+    response = client.post(
+        "/expense-categories/",
+        json={"name": "Food", "color": "#f00"}
+    )
+    assert response.status_code == 201
 
-	assert "id" in response_data
-	assert response_data["name"] == "Food"
-	assert response_data["color"] == "#f00"
+    response_data = response.json()
 
-def test_create_spend_category_when_name_is_already_used():
-	spend_category = models.SpendCategory("Food", "#f00") 
+    assert "id" in response_data
+    assert response_data["name"] == "Food"
+    assert response_data["color"] == "#f00"
 
-	with test_db as db:
-		with db.session_factory() as session:
-			session.query(models.SpendCategory).delete()
 
-			session.add(spend_category)
-			session.commit()
-			session.refresh(spend_category)
+def test_create_expense_category_when_name_is_already_used():
+    expense_category = models.ExpenseCategory("Food", "#f00")
 
-	response = client.post("/spend-categories/", json={"name": "Food"})
+    with test_db as db:
+        with db.session_factory() as session:
+            session.query(models.ExpenseCategory).delete()
 
-	assert response.status_code == 419
+            session.add(expense_category)
+            session.commit()
+            session.refresh(expense_category)
 
-	response_data = response.json()
+    response = client.post("/expense-categories/", json={"name": "Food"})
 
-	assert response_data["message"] == (
-		("You have tried create spend "
-		"category name but name is already used")
-	)
+    assert response.status_code == 419
 
-def test_get_spend_category():
-	spend_category = models.SpendCategory("Food", "#f00")
+    response_data = response.json()
 
-	with test_db as db:
-		with db.session_factory() as session:
-			session.query(models.SpendCategory).delete()
+    assert response_data["message"] == (
+        ("You have tried create expense "
+         "category name but name is already used")
+    )
 
-			session.add(spend_category)
-			session.commit()
-			session.refresh(spend_category)
 
-	spend_category_id = spend_category.id
+def test_get_expense_category():
+    expense_category = models.ExpenseCategory("Food", "#f00")
 
-	response = client.get(f"/spend-categories/{spend_category_id}/")
-	
-	assert response.status_code == 200
+    with test_db as db:
+        with db.session_factory() as session:
+            session.query(models.ExpenseCategory).delete()
 
-	response_data = response.json()
+            session.add(expense_category)
+            session.commit()
+            session.refresh(expense_category)
 
-	assert response_data["name"] == "Food"
-	assert response_data["color"] == "#f00"
-	assert response_data["id"] == spend_category_id
+    expense_category_id = expense_category.id
 
-def test_get_spend_category_not_found():
-	with test_db as db:
-		with db.session_factory() as session:
-			session.query(models.SpendCategory).delete()
-			session.commit()
+    response = client.get(f"/expense-categories/{expense_category_id}/")
 
-	response = client.get(f"/spend-categories/0/")
+    assert response.status_code == 200
 
-	assert response.status_code == 419
+    response_data = response.json()
 
-	response_data = response.json()
+    assert response_data["name"] == "Food"
+    assert response_data["color"] == "#f00"
+    assert response_data["id"] == expense_category_id
 
-	assert response_data["message"] == (
-		"You have tried get spend " 
-		"category but is not found"
-	)
 
-def test_get_all_spend_categories():
-	spend_category = models.SpendCategory("Food", "#f00")
+def test_get_expense_category_not_found():
+    with test_db as db:
+        with db.session_factory() as session:
+            session.query(models.ExpenseCategory).delete()
+            session.commit()
 
-	with test_db as db:
-		with db.session_factory() as session:
-			session.query(models.SpendCategory).delete()
+    response = client.get(f"/expense-categories/0/")
 
-			session.add(spend_category)
-			session.commit()
-			session.refresh(spend_category)
+    assert response.status_code == 419
 
-	response = client.get("/spend-categories/")
+    response_data = response.json()
 
-	assert response.status_code == 200
+    assert response_data["message"] == (
+        "You have tried get expense "
+        "category but is not found"
+    )
 
-	response_data = response.json()
 
-	assert len(response_data) == 1
+def test_get_all_expense_categories():
+    expense_category = models.ExpenseCategory("Food", "#f00")
 
-	assert response_data[0]["name"] == "Food"
-	assert response_data[0]["color"] == "#f00"
-	assert response_data[0]["id"] == spend_category.id
+    with test_db as db:
+        with db.session_factory() as session:
+            session.query(models.ExpenseCategory).delete()
 
-def test_delete_spend_category():
-	spend_category = models.SpendCategory("Food", "#f00")
+            session.add(expense_category)
+            session.commit()
+            session.refresh(expense_category)
 
-	with test_db as db:
-		with db.session_factory() as session:
-			session.query(models.SpendCategory).delete()
+    response = client.get("/expense-categories/")
 
-			session.add(spend_category)
-			session.commit()
-			session.refresh(spend_category)
+    assert response.status_code == 200
 
-	spend_category_id = spend_category.id
+    response_data = response.json()
 
-	response = client.delete(f"/spend-categories/{spend_category_id}/")
+    assert len(response_data) == 1
 
-	assert response.status_code == 200
+    assert response_data[0]["name"] == "Food"
+    assert response_data[0]["color"] == "#f00"
+    assert response_data[0]["id"] == expense_category.id
 
-	response_data = response.json()
 
-	assert response_data["name"] == "Food"
-	assert response_data["color"] == "#f00"
-	assert response_data["id"] == spend_category_id
+def test_delete_expense_category():
+    expense_category = models.ExpenseCategory("Food", "#f00")
 
+    with test_db as db:
+        with db.session_factory() as session:
+            session.query(models.ExpenseCategory).delete()
 
-def test_create_spend():
-	response = client.post("/spendings/", json={"amount": 1000})
+            session.add(expense_category)
+            session.commit()
+            session.refresh(expense_category)
 
-	assert response.status_code == 201
+    expense_category_id = expense_category.id
 
-	response_data = response.json()
+    response = client.delete(f"/expense-categories/{expense_category_id}/")
 
-	assert "id" in response_data
-	assert response_data["amount"] == 1000
-	assert response_data["spend_category"] == None
+    assert response.status_code == 200
 
-def test_create_spend_with_category():
-	spend_category = models.SpendCategory("Food", "#f00")
+    response_data = response.json()
 
-	with test_db as db:
-		with db.session_factory() as session:
-			session.query(models.SpendCategory).delete()
+    assert response_data["name"] == "Food"
+    assert response_data["color"] == "#f00"
+    assert response_data["id"] == expense_category_id
 
-			session.add(spend_category)
-			session.commit()
-			session.refresh(spend_category)
 
-	spend_category_id = spend_category.id
+def test_create_expense():
+    response = client.post("/expenses/", json={"amount": 1000})
 
-	response = client.post(
-		"/spendings/", 
-		json={"amount": 1000, "spend_category_id": spend_category_id}
-	)
+    assert response.status_code == 201
 
-	assert response.status_code == 201
+    response_data = response.json()
 
-	response_data = response.json()
+    assert "id" in response_data
+    assert response_data["amount"] == 1000
+    assert response_data["expense_category"] == None
 
-	assert "id" in response_data
-	assert response_data["amount"] == 1000
-	assert response_data["spend_category"]["name"] == "Food"
-	assert response_data["spend_category"]["color"] == "#f00"
-	assert response_data["spend_category"]["id"] == spend_category_id
 
-def test_create_spend_with_category_when_category_not_found():
-	response = client.post(
-		"/spendings/", 
-		json={"amount": 1000, "spend_category_id": "123"}
-	)
+def test_create_expense_with_category():
+    expense_category = models.ExpenseCategory("Food", "#f00")
 
-	assert response.status_code == 419
+    with test_db as db:
+        with db.session_factory() as session:
+            session.query(models.ExpenseCategory).delete()
 
-	response_data = response.json()
+            session.add(expense_category)
+            session.commit()
+            session.refresh(expense_category)
 
-	assert response_data["message"] == (
-		("You have tried create spend but " 
-		"spend category id is not found")
-	)
+    expense_category_id = expense_category.id
 
-def test_get_spend():
-	spend = models.Spend(None, 1000)
+    response = client.post(
+        "/expenses/",
+        json={"amount": 1000, "expense_category_id": expense_category_id}
+    )
 
-	with test_db as db:
-		with db.session_factory() as session:
-			session.query(models.Spend).delete()
+    assert response.status_code == 201
 
-			session.add(spend)
-			session.commit()
-			session.refresh(spend)
+    response_data = response.json()
 
-	spend_id = spend.id
+    assert "id" in response_data
+    assert response_data["amount"] == 1000
+    assert response_data["expense_category"]["name"] == "Food"
+    assert response_data["expense_category"]["color"] == "#f00"
+    assert response_data["expense_category"]["id"] == expense_category_id
 
-	response = client.get(f"/spendings/{spend_id}/")
 
-	assert response.status_code == 200
+def test_create_expense_with_category_when_category_not_found():
+    response = client.post(
+        "/expenses/",
+        json={"amount": 1000, "expense_category_id": "123"}
+    )
 
-	response_data = response.json()
+    assert response.status_code == 419
 
-	assert response_data["id"] == spend_id
-	assert response_data["amount"] == 1000
-	assert response_data["spend_category"] == None
+    response_data = response.json()
 
-def test_get_spend_not_found():
-	response = client.get(f"/spendings/123/")
+    assert response_data["message"] == (
+        ("You have tried create expense but "
+         "expense category id is not found")
+    )
 
-	assert response.status_code == 419
 
-	response_data = response.json()
+def test_get_expense():
+    expense = models.Expense(None, 1000)
 
-	assert response_data["message"] == "You have tried get spend but is not found"
+    with test_db as db:
+        with db.session_factory() as session:
+            session.query(models.Expense).delete()
 
-def test_get_spendings():
-	spend = models.Spend(None, 1000)
+            session.add(expense)
+            session.commit()
+            session.refresh(expense)
 
-	with test_db as db:
-		with db.session_factory() as session:
-			session.query(models.Spend).delete()
+    expense_id = expense.id
 
-			session.add(spend)
-			session.commit()
-			session.refresh(spend)
+    response = client.get(f"/expenses/{expense_id}/")
 
-	response = client.get("/spendings/")
+    assert response.status_code == 200
 
-	assert response.status_code == 200
+    response_data = response.json()
 
-	response_data = response.json()
+    assert response_data["id"] == expense_id
+    assert response_data["amount"] == 1000
+    assert response_data["expense_category"] == None
 
-	assert response_data[0]["id"] == spend.id
-	assert response_data[0]["amount"] == spend.amount
-	assert response_data[0]["spend_category"] == None
 
-def test_delete_spend():
-	spend = models.Spend(None, 1000)
+def test_get_expense_not_found():
+    response = client.get(f"/expenses/123/")
 
-	with test_db as db:
-		with db.session_factory() as session:
-			session.query(models.Spend).delete()
+    assert response.status_code == 419
 
-			session.add(spend)
-			session.commit()
-			session.refresh(spend)
+    response_data = response.json()
 
-	spend_id = spend.id
+    assert response_data["message"] == "You have tried get expense but is not found"
 
-	response = client.delete(f"/spendings/{spend_id}/")
 
-	assert response.status_code == 200
+def test_get_expenses():
+    expense = models.Expense(None, 1000)
 
-	response_data = response.json()
+    with test_db as db:
+        with db.session_factory() as session:
+            session.query(models.Expense).delete()
 
-	assert response_data["id"] == spend_id
-	assert response_data["amount"] == 1000
-	assert response_data["spend_category"] == None
+            session.add(expense)
+            session.commit()
+            session.refresh(expense)
 
-def test_delete_spend_not_found():
-	response = client.delete("/spendings/123/")
+    response = client.get("/expenses/")
 
-	assert response.status_code == 419
+    assert response.status_code == 200
 
-	response_data = response.json()
+    response_data = response.json()
 
-	assert response_data["message"] == "You have tried delete spend but is not found"
+    assert response_data[0]["id"] == expense.id
+    assert response_data[0]["amount"] == expense.amount
+    assert response_data[0]["expense_category"] == None
+
+
+def test_delete_expense():
+    expense = models.Expense(None, 1000)
+
+    with test_db as db:
+        with db.session_factory() as session:
+            session.query(models.Expense).delete()
+
+            session.add(expense)
+            session.commit()
+            session.refresh(expense)
+
+    expense_id = expense.id
+
+    response = client.delete(f"/expenses/{expense_id}/")
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+
+    assert response_data["id"] == expense_id
+    assert response_data["amount"] == 1000
+    assert response_data["expense_category"] == None
+
+
+def test_delete_expense_not_found():
+    response = client.delete("/expenses/123/")
+
+    assert response.status_code == 419
+
+    response_data = response.json()
+
+    assert response_data["message"] == "You have tried delete expense but is not found"

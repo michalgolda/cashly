@@ -1,6 +1,7 @@
 import typing
 from abc import ABC, abstractmethod
-from app import schemas, models, repositories
+
+from app import models, repositories, schemas
 
 
 class Interactor(ABC):
@@ -15,114 +16,129 @@ class Interactor(ABC):
 
 
 class LogicException(Exception):
-    def __init__(self, message: str, status_code = 419):
+    def __init__(self, message: str, status_code=419):
         self.message = message
         self.status_code = status_code
 
 
-class SpendInteractor(Interactor):
-    def __init__(self, spend_repo: repositories.SpendRepository):
-        self._spend_repo = spend_repo
+class ExpenseInteractor(Interactor):
+    def __init__(self, expense_repo: repositories.ExpenseRepository):
+        self._expense_repo = expense_repo
 
-class CreateSpendInteractor(SpendInteractor):
-    def __init__(self, spend_category_repo: repositories.SpendCategoryRepository, *args, **kwargs):
+
+class CreateExpenseInteractor(ExpenseInteractor):
+    def __init__(self, expense_category_repo: repositories.ExpenseCategoryRepository, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self._spend_category_repo = spend_category_repo
+        self._expense_category_repo = expense_category_repo
 
-    def execute(self, spend: schemas.SpendCreate) -> models.Spend:
-        existing_spend_category = None
+    def execute(self, expense: schemas.ExpenseCreate) -> models.Expense:
+        existing_expense_category = None
 
-        if spend.spend_category_id:
-            existing_spend_category = self._spend_category_repo.get(
-                spend_category_id=spend.spend_category_id
+        if expense.expense_category_id:
+            existing_expense_category = self._expense_category_repo.get(
+                expense_category_id=expense.expense_category_id
             )
 
-            if not existing_spend_category:
+            if not existing_expense_category:
                 raise LogicException(
-                    ("You have tried create spend but " 
-                    "spend category id is not found")
+                    ("You have tried create expense but "
+                     "expense category id is not found")
                 )
 
-        created_spend = self._spend_repo.add(
-            spend,
-            spend_category=existing_spend_category
+        created_expense = self._expense_repo.add(
+            expense,
+            expense_category=existing_expense_category
         )
 
-        return created_spend
+        return created_expense
 
-class DeleteSpendInteractor(SpendInteractor):
-    def execute(self, spend_id: str) -> schemas.SpendOut:
-        existing_spend = self._spend_repo.get(spend_id)
 
-        if not existing_spend:
-            raise LogicException("You have tried delete spend but is not found")
+class DeleteExpenseInteractor(ExpenseInteractor):
+    def execute(self, expense_id: str) -> models.Expense:
+        existing_expense = self._expense_repo.get(expense_id)
 
-        deleted_spend = self._spend_repo.delete(existing_spend)
-
-        return deleted_spend
-
-class GetAllSpendingsInteractor(SpendInteractor):
-    def execute(self) -> typing.List[schemas.SpendOut]:
-        spendings = self._spend_repo.list()
-
-        return spendings
-
-class GetSpendByIdInteractor(SpendInteractor):
-    def execute(self, spend_id: str) -> schemas.SpendOut:
-        existing_spend = self._spend_repo.get(spend_id)
-
-        if not existing_spend:
-            raise LogicException("You have tried get spend but is not found")
-
-        return existing_spend
-
-class SpendCategoryInteractor(Interactor):
-    def __init__(self, spend_category_repo: repositories.SpendCategoryRepository):
-        self._spend_category_repo = spend_category_repo
-
-class CreateSpendCategoryInteractor(SpendCategoryInteractor):
-    def execute(self, spend_category: schemas.SpendCategoryCreate) -> models.SpendCategory:
-        spend_category_name_is_already_used = self._spend_category_repo.get_one_by(name=spend_category.name)
-
-        if spend_category_name_is_already_used:
+        if not existing_expense:
             raise LogicException(
-                ("You have tried create spend "
-                "category name but name is already used")
+                "You have tried delete expense but is not found")
+
+        deleted_expense = self._expense_repo.delete(existing_expense)
+
+        return deleted_expense
+
+
+class GetAllExpensesInteractor(ExpenseInteractor):
+    def execute(self) -> typing.List[models.Expense]:
+        expenses = self._expense_repo.list()
+
+        return expenses
+
+
+class GetExpenseByIdInteractor(ExpenseInteractor):
+    def execute(self, expense_id: str) -> models.Expense:
+        existing_expense = self._expense_repo.get(expense_id)
+
+        if not existing_expense:
+            raise LogicException("You have tried get expense but is not found")
+
+        return existing_expense
+
+
+class ExpenseCategoryInteractor(Interactor):
+    def __init__(self, expense_category_repo: repositories.ExpenseCategoryRepository):
+        self._expense_category_repo = expense_category_repo
+
+
+class CreateExpenseCategoryInteractor(ExpenseCategoryInteractor):
+    def execute(self, expense_category: schemas.ExpenseCategoryCreate) -> models.ExpenseCategory:
+        expense_category_name_is_already_used = self._expense_category_repo.get_one_by(
+            name=expense_category.name)
+
+        if expense_category_name_is_already_used:
+            raise LogicException(
+                ("You have tried create expense "
+                 "category name but name is already used")
             )
 
-        created_spend_category = self._spend_category_repo.add(spend_category)
+        created_expense_category = self._expense_category_repo.add(
+            expense_category)
 
-        return created_spend_category
+        return created_expense_category
 
-class DeleteSpendCategoryInteractor(SpendCategoryInteractor):
-    def execute(self, spend_category_id: str) -> models.SpendCategory:
-        existing_spend_category = self._spend_category_repo.get(spend_category_id)
 
-        if not existing_spend_category:
+class DeleteExpenseCategoryInteractor(ExpenseCategoryInteractor):
+    def execute(self, expense_category_id: str) -> models.ExpenseCategory:
+        existing_expense_category = self._expense_category_repo.get(
+            expense_category_id)
+
+        if not existing_expense_category:
             raise LogicException(
-                ("You have tried delete " 
-                "spend category but is not found")
+                ("You have tried delete "
+                 "expense category but is not found")
             )
 
-        deleted_spend_category = self._spend_category_repo.delete(existing_spend_category)
+        deleted_expense_category = self._expense_category_repo.delete(
+            existing_expense_category)
 
-        return deleted_spend_category
+        return deleted_expense_category
 
-class GetAllSpendCategoriesInteractor(SpendCategoryInteractor):
-    def execute(self) -> typing.List[models.SpendCategory]:
-        exisitng_spend_categories = self._spend_category_repo.list()
 
-        return exisitng_spend_categories
+class GetAllExpenseCategoriesInteractor(ExpenseCategoryInteractor):
+    def execute(self) -> typing.List[models.ExpenseCategory]:
+        exisitng_expense_categories = self._expense_category_repo.list()
 
-class GetSpendCategoryByIdInteractor(SpendCategoryInteractor):
-    def execute(self, spend_category_id: str) -> models.SpendCategory:
-        existing_spend_category = self._spend_category_repo.get(spend_category_id)
+        return exisitng_expense_categories
 
-        if not existing_spend_category:
+
+class GetExpenseCategoryByIdInteractor(ExpenseCategoryInteractor):
+    def execute(self, expense_category_id: str) -> models.ExpenseCategory:
+        existing_expense_category = self._expense_category_repo.get(
+            expense_category_id)
+
+        if not existing_expense_category:
             raise LogicException(
-                ("You have tried get spend " 
-                "category but is not found")
+                ("You have tried get expense "
+                 "category but is not found")
             )
 
-        return existing_spend_category
+        return existing_expense_category
