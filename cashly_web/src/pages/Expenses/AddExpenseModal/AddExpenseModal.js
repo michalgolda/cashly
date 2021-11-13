@@ -9,7 +9,7 @@ export default NiceModal.create(() => {
     const modal = useModal();
     const queryClient = useQueryClient();
     
-    const initialValues = { amount: 0, categoryId: "" };
+    const initialValues = { amount: 0, expense_category_id: "" };
 
     const mutation = useMutation(createExpense, {
         onSuccess: () => {
