@@ -21,11 +21,21 @@ const StyledText = styled.p`
 const StyledBottomElementWrapper = styled.div`margin-top: 32px;`;
 
 function Informer(props) {
-    const { bottomElement, text, illustrationSource } = props;
+    const { 
+        text, 
+        bottomElement, 
+        illustrationSource,
+        illustrationStyles
+    } = props;
 
     return (
         <StyledContainer {...props}>
-            {illustrationSource && <StyledIllustration src={illustrationSource} />}
+            {illustrationSource && (
+                <StyledIllustration 
+                    src={illustrationSource} 
+                    style={illustrationStyles} 
+                />
+            )}
             <StyledText>{text}</StyledText>
             {bottomElement && (
                 <StyledBottomElementWrapper>
