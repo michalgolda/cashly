@@ -58,7 +58,7 @@ const StyledDeleteButton = styled(StyledActionButton)`
     &:active { background-color: ${({ theme }) => theme.colors.red300}; }
 `;
 
-function ExpenseListItem({ id, amount, category, createdAt }) {
+function ExpenseListItem({ id, amount, expense_category, created_at }) {
     const queryClient = useQueryClient();
     const editExpenseModal = useModal(EditExpenseModal);
     const mutation = useMutation(deleteExpense, {
@@ -68,24 +68,24 @@ function ExpenseListItem({ id, amount, category, createdAt }) {
     return (
         <StyledListItem>
             <StyledSpan>{amount} PLN</StyledSpan>
-            {category ? (
-                <StyledCategory color={category.color}>
-                    {category.name}
+            {expense_category ? (
+                <StyledCategory color={expense_category.color}>
+                    {expense_category.name}
                 </StyledCategory>
             ) : (
                 <StyledCategory>
                     Bez kategorii
                 </StyledCategory>
             )}
-            <StyledSpan>{createdAt}</StyledSpan>
+            <StyledSpan>{created_at}</StyledSpan>
             <StyledActions>
                 <StyledEditButton 
                     icon={<FontAwesomeIcon icon={faEdit} />} 
                     onClick={() => {
                         editExpenseModal.show({ 
                             id, 
-                            amount, 
-                            categoryId: category ? category.id : "" 
+                            amount,
+                            expense_category_id: expense_category ? expense_category.id : ""
                         });
                     }}
                 />
@@ -101,11 +101,11 @@ function ExpenseListItem({ id, amount, category, createdAt }) {
 ExpenseListItem.propTypes = {
     id: PropTypes.string.isRequired,
     amount: PropTypes.number.isRequired,
-    category: PropTypes.shape({
+    expense_category: PropTypes.shape({
         name: PropTypes.string.isRequired,
         color: PropTypes.string.isRequired
     }),
-    createdAt: PropTypes.string.isRequired
+    created_at: PropTypes.string.isRequired
 };
 
 export default ExpenseListItem;

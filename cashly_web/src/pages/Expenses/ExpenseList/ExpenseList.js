@@ -23,17 +23,10 @@ function ExpenseList({ data, isEmpty, isLoading }) {
                     {isLoading ? <ExpenseListSkeleton /> : (
                         <>
                             {data.map((item, index) => {
-                                const { 
-                                    created_at: createdAt, 
-                                    expense_category: category 
-                                } = item;
-
                                 return (
                                     <ExpenseListItem 
                                         {...item} 
                                         key={index}
-                                        category={category}
-                                        createdAt={createdAt} 
                                     />
                                 );
                             })}

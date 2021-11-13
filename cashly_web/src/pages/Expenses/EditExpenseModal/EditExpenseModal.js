@@ -3,10 +3,10 @@ import NiceModal, { useModal, bootstrapDialog } from "@ebay/nice-modal-react";
 import ExpenseModal from "../ExpenseModal/ExpenseModal";
 
 
-export default NiceModal.create(({ id, amount, categoryId }) => {
+export default NiceModal.create(({ id, amount, expense_category_id }) => {
 	const modal = useModal();
 
-	const initialValues = { amount, categoryId };
+	const initialValues = { amount, expense_category_id };
 	
 	const onSubmit = (_, { resetForm }) => { resetForm(); };
 

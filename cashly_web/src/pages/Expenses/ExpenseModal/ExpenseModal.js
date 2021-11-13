@@ -61,11 +61,11 @@ function ExpenseModal(props) {
 				/>
                 <Input 
                     as="select"
-                    name="categoryId"
                     labelText="Kategoria"
+                    name="expense_category_id"
                     onChange={formik.handleChange}
-                    value={formik.values.categoryId || initialValues.categoryId}
-                    error={formik.touched.categoryId && formik.errors.categoryId}
+                    value={formik.values.expense_category_id || initialValues.expense_category_id}
+                    error={formik.touched.expense_category_id && formik.errors.expense_category_id}
                     fullWidth
                 >
                     <option value="">Bez kategorii</option>
@@ -98,7 +98,7 @@ ExpenseModal.propTypes = {
     description: PropTypes.string.isRequired,
     initialValues: PropTypes.shape({
         amount: PropTypes.number.isRequired,
-        categoryId: PropTypes.string.isRequired
+        expense_category_id: PropTypes.string.isRequired
     }).isRequired,
 };
 
