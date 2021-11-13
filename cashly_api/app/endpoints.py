@@ -1,150 +1,152 @@
 import typing
+
 from fastapi import APIRouter, Depends
 
-from app import (
-    schemas,
-    interactors, 
-    repositories, 
-    dependencies
-)
+from app import dependencies, interactors, repositories, schemas
 from app.database import Database
-
 
 router = APIRouter()
 
-@router.post(
-    "/spend-categories/", 
-    status_code=201,
-    response_model=schemas.SpendCategoryOut
-)
-def create_spend_category(
-    spend_category: schemas.SpendCategoryCreate,
-    db: Database = Depends(dependencies.get_database)
-):
-    spend_category_repo = repositories.SpendCategoryRepository(db)
-    
-    interactor = interactors.CreateSpendCategoryInteractor(
-        spend_category_repo
-    )
-
-    created_spend_category = interactor.execute(spend_category)
-
-    return created_spend_category
-
-@router.get(
-    "/spend-categories/{spend_category_id}/",
-    response_model=schemas.SpendCategoryOut
-)
-def get_spend_category(
-    spend_category_id: str,
-    db: Database = Depends(dependencies.get_database)
-):
-    spend_category_repo = repositories.SpendCategoryRepository(db)
-
-    interactor = interactors.GetSpendCategoryByIdInteractor(
-        spend_category_repo
-    )
-
-    existing_spend_category = interactor.execute(spend_category_id)
-
-    return existing_spend_category
-
-@router.get(
-    "/spend-categories/",
-    response_model=typing.List[schemas.SpendCategoryOut]
-)
-def get_spend_categories(db: Database = Depends(dependencies.get_database)):
-    spend_category_repo = repositories.SpendCategoryRepository(db)
-
-    interactor = interactors.GetAllSpendCategoriesInteractor(
-        spend_category_repo
-    )
-
-    existing_spend_categories = interactor.execute()
-
-    return existing_spend_categories
-
-@router.delete(
-    "/spend-categories/{spend_category_id}/",
-    response_model=schemas.SpendCategoryOut
-)
-def delete_spend_category(
-    spend_category_id: str,
-    db: Database = Depends(dependencies.get_database)
-):
-    spend_category_repo = repositories.SpendCategoryRepository(db)
-
-    interactor = interactors.DeleteSpendCategoryInteractor(
-        spend_category_repo
-    )
-
-    deleted_spend_category = interactor.execute(spend_category_id)
-
-    return deleted_spend_category
-
 
 @router.post(
-    "/spendings/",
+    "/expense-categories/",
     status_code=201,
-    response_model=schemas.SpendOut
+    response_model=schemas.ExpenseCategoryOut
 )
-def create_spend(
-    spend: schemas.SpendCreate,
+def create_expense_category(
+    expense_category: schemas.ExpenseCategoryCreate,
     db: Database = Depends(dependencies.get_database)
 ):
-    spend_repo = repositories.SpendRepository(db)
-    spend_category_repo = repositories.SpendCategoryRepository(db)
+    expense_category_repo = repositories.ExpenseCategoryRepository(db)
 
-    interactor = interactors.CreateSpendInteractor(
-        spend_repo=spend_repo,
-        spend_category_repo=spend_category_repo
+    interactor = interactors.CreateExpenseCategoryInteractor(
+        expense_category_repo
     )
 
-    created_spend = interactor.execute(spend)
+    created_expense_category = interactor.execute(expense_category)
 
-    return created_spend
+    return created_expense_category
+
 
 @router.get(
-    "/spendings/{spend_id}/",
-    response_model=schemas.SpendOut
+    "/expense-categories/{expense_category_id}/",
+    response_model=schemas.ExpenseCategoryOut
 )
-def get_spend(
-    spend_id: str,
+def get_expense_category(
+    expense_category_id: str,
     db: Database = Depends(dependencies.get_database)
 ):
-    spend_repo = repositories.SpendRepository(db)
+    expense_category_repo = repositories.ExpenseCategoryRepository(db)
 
-    interactor = interactors.GetSpendByIdInteractor(spend_repo)
+    interactor = interactors.GetExpenseCategoryByIdInteractor(
+        expense_category_repo
+    )
 
-    existing_spend = interactor.execute(spend_id)
+    exisiting_expense_category = interactor.execute(expense_category_id)
 
-    return existing_spend
+    return exisiting_expense_category
+
 
 @router.get(
-    "/spendings/",
-    response_model=typing.List[schemas.SpendOut]
+    "/expense-categories/",
+    response_model=typing.List[schemas.ExpenseCategoryOut]
 )
-def get_spendings(db: Database = Depends(dependencies.get_database)):
-    spend_repo = repositories.SpendRepository(db)
+def get_expense_categories(db: Database = Depends(dependencies.get_database)):
+    expense_category_repo = repositories.ExpenseCategoryRepository(db)
 
-    interactor = interactors.GetAllSpendingsInteractor(spend_repo)
+    interactor = interactors.GetAllExpenseCategoriesInteractor(
+        expense_category_repo
+    )
 
-    existing_spendings = interactor.execute()
+    existing_expense_categories = interactor.execute()
 
-    return existing_spendings
+    return existing_expense_categories
+
 
 @router.delete(
-    "/spendings/{spend_id}/",
-    response_model=schemas.SpendOut
+    "/expense-categories/{expense_category_id}/",
+    response_model=schemas.ExpenseCategoryOut
 )
-def delete_spend(
-    spend_id: str,
+def delete_expense_category(
+    expense_category_id: str,
     db: Database = Depends(dependencies.get_database)
 ):
-    spend_repo = repositories.SpendRepository(db)
+    expense_category_repo = repositories.ExpenseCategoryRepository(db)
 
-    interactor = interactors.DeleteSpendInteractor(spend_repo)
+    interactor = interactors.DeleteExpenseCategoryInteractor(
+        expense_category_repo
+    )
 
-    deleted_spend = interactor.execute(spend_id)
+    deleted_expense_category = interactor.execute(expense_category_id)
 
-    return deleted_spend
+    return deleted_expense_category
+
+
+@router.post(
+    "/expenses/",
+    status_code=201,
+    response_model=schemas.ExpenseOut
+)
+def create_expense(
+    expense: schemas.ExpenseCreate,
+    db: Database = Depends(dependencies.get_database)
+):
+    expense_repo = repositories.ExpenseRepository(db)
+    expense_category_repo = repositories.ExpenseCategoryRepository(db)
+
+    interactor = interactors.CreateExpenseInteractor(
+        expense_repo=expense_repo,
+        expense_category_repo=expense_category_repo
+    )
+
+    created_expense = interactor.execute(expense)
+
+    return created_expense
+
+
+@router.get(
+    "/expenses/{expense_id}/",
+    response_model=schemas.ExpenseOut
+)
+def get_expense(
+    expense_id: str,
+    db: Database = Depends(dependencies.get_database)
+):
+    expense_repo = repositories.ExpenseRepository(db)
+
+    interactor = interactors.GetExpenseByIdInteractor(expense_repo)
+
+    existing_expense = interactor.execute(expense_id)
+
+    return existing_expense
+
+
+@router.get(
+    "/expenses/",
+    response_model=typing.List[schemas.ExpenseOut]
+)
+def get_expenses(db: Database = Depends(dependencies.get_database)):
+    expense_repo = repositories.ExpenseRepository(db)
+
+    interactor = interactors.GetAllExpensesInteractor(expense_repo)
+
+    existing_expenses = interactor.execute()
+
+    return existing_expenses
+
+
+@router.delete(
+    "/expenses/{expense_id}/",
+    response_model=schemas.ExpenseOut
+)
+def delete_expense(
+    expense_id: str,
+    db: Database = Depends(dependencies.get_database)
+):
+    expense_repo = repositories.ExpenseRepository(db)
+
+    interactor = interactors.DeleteExpenseInteractor(expense_repo)
+
+    deleted_expense = interactor.execute(expense_id)
+
+    return deleted_expense

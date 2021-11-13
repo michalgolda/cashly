@@ -1,15 +1,6 @@
-import decimal
-from enum import Enum
-
-from sqlalchemy import (
-    Column, 
-    String,
-    Integer,
-    DateTime,
-    ForeignKey
-)
-from sqlalchemy.sql import func as sql_func 
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func as sql_func
 
 from app.database import Base
 from app.utils import uuid4_as_string
@@ -19,7 +10,7 @@ class Model(Base):
     __abstract__ = True
 
     id = Column(
-        String, 
+        String,
         index=True,
         primary_key=True,
         default=uuid4_as_string
@@ -34,33 +25,35 @@ class Model(Base):
     )
 
     def __repr__(self):
-        return f'<{type(self).__name__} id={str(self.id)}>'
+        return f"<{type(self).__name__} id={str(self.id)}>"
 
-class SpendCategory(Model):
-    __tablename__ = "spend_categories"
+
+class ExpenseCategory(Model):
+    __tablename__ = "expense_categories"
 
     name = Column(String(50))
     color = Column(String(7))
-    
+
     def __init__(self, name: str, color: str):
         self.name = name
         self.color = color
 
-class Spend(Model):
-    __tablename__ = "spendings"
 
-    spend_category_id = Column(
+class Expense(Model):
+    __tablename__ = "expenses"
+
+    expense_category_id = Column(
         String,
-        ForeignKey("spend_categories.id")
+        ForeignKey("expense_categories.id")
     )
     amount = Column(Integer)
-    
-    spend_category = relationship(
-        "SpendCategory",
+
+    expense_category = relationship(
+        "ExpenseCategory",
         lazy="subquery",
-        backref="spendings"
+        backref="expenses"
     )
 
-    def __init__(self, spend_category: SpendCategory, amount: int):
+    def __init__(self, expense_category: ExpenseCategory, amount: int):
         self.amount = amount
-        self.spend_category = spend_category
+        self.expense_category = expense_category

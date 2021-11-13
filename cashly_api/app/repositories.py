@@ -1,8 +1,7 @@
 import typing
-
 from abc import ABC, abstractmethod
 
-from app import schemas, models
+from app import models, schemas
 from app.database import Database
 
 
@@ -31,85 +30,84 @@ class Repository(ABC):
         raise NotImplementedError
 
 
-class SpendRepository(Repository):
-    def add(self, spend: schemas.SpendCreate, spend_category: models.SpendCategory) -> models.Spend:
+class ExpenseRepository(Repository):
+    def add(self, expense: schemas.ExpenseCreate,
+            expense_category: models.ExpenseCategory) -> models.Expense:
         with self._db.session_factory() as session:
-            new_spend = models.Spend(
-                spend_category,
-                amount=spend.amount
-            )
+            new_expense = models.Expense(expense_category, amount=expense.amount)
 
-            session.add(new_spend)
+            session.add(new_expense)
             session.commit()
-            session.refresh(new_spend)
+            session.refresh(new_expense)
 
-            return new_spend
+            return new_expense
 
-    def get(self, spend_id: str) -> typing.Union[models.Spend, None]:
+    def get(self, expense_id: str) -> typing.Union[models.Expense, None]:
         with self._db.session_factory() as session:
-            spend = session.query(models.Spend).get(spend_id)
+            expense = session.query(models.Expense).get(expense_id)
 
-            return spend
+            return expense
 
-    def get_one_by(self, *args, **kwargs) -> typing.Union[models.Spend, None]:
+    def get_one_by(self, *args, **kwargs) -> typing.Union[models.Expense, None]:
         with self._db.session_factory() as session:
-            spend = session.query(models.Spend) \
-                           .filter_by(*args, **kwargs).first()
+            expense = session.query(models.Expense) \
+                .filter_by(*args, **kwargs).first()
 
-            return spend
+            return expense
 
-    def list(self) -> typing.List[models.Spend]:
+    def list(self) -> typing.List[models.Expense]:
         with self._db.session_factory() as session:
-            spendings = session.query(models.Spend).all()
+            expenses = session.query(models.Expense).all()
 
-            return spendings
+            return expenses
 
-    def delete(self, spend: models.Spend) -> models.Spend:
+    def delete(self, expense: models.Expense) -> models.Expense:
         with self._db.session_factory() as session:
-            session.delete(spend)
+            session.delete(expense)
             session.commit()
 
-            return spend
+            return expense
 
 
-class SpendCategoryRepository(Repository):
-    def add(self, spend_category: schemas.SpendCategoryCreate) -> models.SpendCategory:
+class ExpenseCategoryRepository(Repository):
+    def add(self, expense_category: schemas.ExpenseCategoryCreate
+            ) -> models.ExpenseCategory:
         with self._db.session_factory() as session:
-            new_spend_category = models.SpendCategory(
-                name=spend_category.name,
-                color=spend_category.color
-            )
-            
-            session.add(new_spend_category)
+            new_expense_category = models.ExpenseCategory(
+                name=expense_category.name, color=expense_category.color)
+
+            session.add(new_expense_category)
             session.commit()
-            session.refresh(new_spend_category)
+            session.refresh(new_expense_category)
 
-            return new_spend_category
+            return new_expense_category
 
-    def get(self, spend_category_id: str) -> typing.Union[models.SpendCategory, None]:
+    def get(self, expense_category_id: str
+            ) -> typing.Union[models.ExpenseCategory, None]:
         with self._db.session_factory() as session:
-            spend_category = session.query(models.SpendCategory) \
-                                    .get(spend_category_id)
+            expense_category = session.query(models.ExpenseCategory) \
+                .get(expense_category_id)
 
-            return spend_category
+            return expense_category
 
-    def get_one_by(self, *args, **kwargs) -> typing.Union[models.SpendCategory, None]:
+    def get_one_by(self, *args,
+                   **kwargs) -> typing.Union[models.ExpenseCategory, None]:
         with self._db.session_factory() as session:
-            spend_category = session.query(models.SpendCategory) \
-                                    .filter_by(*args, **kwargs).first()
+            expense_category = session.query(models.ExpenseCategory) \
+                .filter_by(*args, **kwargs).first()
 
-            return spend_category
+            return expense_category
 
-    def list(self) -> typing.List[models.SpendCategory]:
+    def list(self) -> typing.List[models.ExpenseCategory]:
         with self._db.session_factory() as session:
-            spend_categories = session.query(models.SpendCategory).all()
+            expense_categories = session.query(models.ExpenseCategory).all()
 
-            return spend_categories
+            return expense_categories
 
-    def delete(self, spend_category: models.SpendCategory) -> models.SpendCategory:
+    def delete(self,
+               expense_category: models.ExpenseCategory) -> models.ExpenseCategory:
         with self._db.session_factory() as session:
-            session.delete(spend_category)
+            session.delete(expense_category)
             session.commit()
 
-        return spend_category
-                    
+        return expense_category

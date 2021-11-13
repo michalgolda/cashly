@@ -25,7 +25,7 @@ function ExpenseList({ data, isEmpty, isLoading }) {
                             {data.map((item, index) => {
                                 const { 
                                     created_at: createdAt, 
-                                    spend_category: category 
+                                    expense_category: category 
                                 } = item;
 
                                 return (

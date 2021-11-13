@@ -1,34 +1,39 @@
 from datetime import datetime
+
 from pydantic import BaseModel
 
 
-class SpendCategory(BaseModel):
+class ExpenseCategory(BaseModel):
     name: str
     color: str = "#000"
 
     class Config:
         orm_mode = True
 
-class SpendCategoryCreate(SpendCategory):
+
+class ExpenseCategoryCreate(ExpenseCategory):
     pass
 
-class SpendCategoryOut(SpendCategory):
+
+class ExpenseCategoryOut(ExpenseCategory):
     id: str
     created_at: datetime
     updated_at: datetime = None
 
 
-class Spend(BaseModel):
-    amount: int 
+class Expense(BaseModel):
+    amount: int
 
     class Config:
         orm_mode = True
 
-class SpendCreate(Spend):
-    spend_category_id: str = None
 
-class SpendOut(Spend):
+class ExpenseCreate(Expense):
+    expense_category_id: str = None
+
+
+class ExpenseOut(Expense):
     id: str
-    spend_category: SpendCategoryOut = None
     created_at: datetime
     updated_at: datetime = None
+    expense_category: ExpenseCategoryOut = None
