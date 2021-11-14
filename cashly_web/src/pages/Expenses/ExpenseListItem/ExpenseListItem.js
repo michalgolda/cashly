@@ -65,6 +65,16 @@ function ExpenseListItem({ id, amount, expense_category, created_at }) {
         onSuccess: () => queryClient.invalidateQueries("expenses")
     });
 
+    const getFormatedCreatedAtDate = () => {
+        const date = new Date(created_at);
+
+        const day = date.getDate();
+        const month = date.getMonth();
+        const year = date.getFullYear();
+
+        return `${day}.${month}.${year}`;
+    };
+
     return (
         <StyledListItem>
             <StyledSpan>{amount} PLN</StyledSpan>
@@ -77,7 +87,7 @@ function ExpenseListItem({ id, amount, expense_category, created_at }) {
                     Bez kategorii
                 </StyledCategory>
             )}
-            <StyledSpan>{created_at}</StyledSpan>
+            <StyledSpan>{getFormatedCreatedAtDate()}</StyledSpan>
             <StyledActions>
                 <StyledEditButton 
                     icon={<FontAwesomeIcon icon={faEdit} />} 
