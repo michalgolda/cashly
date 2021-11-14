@@ -36,3 +36,10 @@ export async function deleteExpense(expenseId) {
 
 	return response;
 }
+
+export async function updateExpense({ expenseId, data }) {
+	const requestURL = `${config.apiURL}/expenses/${expenseId}/`;
+	const response = await axios.put(requestURL, data);
+
+	return response;
+}

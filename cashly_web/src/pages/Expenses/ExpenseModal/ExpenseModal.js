@@ -64,7 +64,7 @@ function ExpenseModal(props) {
                     labelText="Kategoria"
                     name="expense_category_id"
                     onChange={formik.handleChange}
-                    value={formik.values.expense_category_id || initialValues.expense_category_id}
+                    value={formik.values.expense_category_id}
                     error={formik.touched.expense_category_id && formik.errors.expense_category_id}
                     fullWidth
                 >
