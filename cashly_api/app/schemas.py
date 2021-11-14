@@ -7,11 +7,12 @@ class ExpenseCategory(BaseModel):
     name: str
     color: str
 
-    class Config:
-        orm_mode = True
-
 
 class ExpenseCategoryCreate(ExpenseCategory):
+    pass
+
+
+class ExpenseCategoryUpdate(ExpenseCategory):
     pass
 
 
@@ -20,20 +21,20 @@ class ExpenseCategoryOut(ExpenseCategory):
     created_at: datetime
     updated_at: datetime = None
 
-
-class ExpenseCategoryUpdate(BaseModel):
-    name: str
-    color: str
+    class Config:
+        orm_mode = True
 
 
 class Expense(BaseModel):
     amount: int
 
-    class Config:
-        orm_mode = True
-
 
 class ExpenseCreate(Expense):
+    expense_category_id: str = None
+
+
+class ExpenseUpdate(Expense):
+    amount: int
     expense_category_id: str = None
 
 
@@ -43,7 +44,5 @@ class ExpenseOut(Expense):
     updated_at: datetime = None
     expense_category: ExpenseCategoryOut = None
 
-
-class ExpenseUpdate(BaseModel):
-    amount: int
-    expense_category_id: str = None
+    class Config:
+        orm_mode = True
