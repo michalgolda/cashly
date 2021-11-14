@@ -74,11 +74,14 @@ class ExpenseRepository(Repository):
             return expense
 
     def update(self, expense: models.Expense, expense_category: models.ExpenseCategory, expense_update: schemas.ExpenseUpdate) -> models.Expense:
-        expense.amount = expense_update.amount
-        expense.expense_category = expense_category
-
         with self._db.session_factory() as session:
+            expense = session.query(models.Expense).get(expense.id)
+
+            expense.amount = expense_update.amount
+            expense.expense_category = expense_category
+
             session.commit()
+            session.refresh(expense)
 
         return expense
 
@@ -127,10 +130,13 @@ class ExpenseCategoryRepository(Repository):
         return expense_category
 
     def update(self, expense_category: models.ExpenseCategory, expense_category_update: schemas.ExpenseCategoryUpdate) -> models.ExpenseCategory:
-        expense_category.name = expense_category_update.name
-        expense_category.color = expense_category_update.color
-
         with self._db.session_factory() as session:
+            expense_category = session.query(models.ExpenseCategory).get(expense_category.id)
+
+            expense_category.name = expense_category_update.name
+            expense_category.color = expense_category_update.color
+
             session.commit()
+            session.refresh(expense_category)
 
         return expense_category
