@@ -84,6 +84,36 @@ class GetExpenseByIdInteractor(ExpenseInteractor):
         return existing_expense
 
 
+class UpdateExpenseInteractor(ExpenseInteractor):
+    def __init__(self, expense_category_repo: repositories.ExpenseCategoryRepository, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self._expense_category_repo = expense_category_repo
+
+    def execute(self, expense_id: str, expense: schemas.ExpenseUpdate) -> models.Expense:
+        existing_expense = self._expense_repo.get(expense_id)
+
+        if not existing_expense:
+            raise LogicException("Próbujesz edytować wydatek, który nie istnieje")
+
+        existing_expense_category = None
+        expense_category_id = expense.expense_category_id
+
+        if expense_category_id != None:
+            existing_expense_category = self._expense_category_repo.get(expense_category_id)
+
+            if not existing_expense_category:
+                raise LogicException("Kategoria wydatku nie istnieje")
+
+        updated_expense = self._expense_repo.update(
+            existing_expense,
+            existing_expense_category, 
+            expense
+        )
+
+        return updated_expense
+
+
 class ExpenseCategoryInteractor(Interactor):
     def __init__(self, expense_category_repo: repositories.ExpenseCategoryRepository):
         self._expense_category_repo = expense_category_repo
@@ -142,3 +172,23 @@ class GetExpenseCategoryByIdInteractor(ExpenseCategoryInteractor):
             )
 
         return existing_expense_category
+
+
+class UpdateExpenseCategoryInteractor(ExpenseCategoryInteractor):
+    def execute(self, expense_category_id: str, expense_category: schemas.ExpenseCategoryUpdate) -> models.ExpenseCategory:
+        existing_expense_category = self._expense_category_repo.get(expense_category_id)
+
+        if not existing_expense_category:
+            raise LogicException(
+                ("Próbujesz edytować kategorię wydatku, " 
+                "która nie istnieje")
+            )
+
+        updated_expense_category = self._expense_category_repo.update(
+            existing_expense_category, 
+            expense_category
+        )
+
+        return updated_expense_category
+
+        

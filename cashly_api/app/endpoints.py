@@ -82,6 +82,29 @@ def delete_expense_category(
     return deleted_expense_category
 
 
+@router.put(
+    "/expense-categories/{expense_category_id}/",
+    response_model=schemas.ExpenseCategoryOut
+)
+def update_expense_category(
+    expense_category_id: str,
+    expense_category: schemas.ExpenseCategoryUpdate,
+    db: Database = Depends(dependencies.get_database)
+):
+    expense_category_repo = repositories.ExpenseCategoryRepository(db)
+
+    interactor = interactors.UpdateExpenseCategoryInteractor(
+        expense_category_repo
+    )
+
+    updated_expense_category = interactor.execute(
+        expense_category_id, 
+        expense_category
+    )
+
+    return updated_expense_category
+
+
 @router.post(
     "/expenses/",
     status_code=201,
@@ -150,3 +173,28 @@ def delete_expense(
     deleted_expense = interactor.execute(expense_id)
 
     return deleted_expense
+
+
+@router.put(
+    "/expenses/{expense_id}/",
+    response_model=schemas.ExpenseOut
+)
+def update_expense_category(
+    expense_id: str,
+    expense: schemas.ExpenseUpdate,
+    db: Database = Depends(dependencies.get_database)
+):
+    expense_repo = repositories.ExpenseRepository(db)
+    expense_category_repo = repositories.ExpenseCategoryRepository(db)
+
+    interactor = interactors.UpdateExpenseInteractor(
+        expense_repo=expense_repo,
+        expense_category_repo=expense_category_repo
+    )
+
+    updated_expense_category = interactor.execute(
+        expense_id,
+        expense
+    )
+
+    return updated_expense_category

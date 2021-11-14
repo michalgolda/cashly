@@ -147,6 +147,60 @@ def test_get_expense_category_by_id_interactor_when_expense_category_not_found(m
         mock_expense_category.id)
 
 
+def test_update_expense_category_interactor(mocker):
+    mock_expense_category = mocker.MagicMock(id="123")
+    mock_updated_expense_category = mocker.MagicMock(id="321")
+
+    mock_expense_category_repo = mocker.patch(
+        "app.repositories.ExpenseCategoryRepository")
+
+    mock_expense_category_repo.get.return_value = mock_expense_category
+
+    mock_expense_category_repo.update.return_value = mock_updated_expense_category
+
+    interactor = interactors.UpdateExpenseCategoryInteractor(
+        expense_category_repo=mock_expense_category_repo
+    )
+
+    updated_expense_category = interactor.execute(
+        expense_category_id=mock_expense_category.id,
+        expense_category=mock_updated_expense_category
+    )
+
+    mock_expense_category_repo.get.assert_called_once_with(
+        mock_expense_category.id)
+
+    mock_expense_category_repo.update.assert_called_once_with(
+        mock_expense_category,
+        mock_updated_expense_category
+    )
+
+    assert updated_expense_category == mock_updated_expense_category
+
+
+def test_update_expense_category_interactor_when_expense_category_not_found(mocker):
+    mock_expense_category = mocker.MagicMock(id="123")
+    mock_updated_expense_category = mocker.MagicMock(id="321")
+    
+    mock_expense_category_repo = mocker.patch(
+        "app.repositories.ExpenseCategoryRepository")
+
+    mock_expense_category_repo.get.return_value = None
+
+    interactor = interactors.UpdateExpenseCategoryInteractor(
+        expense_category_repo=mock_expense_category_repo
+    )
+
+    with pytest.raises(interactors.LogicException):
+        interactor.execute(
+            expense_category_id=mock_expense_category.id,
+            expense_category=mock_updated_expense_category
+        )
+
+    mock_expense_category_repo.get.assert_called_once_with(
+        mock_expense_category.id)
+
+
 def test_create_expense_interactor(mocker):
     mock_expense = mocker.MagicMock(expense_category_id=None)
 
@@ -304,3 +358,111 @@ def test_get_expense_by_id_interactor_when_expense_not_found(mocker):
         interactor.execute(expense_id=mock_expense.id)
 
     mock_expense_repo.get.assert_called_once_with(mock_expense.id)
+
+
+def test_update_expense_interactor(mocker):
+    mock_expense = mocker.MagicMock(id="123")
+    mock_updated_expense = mocker.MagicMock(
+        id="321",
+        expense_category_id="123"
+    )
+    mock_expense_category = mocker.MagicMock(id="123")
+
+    mock_expense_repo = mocker.patch(
+        "app.repositories.ExpenseRepository")
+
+    mock_expense_category_repo = mocker.patch("app.repositories.ExpenseCategoryRepository")
+
+    mock_expense_repo.get.return_value = mock_expense
+
+    mock_expense_repo.update.return_value = mock_updated_expense
+
+    mock_expense_category_repo.get.return_value = mock_expense_category
+
+    interactor = interactors.UpdateExpenseInteractor(
+        expense_repo=mock_expense_repo,
+        expense_category_repo=mock_expense_category_repo
+    )
+
+    updated_expense = interactor.execute(
+        expense_id=mock_expense.id,
+        expense=mock_updated_expense
+    )
+
+    mock_expense_repo.get.assert_called_once_with(
+        mock_expense.id)
+
+    mock_expense_category_repo.get.assert_called_once_with(
+        mock_expense_category.id
+    )
+
+    mock_expense_repo.update.assert_called_once_with(
+        mock_expense,
+        mock_expense_category,
+        mock_updated_expense
+    )
+
+    assert updated_expense == mock_updated_expense
+
+
+def test_update_expense_interactor_when_expense_not_found(mocker):
+    mock_expense = mocker.MagicMock(id="123")
+    mock_updated_expense = mocker.MagicMock(id="321")
+    
+    mock_expense_repo = mocker.patch(
+        "app.repositories.ExpenseRepository")
+
+    mock_expense_category_repo = mocker.patch("app.repositories.ExpenseCategoryRepository")
+
+    mock_expense_repo.get.return_value = None
+
+    interactor = interactors.UpdateExpenseInteractor(
+        expense_repo=mock_expense_repo,
+        expense_category_repo=mock_expense_category_repo
+    )
+
+    with pytest.raises(interactors.LogicException):
+        interactor.execute(
+            expense_id=mock_expense.id,
+            expense=mock_updated_expense
+        )
+
+    mock_expense_repo.get.assert_called_once_with(
+        mock_expense.id)
+
+
+def test_update_expense_interactor_when_expense_category_not_found(mocker):
+    mock_expense = mocker.MagicMock(id="123")
+    mock_updated_expense = mocker.MagicMock(
+        id="321",
+        expense_category_id="123"
+    )
+    mock_expense_category = mocker.MagicMock(id="123")
+
+    mock_expense_repo = mocker.patch(
+        "app.repositories.ExpenseRepository")
+
+    mock_expense_category_repo = mocker.patch("app.repositories.ExpenseCategoryRepository")
+
+    mock_expense_repo.get.return_value = mock_expense
+
+    mock_expense_category_repo.get.return_value = None
+
+    interactor = interactors.UpdateExpenseInteractor(
+        expense_repo=mock_expense_repo,
+        expense_category_repo=mock_expense_category_repo
+    )
+
+    with pytest.raises(interactors.LogicException):
+        interactor.execute(
+            expense_id=mock_expense.id,
+            expense=mock_updated_expense
+        )
+
+    mock_expense_repo.get.assert_called_once_with(
+        mock_expense.id)
+
+    mock_expense_category_repo.get.assert_called_once_with(
+        mock_expense_category.id
+    )
+    

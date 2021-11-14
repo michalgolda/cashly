@@ -29,12 +29,17 @@ class Repository(ABC):
     def delete():
         raise NotImplementedError
 
+    @abstractmethod
+    def update():
+        raise NotImplementedError
+
 
 class ExpenseRepository(Repository):
     def add(self, expense: schemas.ExpenseCreate,
             expense_category: models.ExpenseCategory) -> models.Expense:
         with self._db.session_factory() as session:
-            new_expense = models.Expense(expense_category, amount=expense.amount)
+            new_expense = models.Expense(
+                expense_category, amount=expense.amount)
 
             session.add(new_expense)
             session.commit()
@@ -67,6 +72,15 @@ class ExpenseRepository(Repository):
             session.commit()
 
             return expense
+
+    def update(self, expense: models.Expense, expense_category: models.ExpenseCategory, expense_update: schemas.ExpenseUpdate) -> models.Expense:
+        expense.amount = expense_update.amount
+        expense.expense_category = expense_category
+
+        with self._db.session_factory() as session:
+            session.commit()
+
+        return expense
 
 
 class ExpenseCategoryRepository(Repository):
@@ -108,6 +122,15 @@ class ExpenseCategoryRepository(Repository):
                expense_category: models.ExpenseCategory) -> models.ExpenseCategory:
         with self._db.session_factory() as session:
             session.delete(expense_category)
+            session.commit()
+
+        return expense_category
+
+    def update(self, expense_category: models.ExpenseCategory, expense_category_update: schemas.ExpenseCategoryUpdate) -> models.ExpenseCategory:
+        expense_category.name = expense_category_update.name
+        expense_category.color = expense_category_update.color
+
+        with self._db.session_factory() as session:
             session.commit()
 
         return expense_category
