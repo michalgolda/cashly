@@ -1,20 +1,20 @@
 from app import create_app, models
+from app.database import Database
 from app.dependencies import get_database
 from fastapi.testclient import TestClient
-from tests.utils import TestDatabase
 
 app = create_app()
-test_db = TestDatabase()
 client = TestClient(app)
+db = Database("sqlite:///./test.db")
 
-app.dependency_overrides[get_database] = test_db.get_database
+
+app.dependency_overrides[get_database] = lambda: db
 
 
 def test_create_expense_category():
-    with test_db as db:
-        with db.session_factory() as session:
-            session.query(models.ExpenseCategory).delete()
-            session.commit()
+    with db.session_factory() as session:
+        session.query(models.ExpenseCategory).delete()
+        session.commit()
 
     response = client.post(
         "/expense-categories/",
@@ -32,13 +32,12 @@ def test_create_expense_category():
 def test_create_expense_category_when_name_is_already_used():
     expense_category = models.ExpenseCategory("Food", "#f00")
 
-    with test_db as db:
-        with db.session_factory() as session:
-            session.query(models.ExpenseCategory).delete()
+    with db.session_factory() as session:
+        session.query(models.ExpenseCategory).delete()
 
-            session.add(expense_category)
-            session.commit()
-            session.refresh(expense_category)
+        session.add(expense_category)
+        session.commit()
+        session.refresh(expense_category)
 
     response = client.post(
         "/expense-categories/",
@@ -58,13 +57,12 @@ def test_create_expense_category_when_name_is_already_used():
 def test_get_expense_category():
     expense_category = models.ExpenseCategory("Food", "#f00")
 
-    with test_db as db:
-        with db.session_factory() as session:
-            session.query(models.ExpenseCategory).delete()
+    with db.session_factory() as session:
+        session.query(models.ExpenseCategory).delete()
 
-            session.add(expense_category)
-            session.commit()
-            session.refresh(expense_category)
+        session.add(expense_category)
+        session.commit()
+        session.refresh(expense_category)
 
     expense_category_id = expense_category.id
 
@@ -80,10 +78,9 @@ def test_get_expense_category():
 
 
 def test_get_expense_category_not_found():
-    with test_db as db:
-        with db.session_factory() as session:
-            session.query(models.ExpenseCategory).delete()
-            session.commit()
+    with db.session_factory() as session:
+        session.query(models.ExpenseCategory).delete()
+        session.commit()
 
     response = client.get(f"/expense-categories/0/")
 
@@ -100,13 +97,12 @@ def test_get_expense_category_not_found():
 def test_get_all_expense_categories():
     expense_category = models.ExpenseCategory("Food", "#f00")
 
-    with test_db as db:
-        with db.session_factory() as session:
-            session.query(models.ExpenseCategory).delete()
+    with db.session_factory() as session:
+        session.query(models.ExpenseCategory).delete()
 
-            session.add(expense_category)
-            session.commit()
-            session.refresh(expense_category)
+        session.add(expense_category)
+        session.commit()
+        session.refresh(expense_category)
 
     response = client.get("/expense-categories/")
 
@@ -124,13 +120,12 @@ def test_get_all_expense_categories():
 def test_delete_expense_category():
     expense_category = models.ExpenseCategory("Food", "#f00")
 
-    with test_db as db:
-        with db.session_factory() as session:
-            session.query(models.ExpenseCategory).delete()
+    with db.session_factory() as session:
+        session.query(models.ExpenseCategory).delete()
 
-            session.add(expense_category)
-            session.commit()
-            session.refresh(expense_category)
+        session.add(expense_category)
+        session.commit()
+        session.refresh(expense_category)
 
     expense_category_id = expense_category.id
 
@@ -148,13 +143,12 @@ def test_delete_expense_category():
 def test_update_expense_category():
     expense_category = models.ExpenseCategory("Food", "#f00")
 
-    with test_db as db:
-        with db.session_factory() as session:
-            session.query(models.ExpenseCategory).delete()
+    with db.session_factory() as session:
+        session.query(models.ExpenseCategory).delete()
 
-            session.add(expense_category)
-            session.commit()
-            session.refresh(expense_category)
+        session.add(expense_category)
+        session.commit()
+        session.refresh(expense_category)
 
     expense_category_id = expense_category.id
 
@@ -173,10 +167,9 @@ def test_update_expense_category():
 
 
 def test_update_expense_category_not_found():
-    with test_db as db:
-        with db.session_factory() as session:
-            session.query(models.ExpenseCategory).delete()
-            session.commit()
+    with db.session_factory() as session:
+        session.query(models.ExpenseCategory).delete()
+        session.commit()
 
     response = client.put(
         "/expense-categories/0/",
@@ -208,13 +201,12 @@ def test_create_expense():
 def test_create_expense_with_category():
     expense_category = models.ExpenseCategory("Food", "#f00")
 
-    with test_db as db:
-        with db.session_factory() as session:
-            session.query(models.ExpenseCategory).delete()
+    with db.session_factory() as session:
+        session.query(models.ExpenseCategory).delete()
 
-            session.add(expense_category)
-            session.commit()
-            session.refresh(expense_category)
+        session.add(expense_category)
+        session.commit()
+        session.refresh(expense_category)
 
     expense_category_id = expense_category.id
 
@@ -253,13 +245,12 @@ def test_create_expense_with_category_when_category_not_found():
 def test_get_expense():
     expense = models.Expense(None, 1000)
 
-    with test_db as db:
-        with db.session_factory() as session:
-            session.query(models.Expense).delete()
+    with db.session_factory() as session:
+        session.query(models.Expense).delete()
 
-            session.add(expense)
-            session.commit()
-            session.refresh(expense)
+        session.add(expense)
+        session.commit()
+        session.refresh(expense)
 
     expense_id = expense.id
 
@@ -287,13 +278,12 @@ def test_get_expense_not_found():
 def test_get_expenses():
     expense = models.Expense(None, 1000)
 
-    with test_db as db:
-        with db.session_factory() as session:
-            session.query(models.Expense).delete()
+    with db.session_factory() as session:
+        session.query(models.Expense).delete()
 
-            session.add(expense)
-            session.commit()
-            session.refresh(expense)
+        session.add(expense)
+        session.commit()
+        session.refresh(expense)
 
     response = client.get("/expenses/")
 
@@ -309,13 +299,12 @@ def test_get_expenses():
 def test_delete_expense():
     expense = models.Expense(None, 1000)
 
-    with test_db as db:
-        with db.session_factory() as session:
-            session.query(models.Expense).delete()
+    with db.session_factory() as session:
+        session.query(models.Expense).delete()
 
-            session.add(expense)
-            session.commit()
-            session.refresh(expense)
+        session.add(expense)
+        session.commit()
+        session.refresh(expense)
 
     expense_id = expense.id
 
@@ -343,13 +332,12 @@ def test_delete_expense_not_found():
 def test_update_expense():
     expense = models.Expense(None, 1000)
 
-    with test_db as db:
-        with db.session_factory() as session:
-            session.query(models.Expense).delete()
+    with db.session_factory() as session:
+        session.query(models.Expense).delete()
 
-            session.add(expense)
-            session.commit()
-            session.refresh(expense)
+        session.add(expense)
+        session.commit()
+        session.refresh(expense)
 
     expense_id = expense.id
 
@@ -368,10 +356,9 @@ def test_update_expense():
 
 
 def test_update_expense_not_found():
-    with test_db as db:
-        with db.session_factory() as session:
-            session.query(models.Expense).delete()
-            session.commit()
+    with db.session_factory() as session:
+        session.query(models.Expense).delete()
+        session.commit()
 
     response = client.put(
         "/expenses/0/",
@@ -388,13 +375,12 @@ def test_update_expense_not_found():
 def test_update_expense_when_expense_category_not_found():
     expense = models.Expense(None, 1000)
 
-    with test_db as db:
-        with db.session_factory() as session:
-            session.query(models.Expense).delete()
+    with db.session_factory() as session:
+        session.query(models.Expense).delete()
 
-            session.add(expense)
-            session.commit()
-            session.refresh(expense)
+        session.add(expense)
+        session.commit()
+        session.refresh(expense)
 
     expense_id = expense.id
 
