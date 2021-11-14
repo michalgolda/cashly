@@ -76,6 +76,9 @@ class ExpenseRepository(Repository):
     def update(self, expense: models.Expense, expense_category: models.ExpenseCategory, expense_update: schemas.ExpenseUpdate) -> models.Expense:
         with self._db.session_factory() as session:
             expense = session.query(models.Expense).get(expense.id)
+            
+            if expense_category: 
+                expense_category = session.query(models.ExpenseCategory).get(expense_category.id)
 
             expense.amount = expense_update.amount
             expense.expense_category = expense_category
