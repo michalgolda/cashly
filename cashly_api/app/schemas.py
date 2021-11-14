@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 class ExpenseCategory(BaseModel):
     name: str
-    color: str = "#000"
+    color: str
 
     class Config:
         orm_mode = True
@@ -19,6 +19,11 @@ class ExpenseCategoryOut(ExpenseCategory):
     id: str
     created_at: datetime
     updated_at: datetime = None
+
+
+class ExpenseCategoryUpdate(BaseModel):
+    name: str
+    color: str
 
 
 class Expense(BaseModel):
@@ -37,3 +42,8 @@ class ExpenseOut(Expense):
     created_at: datetime
     updated_at: datetime = None
     expense_category: ExpenseCategoryOut = None
+
+
+class ExpenseUpdate(BaseModel):
+    amount: int
+    expense_category_id: str = None

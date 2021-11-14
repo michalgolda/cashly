@@ -40,7 +40,10 @@ def test_create_expense_category_when_name_is_already_used():
             session.commit()
             session.refresh(expense_category)
 
-    response = client.post("/expense-categories/", json={"name": "Food"})
+    response = client.post(
+        "/expense-categories/",
+        json={"name": "Food", "color": "#fff"}
+    )
 
     assert response.status_code == 419
 
@@ -140,6 +143,54 @@ def test_delete_expense_category():
     assert response_data["name"] == "Food"
     assert response_data["color"] == "#f00"
     assert response_data["id"] == expense_category_id
+
+
+def test_update_expense_category():
+    expense_category = models.ExpenseCategory("Food", "#f00")
+
+    with test_db as db:
+        with db.session_factory() as session:
+            session.query(models.ExpenseCategory).delete()
+
+            session.add(expense_category)
+            session.commit()
+            session.refresh(expense_category)
+
+    expense_category_id = expense_category.id
+
+    response = client.put(
+        f"/expense-categories/{expense_category_id}/",
+        json={"name": "Test", "color": "#f00"}
+    )
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+
+    assert response_data["name"] == "Test"
+    assert response_data["color"] == "#f00"
+    assert response_data["id"] == expense_category_id
+
+
+def test_update_expense_category_not_found():
+    with test_db as db:
+        with db.session_factory() as session:
+            session.query(models.ExpenseCategory).delete()
+            session.commit()
+
+    response = client.put(
+        "/expense-categories/0/",
+        json={"name": "", "color": ""}
+    )
+
+    assert response.status_code == 419
+
+    response_data = response.json()
+
+    assert response_data["message"] == (
+        "Próbujesz edytować kategorię wydatku, "
+        "która nie istnieje"
+    )
 
 
 def test_create_expense():
@@ -287,3 +338,73 @@ def test_delete_expense_not_found():
     response_data = response.json()
 
     assert response_data["message"] == "You have tried delete expense but is not found"
+
+
+def test_update_expense():
+    expense = models.Expense(None, 1000)
+
+    with test_db as db:
+        with db.session_factory() as session:
+            session.query(models.Expense).delete()
+
+            session.add(expense)
+            session.commit()
+            session.refresh(expense)
+
+    expense_id = expense.id
+
+    response = client.put(
+        f"/expenses/{expense_id}/",
+        json={"amount": 500, "expense_category_id": None}
+    )
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+
+    assert response_data["amount"] == 500
+    assert response_data["id"] == expense_id
+    assert response_data["expense_category"] == None
+
+
+def test_update_expense_not_found():
+    with test_db as db:
+        with db.session_factory() as session:
+            session.query(models.Expense).delete()
+            session.commit()
+
+    response = client.put(
+        "/expenses/0/",
+        json={"amount": 500, "expense_category_id": ""}
+    )
+
+    assert response.status_code == 419
+
+    response_data = response.json()
+
+    assert response_data["message"] == "Próbujesz edytować wydatek, który nie istnieje"
+
+
+def test_update_expense_when_expense_category_not_found():
+    expense = models.Expense(None, 1000)
+
+    with test_db as db:
+        with db.session_factory() as session:
+            session.query(models.Expense).delete()
+
+            session.add(expense)
+            session.commit()
+            session.refresh(expense)
+
+    expense_id = expense.id
+
+    response = client.put(
+        f"/expenses/{expense_id}/",
+        json={"amount": 500, "expense_category_id": "0"}
+    )
+
+    assert response.status_code == 419
+
+    response_data = response.json()
+
+    assert response_data["message"] == "Kategoria wydatku nie istnieje"
