@@ -13,7 +13,8 @@ const StyledLayout = styled.div`
 const StyledContentWrapper = styled.div`
     width: 100%;
     display: flex;
-    margin-left: 256px;
+    overflow-y: auto;
+    max-height: 100vh;
     flex-direction: column;
 `;
 
