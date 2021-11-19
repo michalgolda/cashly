@@ -19,8 +19,8 @@ const StyledForm = styled.form`
 `;
 
 function ExpenseModal(props) {
-    const { 
-        title, 
+    const {
+        title,
         onSubmit, 
         submitText, 
         description, 
@@ -31,12 +31,21 @@ function ExpenseModal(props) {
 		amount: yup.number()
             .required("Kwota jest wymagana.")
             .positive("Podaj prawidłową wartość.")
-            .max(99999, "Maksymalna wartość to 99999"),
+            .min(0.01, "Minimalna wartość to 0.01")
+            .max(99999.00, "Maksymalna wartość to 99999.00"),
         realised_date: yup.date()
             .required("Data zrealizowania wydatku jest wymagana.")
     });
 
-    const formik = useFormik({
+    initialValues.amount = Number(initialValues.amount).toFixed(2);
+
+    const {  
+        values,
+        errors,
+        touched,
+        handleChange,
+        handleSubmit
+    } = useFormik({
         onSubmit,
 		initialValues,
 		validationSchema
@@ -53,24 +62,23 @@ function ExpenseModal(props) {
 				<h2>{title}</h2>
 				<p>{description}</p>
 			</StyledTextContainer>
-			<StyledForm onSubmit={formik.handleSubmit}>
+			<StyledForm onSubmit={handleSubmit}>
 				<Input 
                     step="any"
 					type="number"
 					name="amount"
 					labelText="Kwota"
-					value={formik.values.amount}
-					onChange={formik.handleChange}
-					error={formik.touched.amount && formik.errors.amount}
+					value={values.amount}
+					error={touched.amount && errors.amount}
 					fullWidth
 				/>
                 <Input 
                     as="select"
                     labelText="Kategoria"
                     name="expense_category_id"
-                    onChange={formik.handleChange}
-                    value={formik.values.expense_category_id}
-                    error={formik.touched.expense_category_id && formik.errors.expense_category_id}
+                    onChange={handleChange}
+                    value={values.expense_category_id}
+                    error={touched.expense_category_id && errors.expense_category_id}
                     fullWidth
                 >
                     <option value="">Bez kategorii</option>
@@ -89,9 +97,9 @@ function ExpenseModal(props) {
                     type="date"
                     name="realised_date"
                     labelText="Data zrealizowania"
-                    onChange={formik.handleChange}
-                    value={formik.values.realised_date}
-                    error={formik.touched.realised_date && formik.errors.realised_date}
+                    onChange={handleChange}
+                    value={values.realised_date}
+                    error={touched.realised_date && errors.realised_date}
                     fullWidth
                 />
 				<Button 

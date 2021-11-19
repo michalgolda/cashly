@@ -1,6 +1,6 @@
 from datetime import date
 
-from sqlalchemy import Column, DateTime, Date, ForeignKey, Integer, String
+from sqlalchemy import Column, DateTime, Date, ForeignKey, Float, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func as sql_func
 
@@ -48,7 +48,7 @@ class Expense(Model):
         String,
         ForeignKey("expense_categories.id")
     )
-    amount = Column(Integer)
+    amount = Column(Float)
     realised_date = Column(Date)
 
     expense_category = relationship(
