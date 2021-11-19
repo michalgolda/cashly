@@ -20,7 +20,7 @@ export default NiceModal.create(({ id, amount, realised_date, expense_category_i
 	const initialValues = { 
 		amount,
 		realised_date, 
-		expense_category_id 
+		expense_category_id: expense_category_id ? expense_category_id : null 
 	};
 	
 	const onSubmit = (values) => {
