@@ -122,6 +122,7 @@ ExpenseModal.propTypes = {
     initialValues: PropTypes.shape({
         amount: PropTypes.number.isRequired,
         expense_category_id: PropTypes.string,
+        realised_date: PropTypes.string.isRequired
     }).isRequired
 };
 
