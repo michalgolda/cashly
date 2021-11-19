@@ -31,7 +31,9 @@ function ExpenseModal(props) {
 		amount: yup.number()
             .required("Kwota jest wymagana.")
             .positive("Podaj prawidłową wartość.")
-            .max(99999, "Maksymalna wartość to 99999")
+            .max(99999, "Maksymalna wartość to 99999"),
+        realised_date: yup.date()
+            .required("Data zrealizowania wydatku jest wymagana.")
     });
 
     const formik = useFormik({
@@ -40,7 +42,10 @@ function ExpenseModal(props) {
 		validationSchema
 	});
 
-    const { data } = useQuery("categories", getAllExpenseCategories);
+    const { data } = useQuery(
+        "categories", 
+        getAllExpenseCategories
+    );
 
     return (
         <StyledModal {...props}>
@@ -80,6 +85,15 @@ function ExpenseModal(props) {
                         );
                     })}
                 </Input>
+                <Input 
+                    type="date"
+                    name="realised_date"
+                    labelText="Data zrealizowania"
+                    onChange={formik.handleChange}
+                    value={formik.values.realised_date}
+                    error={formik.touched.realised_date && formik.errors.realised_date}
+                    fullWidth
+                />
 				<Button 
 					type="submit" 
 					fullWidth
@@ -99,7 +113,7 @@ ExpenseModal.propTypes = {
     initialValues: PropTypes.shape({
         amount: PropTypes.number.isRequired,
         expense_category_id: PropTypes.string.isRequired
-    }).isRequired,
+    }).isRequired
 };
 
 export default ExpenseModal;

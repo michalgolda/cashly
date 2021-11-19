@@ -5,7 +5,7 @@ import { updateExpense } from "../../../mutations";
 import ExpenseModal from "../ExpenseModal/ExpenseModal";
 
 
-export default NiceModal.create(({ id, amount, expense_category_id }) => {
+export default NiceModal.create(({ id, amount, realised_date, expense_category_id }) => {
 	const modal = useModal();
 	const queryClient = useQueryClient();
 	const mutation = useMutation(updateExpense, {
@@ -17,7 +17,11 @@ export default NiceModal.create(({ id, amount, expense_category_id }) => {
 	})
 
 
-	const initialValues = { amount, expense_category_id };
+	const initialValues = { 
+		amount,
+		realised_date, 
+		expense_category_id 
+	};
 	
 	const onSubmit = (values) => {
 		values.expense_category_id = values.expense_category_id ? values.expense_category_id : null; 

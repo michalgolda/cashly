@@ -39,7 +39,10 @@ class ExpenseRepository(Repository):
             expense_category: models.ExpenseCategory) -> models.Expense:
         with self._db.session_factory() as session:
             new_expense = models.Expense(
-                expense_category, amount=expense.amount)
+                expense_category, 
+                amount=expense.amount,
+                realised_date=expense.realised_date
+            )
 
             session.add(new_expense)
             session.commit()
@@ -82,6 +85,7 @@ class ExpenseRepository(Repository):
 
             expense.amount = expense_update.amount
             expense.expense_category = expense_category
+            expense.realised_date = expense_update.realised_date
 
             session.commit()
             session.refresh(expense)

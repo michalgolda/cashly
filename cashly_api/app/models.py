@@ -1,4 +1,6 @@
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
+from datetime import date
+
+from sqlalchemy import Column, DateTime, Date, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func as sql_func
 
@@ -47,6 +49,7 @@ class Expense(Model):
         ForeignKey("expense_categories.id")
     )
     amount = Column(Integer)
+    realised_date = Column(Date)
 
     expense_category = relationship(
         "ExpenseCategory",
@@ -54,6 +57,7 @@ class Expense(Model):
         backref="expenses"
     )
 
-    def __init__(self, expense_category: ExpenseCategory, amount: int):
+    def __init__(self, expense_category: ExpenseCategory, amount: int, realised_date: date):
         self.amount = amount
+        self.realised_date = realised_date
         self.expense_category = expense_category

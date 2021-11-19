@@ -1,3 +1,4 @@
+from datetime import date
 from app import create_app, models
 from app.database import Database
 from app.dependencies import get_database
@@ -5,7 +6,8 @@ from fastapi.testclient import TestClient
 
 app = create_app()
 client = TestClient(app)
-db = Database("sqlite:///./test.db")
+db = Database("sqlite:///test-database.sqlite")
+db.create_database()
 
 
 app.dependency_overrides[get_database] = lambda: db
@@ -18,7 +20,8 @@ def test_create_expense_category():
 
     response = client.post(
         "/expense-categories/",
-        json={"name": "Food", "color": "#f00"}
+        json={
+            "name": "Food", "color": "#f00"}
     )
     assert response.status_code == 201
 
@@ -187,7 +190,13 @@ def test_update_expense_category_not_found():
 
 
 def test_create_expense():
-    response = client.post("/expenses/", json={"amount": 1000})
+    response = client.post(
+        "/expenses/", 
+        json={
+            "amount": 1000, 
+            "realised_date": "2021-11-19"
+        }
+    )
 
     assert response.status_code == 201
 
@@ -196,6 +205,7 @@ def test_create_expense():
     assert "id" in response_data
     assert response_data["amount"] == 1000
     assert response_data["expense_category"] == None
+    assert response_data["realised_date"] == "2021-11-19"
 
 
 def test_create_expense_with_category():
@@ -212,7 +222,10 @@ def test_create_expense_with_category():
 
     response = client.post(
         "/expenses/",
-        json={"amount": 1000, "expense_category_id": expense_category_id}
+        json={
+            "amount": 1000,
+            "realised_date": "2021-11-19", 
+            "expense_category_id": expense_category_id}
     )
 
     assert response.status_code == 201
@@ -221,6 +234,7 @@ def test_create_expense_with_category():
 
     assert "id" in response_data
     assert response_data["amount"] == 1000
+    assert response_data["realised_date"] == "2021-11-19"
     assert response_data["expense_category"]["name"] == "Food"
     assert response_data["expense_category"]["color"] == "#f00"
     assert response_data["expense_category"]["id"] == expense_category_id
@@ -229,7 +243,11 @@ def test_create_expense_with_category():
 def test_create_expense_with_category_when_category_not_found():
     response = client.post(
         "/expenses/",
-        json={"amount": 1000, "expense_category_id": "123"}
+        json={
+            "amount": 1000, 
+            "expense_category_id": "123",
+            "realised_date": "2021-11-19"
+        }
     )
 
     assert response.status_code == 419
@@ -243,7 +261,11 @@ def test_create_expense_with_category_when_category_not_found():
 
 
 def test_get_expense():
-    expense = models.Expense(None, 1000)
+    expense = models.Expense(
+        amount=1000,
+        expense_category=None,
+        realised_date=date.fromisoformat("2021-11-19")
+    )
 
     with db.session_factory() as session:
         session.query(models.Expense).delete()
@@ -263,6 +285,7 @@ def test_get_expense():
     assert response_data["id"] == expense_id
     assert response_data["amount"] == 1000
     assert response_data["expense_category"] == None
+    assert response_data["realised_date"] == "2021-11-19"
 
 
 def test_get_expense_not_found():
@@ -276,7 +299,11 @@ def test_get_expense_not_found():
 
 
 def test_get_expenses():
-    expense = models.Expense(None, 1000)
+    expense = models.Expense(
+        amount=1000,
+        expense_category=None,
+        realised_date=date.fromisoformat("2021-11-19")
+    )
 
     with db.session_factory() as session:
         session.query(models.Expense).delete()
@@ -292,12 +319,17 @@ def test_get_expenses():
     response_data = response.json()
 
     assert response_data[0]["id"] == expense.id
-    assert response_data[0]["amount"] == expense.amount
+    assert response_data[0]["amount"] == 1000
     assert response_data[0]["expense_category"] == None
+    assert response_data[0]["realised_date"] == "2021-11-19"
 
 
 def test_delete_expense():
-    expense = models.Expense(None, 1000)
+    expense = models.Expense(
+        amount=1000,
+        expense_category=None,
+        realised_date=date.fromisoformat("2021-11-19")
+    )
 
     with db.session_factory() as session:
         session.query(models.Expense).delete()
@@ -317,6 +349,7 @@ def test_delete_expense():
     assert response_data["id"] == expense_id
     assert response_data["amount"] == 1000
     assert response_data["expense_category"] == None
+    assert response_data["realised_date"] == "2021-11-19"
 
 
 def test_delete_expense_not_found():
@@ -330,7 +363,11 @@ def test_delete_expense_not_found():
 
 
 def test_update_expense():
-    expense = models.Expense(None, 1000)
+    expense = models.Expense(
+        amount=1000,
+        expense_category=None,
+        realised_date=date.fromisoformat("2021-11-19")
+    )
 
     with db.session_factory() as session:
         session.query(models.Expense).delete()
@@ -343,7 +380,11 @@ def test_update_expense():
 
     response = client.put(
         f"/expenses/{expense_id}/",
-        json={"amount": 500, "expense_category_id": None}
+        json={
+            "amount": 500, 
+            "expense_category_id": None,
+            "realised_date": "2021-11-20"
+        }
     )
 
     assert response.status_code == 200
@@ -353,6 +394,7 @@ def test_update_expense():
     assert response_data["amount"] == 500
     assert response_data["id"] == expense_id
     assert response_data["expense_category"] == None
+    assert response_data["realised_date"] == "2021-11-20"
 
 
 def test_update_expense_not_found():
@@ -362,7 +404,11 @@ def test_update_expense_not_found():
 
     response = client.put(
         "/expenses/0/",
-        json={"amount": 500, "expense_category_id": ""}
+        json={
+            "amount": 500, 
+            "expense_category_id": "",
+            "realised_date": "2021-11-19"
+        }
     )
 
     assert response.status_code == 419
@@ -373,7 +419,11 @@ def test_update_expense_not_found():
 
 
 def test_update_expense_when_expense_category_not_found():
-    expense = models.Expense(None, 1000)
+    expense = models.Expense(
+        amount=1000,
+        expense_category=None,
+        realised_date=date.fromisoformat("2021-11-19")
+    )
 
     with db.session_factory() as session:
         session.query(models.Expense).delete()
@@ -386,7 +436,11 @@ def test_update_expense_when_expense_category_not_found():
 
     response = client.put(
         f"/expenses/{expense_id}/",
-        json={"amount": 500, "expense_category_id": "0"}
+        json={
+            "amount": 500, 
+            "expense_category_id": "0",
+            "realised_date": "2021-11-19"
+        }
     )
 
     assert response.status_code == 419
