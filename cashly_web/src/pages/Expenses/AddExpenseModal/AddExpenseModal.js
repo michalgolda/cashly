@@ -9,7 +9,23 @@ export default NiceModal.create(() => {
     const modal = useModal();
     const queryClient = useQueryClient();
     
-    const initialValues = { amount: 0, expense_category_id: "" };
+    const getDefaultRealisedDate = () => {
+        const currentDate = new Date();
+
+        const day = currentDate.getDate();
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth() + 1;
+    
+        const formatedDate = `${year}-${month}-${day}`;
+
+        return formatedDate;
+    };
+
+    const initialValues = { 
+        amount: 0, 
+        expense_category_id: "",
+        realised_date: getDefaultRealisedDate()
+    };
 
     const mutation = useMutation(createExpense, {
         onSuccess: () => {

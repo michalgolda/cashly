@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 
 from pydantic import BaseModel
 
@@ -27,6 +27,7 @@ class ExpenseCategoryOut(ExpenseCategory):
 
 class Expense(BaseModel):
     amount: int
+    realised_date: date
 
 
 class ExpenseCreate(Expense):
@@ -34,7 +35,6 @@ class ExpenseCreate(Expense):
 
 
 class ExpenseUpdate(Expense):
-    amount: int
     expense_category_id: str = None
 
 

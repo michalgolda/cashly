@@ -58,21 +58,19 @@ const StyledDeleteButton = styled(StyledActionButton)`
     &:active { background-color: ${({ theme }) => theme.colors.red300}; }
 `;
 
-function ExpenseListItem({ id, amount, expense_category, created_at }) {
+function ExpenseListItem({ id, amount, expense_category, realised_date }) {
     const queryClient = useQueryClient();
     const editExpenseModal = useModal(EditExpenseModal);
     const mutation = useMutation(deleteExpense, {
         onSuccess: () => queryClient.invalidateQueries("expenses")
     });
 
-    const getFormatedCreatedAtDate = () => {
-        const date = new Date(created_at);
+    const getFormatedRealisedDate = () => {
+        const date = new Date(realised_date);
+    
+        const formatedDate = date.toLocaleDateString();
 
-        const day = date.getDate();
-        const month = date.getMonth();
-        const year = date.getFullYear();
-
-        return `${day}.${month}.${year}`;
+        return formatedDate;
     };
 
     return (
@@ -87,7 +85,7 @@ function ExpenseListItem({ id, amount, expense_category, created_at }) {
                     Bez kategorii
                 </StyledCategory>
             )}
-            <StyledSpan>{getFormatedCreatedAtDate()}</StyledSpan>
+            <StyledSpan>{getFormatedRealisedDate()}</StyledSpan>
             <StyledActions>
                 <StyledEditButton 
                     icon={<FontAwesomeIcon icon={faEdit} />} 
@@ -95,6 +93,7 @@ function ExpenseListItem({ id, amount, expense_category, created_at }) {
                         editExpenseModal.show({ 
                             id, 
                             amount,
+                            realised_date,                            
                             expense_category_id: expense_category ? expense_category.id : ""
                         });
                     }}
