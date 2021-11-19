@@ -75,7 +75,7 @@ function ExpenseListItem({ id, amount, expense_category, realised_date }) {
 
     return (
         <StyledListItem>
-            <StyledSpan>{amount} PLN</StyledSpan>
+            <StyledSpan>{amount.toFixed(2)} PLN</StyledSpan>
             {expense_category ? (
                 <StyledCategory color={expense_category.color}>
                     {expense_category.name}

@@ -26,7 +26,7 @@ class ExpenseCategoryOut(ExpenseCategory):
 
 
 class Expense(BaseModel):
-    amount: int
+    amount: float
     realised_date: date
 
 
