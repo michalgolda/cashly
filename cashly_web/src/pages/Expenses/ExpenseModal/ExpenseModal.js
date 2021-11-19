@@ -69,6 +69,7 @@ function ExpenseModal(props) {
 					name="amount"
 					labelText="Kwota"
 					value={values.amount}
+                    onChange={handleChange}
 					error={touched.amount && errors.amount}
 					fullWidth
 				/>
