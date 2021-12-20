@@ -1,6 +1,12 @@
 import { useState } from "react";
 import styled, { css } from "styled-components";
-import { faAngleLeft, faAngleRight, faGripVertical, faReceipt } from "@fortawesome/free-solid-svg-icons";
+import { 
+    faReceipt, 
+    faChartPie,
+    faAngleLeft, 
+    faAngleRight, 
+    faGripVertical 
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { IconButton } from "../../components";
@@ -79,11 +85,22 @@ export default function Sidebar() {
                     <>
                         <NavLinkButton to="/expenses">Wydatki</NavLinkButton>
                         <NavLinkButton to="/categories">Kategorie</NavLinkButton>
+                        <NavLinkButton to="/analytics">Analityka</NavLinkButton>
                     </>
                 ) : (
                     <>
-                        <NavLinkIconButton to="/expenses" icon={<FontAwesomeIcon icon={faReceipt} />} />
-                        <NavLinkIconButton to="/categories" icon={<FontAwesomeIcon icon={faGripVertical} />} />
+                        <NavLinkIconButton 
+                            to="/expenses" 
+                            icon={<FontAwesomeIcon icon={faReceipt} />} 
+                        />
+                        <NavLinkIconButton 
+                            to="/categories" 
+                            icon={<FontAwesomeIcon icon={faGripVertical} />} 
+                        />
+                        <NavLinkIconButton 
+                            to="/analytics" 
+                            icon={<FontAwesomeIcon icon={faChartPie} />} 
+                        />
                     </>
                 )}
             </StyledNavLinkList>

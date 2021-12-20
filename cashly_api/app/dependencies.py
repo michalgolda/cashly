@@ -1,12 +1,11 @@
-from functools import lru_cache
-
-from app.settings import Settings
-from app.database import Database
+from app.database import session
+from app.repositories import SQLAlchemyExpenseRepository, SQLAlchemyExpenseCategoryRepository
 
 
-@lru_cache()
-def get_settings() -> Settings:
-    return Settings()
+def get_expense_repo():
+    repo = SQLAlchemyExpenseRepository(session)
+
+    return repo
 
 @lru_cache()
 def get_database() -> Database:

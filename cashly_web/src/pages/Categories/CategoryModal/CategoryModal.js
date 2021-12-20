@@ -42,7 +42,8 @@ function CategoryModal(props) {
     const formik = useFormik({
         onSubmit,
 		initialValues,
-		validationSchema
+		validationSchema,
+		enableReinitialize: true
 	});
 
     return (
