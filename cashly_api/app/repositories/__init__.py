@@ -1,1 +1,2 @@
+from .expense import AbstractExpenseRepository
 from .expense_category import AbstractExpenseCategoryRepository
