@@ -48,7 +48,8 @@ function ExpenseModal(props) {
     } = useFormik({
         onSubmit,
 		initialValues,
-		validationSchema
+		validationSchema,
+        enableReinitialize: true
 	});
 
     const { data } = useQuery(

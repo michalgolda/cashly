@@ -1,14 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.endpoints import router
+from app.database import run_mappers, metadata
+from app.endpoints import expense_category_router
 from app.exceptions import exception_handlers_loader
 
 
 def create_app() -> FastAPI:
     app = FastAPI()
 
-    app.include_router(router)
+    app.include_router(expense_category_router)
 
     exception_handlers_loader(app)
 
@@ -19,5 +20,8 @@ def create_app() -> FastAPI:
         allow_credentials=True,
         allow_origins=["http://localhost:3000"]
     )
+
+    app.add_event_handler('startup', run_mappers)
+    app.add_event_handler('startup', metadata.create_all)
 
     return app
