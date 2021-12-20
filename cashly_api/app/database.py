@@ -1,38 +1,93 @@
-import typing
-from contextlib import contextmanager
+from uuid import UUID, uuid4
 
-from sqlalchemy import orm, create_engine
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.sql import func as sql_func
+from sqlalchemy.types import TypeDecorator, CHAR
+from sqlalchemy.dialects.postgresql import UUID as PostgresUUID
+from sqlalchemy.orm import sessionmaker, mapper, relationship, scoped_session
+from sqlalchemy import (
+    create_engine, MetaData, Table,
+    Column, Float, Date, DateTime, ForeignKey, String
+)
+
+from app.settings import settings
+from app.entities import Expense, ExpenseCategory
 
 
-Base = declarative_base()
+engine = create_engine(
+    settings.DATABASE_URL,
+    connect_args={'check_same_thread': False}
+)
+session_factory = scoped_session(
+    sessionmaker(
+        bind=engine,
+        autoflush=False,
+        autocommit=False
+    )
+)
+session = session_factory()
+metadata = MetaData(bind=engine)
 
-class Database:
-    def __init__(self, db_url: str):
-        self._engine = create_engine(db_url)
-        self._session_factory = orm.scoped_session(
-            orm.sessionmaker(
-                autoflush=False,
-                autocommit=False,
-                bind=self._engine
-            )
-        )
 
-    def create_database(self) -> typing.NoReturn:
-        Base.metadata.create_all(self._engine)
+class SQLAlchemyUUID(TypeDecorator):
+    """Platform-independent GUID type.
+    Uses PostgreSQL's UUID type, otherwise uses
+    CHAR(32), storing as stringified hex values.
+    """
+    impl = CHAR
 
-    @contextmanager
-    def session_factory(self) -> typing.Generator[
-        orm.Session,
-        typing.NoReturn,
-        typing.NoReturn
-    ]:
-        session = self._session_factory()
+    def load_dialect_impl(self, dialect):
+        if dialect.name == 'postgresql':
+            return dialect.type_descriptor(PostgresUUID())
+        else:
+            return dialect.type_descriptor(CHAR(32))
 
-        try:
-            yield session
-        except:
-            session.rollback()
-            raise
-        finally:
-            session.close()
+    def process_bind_param(self, value, dialect):
+        if value is None:
+            return value
+        elif dialect.name == 'postgresql':
+            return str(value)
+        else:
+            if not isinstance(value, UUID):
+                return "%.32x" % UUID(value).int
+            else:
+                return "%.32x" % value.int
+
+    def process_result_value(self, value, dialect):
+        if value is None:
+            return value
+        else:
+            if not isinstance(value, UUID):
+                value = UUID(value)
+            return value
+
+
+expense = Table(
+    'expense',
+    metadata,
+    Column('id', SQLAlchemyUUID(), index=True, primary_key=True, default=lambda : str(uuid4())),
+    Column('amount', Float),
+    Column('realised_date', Date),
+    Column('category_id', ForeignKey('expense_category.id')),
+    Column('created_at', DateTime(timezone=True), server_default=sql_func.now()),
+    Column('updated_at', DateTime(timezone=True), onupdate=sql_func.now())
+)
+
+expense_category = Table(
+    'expense_category',
+    metadata,
+    Column('id', SQLAlchemyUUID(), index=True, primary_key=True, default=lambda: str(uuid4())),
+    Column('name', String(20)),
+    Column('color', String(7)),
+    Column('created_at', DateTime(timezone=True), server_default=sql_func.now()),
+    Column('updated_at', DateTime(timezone=True), onupdate=sql_func.now())
+)
+
+
+def run_mappers():
+    mapper(
+        Expense,
+        expense,
+        properties={'tables': relationship(ExpenseCategory, backref='category')}
+    )
+
+    mapper(ExpenseCategory, expense_category)
