@@ -24,7 +24,7 @@ class ExpenseCategoryNameIsAlreadyUsedError(DomainException):
     def __init__(self, expense_category_name: str):
         self.code = 'ExpenseCategoryNameIsAlreadyUsed'
         self.message = (
-            f'Nazwa kategorii {expense_category_name} ',
+            f'Nazwa kategorii {expense_category_name} '
             'jest już w użyciu'
         )
         self.status_code = 419
