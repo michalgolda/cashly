@@ -3,7 +3,7 @@ from .expense import (
     GetAllExpensesResult,
 
     GetExpenseByIdUseCase,
-    GetExpenseByIdResult,
+    GetExpenseByIdRequest,
 
     CreateExpenseUseCase,
     CreateExpenseRequest,

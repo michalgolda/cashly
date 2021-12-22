@@ -3,3 +3,8 @@ from .expense_category import (
     ExpenseCategoryCreate,
     ExpenseCategoryUpdate
 )
+from .expense import (
+    ExpenseOut,
+    ExpenseCreate,
+    ExpenseUpdate
+)
