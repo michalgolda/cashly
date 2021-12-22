@@ -64,7 +64,7 @@ class SQLAlchemyUUID(TypeDecorator):
 expense = Table(
     'expense',
     metadata,
-    Column('id', SQLAlchemyUUID(), index=True, primary_key=True, default=lambda : str(uuid4())),
+    Column('id', SQLAlchemyUUID(), index=True, primary_key=True, default=lambda: str(uuid4())),
     Column('amount', Float),
     Column('realised_date', Date),
     Column('category_id', ForeignKey('expense_category.id')),
@@ -87,7 +87,7 @@ def run_mappers():
     mapper(
         Expense,
         expense,
-        properties={'tables': relationship(ExpenseCategory, backref='category')}
+        properties={'category': relationship(ExpenseCategory, backref='expense_category')}
     )
 
     mapper(ExpenseCategory, expense_category)
