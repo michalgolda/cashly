@@ -7,11 +7,8 @@ def get_expense_repo():
 
     return repo
 
-@lru_cache()
-def get_database() -> Database:
-    settings: Settings = get_settings()
 
-    db = Database(settings.DATABASE_URL)
-    db.create_database()
-    
-    return db
+def get_expense_category_repo():
+    repo = SQLAlchemyExpenseCategoryRepository()
+
+    return repo

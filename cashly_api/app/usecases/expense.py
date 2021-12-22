@@ -16,10 +16,7 @@ from app.usecases.expense_category import ExpenseCategoryNotFoundError
 class ExpenseNotFoundError(DomainException):
     def __init__(self, expense_id: UUID):
         self.code = 'ExpenseNotFound'
-        self.message = (
-            'Nie znaleziono wydatku ',
-            f'o podanym id {str(expense_id)}'
-        )
+        self.message = f'Nie znaleziono wydatku o podanym id {str(expense_id)}'
         self.status_code = 404
 
         super().__init__(self.code, self.message, self.status_code)
