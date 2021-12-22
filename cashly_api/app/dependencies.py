@@ -9,6 +9,6 @@ def get_expense_repo():
 
 
 def get_expense_category_repo():
-    repo = SQLAlchemyExpenseCategoryRepository()
+    repo = SQLAlchemyExpenseCategoryRepository(session)
 
     return repo
