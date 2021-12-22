@@ -12,11 +12,11 @@ class Expense(BaseModel):
 
 
 class ExpenseCreate(Expense):
-    expense_category_id: UUID
+    expense_category_id: UUID = None
 
 
 class ExpenseUpdate(Expense):
-    expense_category_id: UUID
+    expense_category_id: UUID = None
 
 
 class ExpenseOut(Expense):
