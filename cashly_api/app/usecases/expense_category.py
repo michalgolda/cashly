@@ -202,11 +202,14 @@ class UpdateExpenseCategoryUseCase(AbstractUpdateExpenseCategoryUseCase):
             raise ExpenseCategoryNotFoundError(expense_category_id)
 
         new_expense_category_name = request.name
-        expense_category_name_is_already_used = bool(
-            self._expense_category_repo.get_by_name(new_expense_category_name)
-        )
-        if expense_category_name_is_already_used:
-            raise ExpenseCategoryNameIsAlreadyUsedError(new_expense_category_name)
+        old_expense_category_name = expense_category.name
+
+        if new_expense_category_name != old_expense_category_name:
+            expense_category_name_is_already_used = bool(
+                self._expense_category_repo.get_by_name(new_expense_category_name)
+            )
+            if expense_category_name_is_already_used:
+                raise ExpenseCategoryNameIsAlreadyUsedError(new_expense_category_name)
 
         new_expense_category_color = request.color
         expense_category.name = new_expense_category_name
