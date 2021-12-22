@@ -23,7 +23,7 @@ export default NiceModal.create(() => {
 
     const initialValues = { 
         amount: 0, 
-        expense_category_id: "",
+        expense_category_id: null,
         realised_date: getDefaultRealisedDate()
     };
 

@@ -58,7 +58,7 @@ const StyledDeleteButton = styled(StyledActionButton)`
     &:active { background-color: ${({ theme }) => theme.colors.red300}; }
 `;
 
-function ExpenseListItem({ id, amount, expense_category, realised_date }) {
+function ExpenseListItem({ id, amount, category, realised_date }) {
     const queryClient = useQueryClient();
     const editExpenseModal = useModal(EditExpenseModal);
     const mutation = useMutation(deleteExpense, {
@@ -76,9 +76,9 @@ function ExpenseListItem({ id, amount, expense_category, realised_date }) {
     return (
         <StyledListItem>
             <StyledSpan>{amount.toFixed(2)} PLN</StyledSpan>
-            {expense_category ? (
-                <StyledCategory color={expense_category.color}>
-                    {expense_category.name}
+            {category ? (
+                <StyledCategory color={category.color}>
+                    {category.name}
                 </StyledCategory>
             ) : (
                 <StyledCategory>
@@ -94,7 +94,7 @@ function ExpenseListItem({ id, amount, expense_category, realised_date }) {
                             id, 
                             amount,
                             realised_date,                            
-                            expense_category_id: expense_category ? expense_category.id : ""
+                            expense_category_id: category ? category.id : ""
                         });
                     }}
                 />
@@ -110,7 +110,7 @@ function ExpenseListItem({ id, amount, expense_category, realised_date }) {
 ExpenseListItem.propTypes = {
     id: PropTypes.string.isRequired,
     amount: PropTypes.number.isRequired,
-    expense_category: PropTypes.shape({
+    category: PropTypes.shape({
         name: PropTypes.string.isRequired,
         color: PropTypes.string.isRequired
     }),
