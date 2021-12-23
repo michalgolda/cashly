@@ -51,7 +51,7 @@ class GeneralExpensesAggregator:
         data_shape_key_start, data_shape_key_end = data_shape_key.split('/')
 
         data_shape_key_start_date = date.fromisoformat(data_shape_key_start)
-        data_shape_key_end_date = date.fromisoformat(data_shape_key_start)
+        data_shape_key_end_date = date.fromisoformat(data_shape_key_end)
         group_key_date = date.fromisoformat(group_key)
         if data_shape_key_start_date <= group_key_date <= data_shape_key_end_date:
             return True
