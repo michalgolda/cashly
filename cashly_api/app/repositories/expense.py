@@ -1,4 +1,5 @@
 from uuid import UUID
+from datetime import date
 from abc import ABC, abstractmethod
 from typing import Union, List, NoReturn
 
@@ -10,6 +11,10 @@ from app.entities import Expense
 class AbstractExpenseRepository(ABC):
     @abstractmethod
     def get_by_id(self, expense_id: UUID) -> Union[Expense, None]:
+        pass
+
+    @abstractmethod
+    def get_by_date_range(self, start_date: date, end_date: date) -> List[Expense]:
         pass
 
     @abstractmethod
@@ -39,6 +44,16 @@ class SQLAlchemyExpenseRepository(AbstractExpenseRepository):
             .first()
 
         return expense
+
+    def get_by_date_range(self, start_date: date, end_date: date) -> List[Expense]:
+        expenses = self._session.query(Expense) \
+            .filter(
+                (Expense.realised_date >= start_date),
+                (Expense.realised_date <= end_date)
+            ) \
+            .all()
+
+        return expenses
 
     def get_all(self) -> List[Expense]:
         expenses = self._session.query(Expense).all()
