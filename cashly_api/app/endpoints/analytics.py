@@ -9,7 +9,8 @@ from app.aggregator import (
     GeneralExpensesAggregatorOptions,
     ExpensesByCategoryAggregator,
     ExpensesByCategoryAggregatorOptions,
-    TotalAmountOfExpensesAggregator
+    TotalAmountOfExpensesAggregator,
+    CountExpensesByCategoryAggregator
 )
 from app.dependencies import get_expense_repo
 from app.repositories import AbstractExpenseRepository
@@ -80,3 +81,21 @@ def get_total_amount_of_expenses(
     aggregated_data = aggregator.aggregate(expenses)
 
     return aggregated_data
+
+
+@analytics_router.get('/analytics/count_expenses_by_category/')
+def get_count_expenses_by_category(
+    date_params: AnalyticsDateParams = Depends(),
+    expense_repo: AbstractExpenseRepository = Depends(get_expense_repo)
+):
+    expenses = expense_repo.get_by_date_range(
+        start_date=date_params.start_date,
+        end_date=date_params.end_date
+    )
+
+    aggregator = CountExpensesByCategoryAggregator()
+    aggregated_data = aggregator.aggregate(expenses)
+
+    return aggregated_data
+
+

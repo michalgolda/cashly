@@ -135,3 +135,30 @@ class TotalAmountOfExpensesAggregator:
         data_shape = {'key': 'total_amount', 'value': total_amount}
 
         return data_shape
+
+
+class CountExpensesByCategoryAggregator:
+    def aggregate(self, expenses: List[Expense]) -> List[DefaultDataShape]:
+        data_shapes = []
+
+        for group_key, group_items in groupby(expenses, lambda expense: expense.category.name if expense.category else None):
+            search_data_shape_index = None
+
+            for data_shape_index in range(len(data_shapes)):
+                data_shape = data_shapes[data_shape_index]
+                data_shape_key = data_shape.get('key')
+
+                if data_shape_key == group_key:
+                    search_data_shape_index = data_shape_index
+
+                    break
+
+            if search_data_shape_index:
+                data_shapes[search_data_shape_index]['value'] += len(list(group_items))
+            else:
+                data_shapes.append({
+                    'key': group_key,
+                    'value': len(list(group_items))
+                })
+
+        return data_shapes
