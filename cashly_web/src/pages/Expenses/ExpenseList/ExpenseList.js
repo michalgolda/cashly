@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import styled from "styled-components";
 
 import { List } from "../../../components";
 import ExpenseListItem from "../ExpenseListItem/ExpenseListItem";
@@ -7,34 +6,17 @@ import ExpenseListSkeleton from "../ExpenseListSkeleton/ExpenseListSkeleton";
 import ExpenseListEmptyInformer from "../ExpenseListEmptyInformer/ExpenseListEmptyInformer";
 
 
-const StyledWrapper = styled.div`padding: 64px;`;
-
-const StyledList = styled(List)`
-    width: 100%;
-    margin: 0 auto;
-    max-width: 1024px;
-`;
-
 function ExpenseList({ data, isEmpty, isLoading }) {
-    return (
-        <StyledWrapper>
-            {!isLoading && isEmpty ? <ExpenseListEmptyInformer /> : (
-                <StyledList>
-                    {isLoading ? <ExpenseListSkeleton /> : (
-                        <>
-                            {data.map((item, index) => {
-                                return (
-                                    <ExpenseListItem 
-                                        {...item} 
-                                        key={index}
-                                    />
-                                );
-                            })}
-                        </>
-                    )}
-                </StyledList>
-            )}
-        </StyledWrapper>
+    return !isLoading && isEmpty ? <ExpenseListEmptyInformer /> : (
+      <List>
+          {isLoading ? <ExpenseListSkeleton /> : (
+              <>
+                  {data.map((item, index) => {
+                      return <ExpenseListItem key={index} {...item} />;
+                  })}
+              </>
+          )}
+      </List>
     );
 }
 
