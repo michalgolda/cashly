@@ -37,7 +37,7 @@ export default function Chart({ data }) {
     return (
         <StyledWrapper>
             <ResponsiveContainer
-                width="100%"
+                width="99%"
                 height={256}
             >
                 <LineChart
