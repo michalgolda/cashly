@@ -26,8 +26,9 @@ export default function Chart({ data }) {
                     dy={15}
                     interval={0}
                     dataKey="key"
-                    tickLine={false}
                     fill="#a5a5a5"
+                    stroke="#a5a5a5"
+                    tickLine={false}
                     tick={{fill: "#a5a5a5"}}
                     tickFormatter={tickFormatter}
                 />
