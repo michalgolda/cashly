@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
 
 import { deleteExpense } from "../../../mutations";
+import { dateToISOString } from "../../../utilities/date";
 import { ListItem, IconButton } from "../../../components";
 import EditExpenseModal from "../EditExpenseModal/EditExpenseModal";
 
@@ -65,14 +66,6 @@ function ExpenseListItem({ id, amount, category, realised_date }) {
         onSuccess: () => queryClient.invalidateQueries("expenses")
     });
 
-    const getFormatedRealisedDate = () => {
-        const date = new Date(realised_date);
-    
-        const formatedDate = date.toLocaleDateString();
-
-        return formatedDate;
-    };
-
     return (
         <StyledListItem>
             <StyledSpan>{amount.toFixed(2)} PLN</StyledSpan>
@@ -85,7 +78,7 @@ function ExpenseListItem({ id, amount, category, realised_date }) {
                     Bez kategorii
                 </StyledCategory>
             )}
-            <StyledSpan>{getFormatedRealisedDate()}</StyledSpan>
+            <StyledSpan>{dateToISOString(new Date(realised_date))}</StyledSpan>
             <StyledActions>
                 <StyledEditButton 
                     icon={<FontAwesomeIcon icon={faEdit} />} 
