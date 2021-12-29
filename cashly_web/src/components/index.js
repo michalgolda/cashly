@@ -9,6 +9,7 @@ import Sidebar from "./Sidebar/Sidebar";
 import ListItem from "./ListItem/ListItem";
 import Informer from "./Informer/Informer";
 import Skeleton from "./Skeleton/Skeleton";
+import PageMain from "./PageMain/PageMain";
 import IconButton from "./IconButton/IconButton";
 import LinkButton from "./LinkButton/LinkButton";
 
@@ -24,6 +25,7 @@ export {
     Informer, 
     Skeleton,
     ListItem,
+    PageMain,
     IconButton,
     LinkButton
 }
