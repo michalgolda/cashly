@@ -26,8 +26,6 @@ const StyledTicks = styled.div`
 
 const StyledTick = styled.p`
     color: ${({ theme }) => theme.colors.gray600};
-    font-size: ${({ theme }) => theme.fontSizes.h5};
-    font-weight: ${({ theme }) => theme.fontWeights.semiBold};
 `;
 
 export default function Chart({ data }) {
