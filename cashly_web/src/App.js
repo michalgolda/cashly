@@ -1,13 +1,13 @@
-import { theme, GlobalStyle } from "./styles";
 import { ThemeProvider } from "styled-components";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider as NiceModalProvider } from "@ebay/nice-modal-react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import routes from "./routes";
 import config from "./config";
+import routes from "./routes";
 import { Layout } from "./components";
+import { theme, GlobalStyle } from "./styles";
 
 
 const queryClient = new QueryClient();
