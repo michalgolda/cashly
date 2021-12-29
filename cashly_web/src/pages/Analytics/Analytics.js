@@ -1,42 +1,18 @@
-import styled from "styled-components";
-
-import { Page } from "../../components";
+import WidgetList from "./WidgetList/WidgetList";
+import { Page, PageMain } from "../../components";
 import AnalyticsPageHeader from "./AnalyticsPageHeader/AnalyticsPageHeader";
-import RespectiveExpenseWidget from "./RespectiveExpenseWidget/RespectiveExpenseWidget";
+import { PeriodSelectorContextProvider } from "./AnalyticsPageHeader/PeriodSelector/PeriodSelector";
 
-
-const StyledWrapper = styled.div`padding: 64px;`;
-
-const StyledContainer = styled.div`
-	width: 100%;
-	margin: 0 auto;
-	max-width: 1024px;
-`;
 
 export default function Analytics() {
-	const data = [
-		{"day": "PON", "value": 50},
-		{"day": "WTO", "value": 100},
-		{"day": "ŚRO", "value": 500},
-		{"day": "CZW", "value": 300},
-		{"day": "PIĄ", "value": 150},
-		{"day": "SOB", "value": 500},
-		{"day": "NIE", "value": 500}
-	];
-
 	return (
 		<Page title="Cashly - Analityka">
-			<AnalyticsPageHeader />
-
-			<StyledWrapper>
-				<StyledContainer>
-					<RespectiveExpenseWidget 
-						data={data}
-						isEmpty={false}
-						isLoading={false} 
-					/>
-				</StyledContainer>
-			</StyledWrapper>
+			<PeriodSelectorContextProvider>
+				<AnalyticsPageHeader />
+				<PageMain>
+					<WidgetList />
+				</PageMain>
+			</PeriodSelectorContextProvider>
 		</Page>
 	);
 }
