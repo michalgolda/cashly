@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import GeneralExpensesWidget from "../GeneralExpensesWidget/GeneralExpensesWidget";
+import CountExpensesByCategoryWidget from "../CountExpensesByCategoryWidget/CountExpensesByCategoryWidget";
 
 
 const StyledList = styled.div`
@@ -14,6 +15,7 @@ export default function WidgetList() {
     return (
         <StyledList>
             <GeneralExpensesWidget />
+            <CountExpensesByCategoryWidget />
         </StyledList>
     );
 }
