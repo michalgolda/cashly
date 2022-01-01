@@ -100,7 +100,7 @@ class ExpensesByCategoryAggregator:
         data_shapes = []
 
         for group_key, group_items in groupby(expenses, lambda expense: expense.category.name if expense.category else None):
-            search_data_shape_index = None
+            search_data_shape_index = -1
 
             for data_shape_index in range(len(data_shapes)):
                 data_shape = data_shapes[data_shape_index]
@@ -115,7 +115,7 @@ class ExpensesByCategoryAggregator:
             for item in list(group_items):
                 total_amount += item.amount
 
-            if search_data_shape_index:
+            if search_data_shape_index != -1:
                 data_shapes[search_data_shape_index]['value'] += total_amount
             else:
                 data_shapes.append({
@@ -142,7 +142,7 @@ class CountExpensesByCategoryAggregator:
         data_shapes = []
 
         for group_key, group_items in groupby(expenses, lambda expense: expense.category.name if expense.category else None):
-            search_data_shape_index = None
+            search_data_shape_index = -1
 
             for data_shape_index in range(len(data_shapes)):
                 data_shape = data_shapes[data_shape_index]
@@ -153,7 +153,7 @@ class CountExpensesByCategoryAggregator:
 
                     break
 
-            if search_data_shape_index:
+            if search_data_shape_index != -1:
                 data_shapes[search_data_shape_index]['value'] += len(list(group_items))
             else:
                 data_shapes.append({
