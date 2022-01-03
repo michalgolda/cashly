@@ -1,8 +1,9 @@
+import itertools
 from enum import Enum
 from datetime import date
 from itertools import groupby
 from dataclasses import dataclass
-from typing import TypedDict, List, Callable
+from typing import TypedDict, List, Callable, Union
 
 import pandas as pd
 
@@ -16,47 +17,51 @@ class AggregationUnits(Enum):
     YEAR = 'Y'
 
 
-class DefaultDataShape(TypedDict):
+class AggregationDataFrame(TypedDict):
     key: str
     value: float
 
 
 @dataclass(frozen=True)
-class GeneralExpensesAggregatorOptions:
+class DefaultAggregatorParams:
     start_date: date
     end_date: date
     unit: AggregationUnits
 
 
 class GeneralExpensesAggregator:
-    def __init__(self, options: GeneralExpensesAggregatorOptions):
-        self._options = options
+    def __init__(self, params: DefaultAggregatorParams):
+        self._params = params
 
-    def generate_data_shapes(self) -> List[DefaultDataShape]:
-        period_index = pd.period_range(
-            start=self._options.start_date,
-            end=self._options.end_date,
-            freq=self._options.unit.value
+    @staticmethod
+    def default_comparator(data_frame_key: str, group_key: str) -> bool:
+        return data_frame_key in group_key
+
+    @staticmethod
+    def week_comparator(data_frame_key: str, group_key: str) -> bool:
+        frame_start_date, frame_end_date = tuple(
+            map(
+                lambda date_str: date.fromisoformat(date_str),
+                data_frame_key.split('/')
+            )
         )
-        data_shapes = [{'key': str(period), 'value': 0} for period in period_index]
-
-        return data_shapes
-
-    @staticmethod
-    def default_comparator(data_shape_key: str, group_key: str) -> bool:
-        return data_shape_key in group_key
-
-    @staticmethod
-    def week_comparator(data_shape_key: str, group_key: str) -> bool:
-        data_shape_key_start, data_shape_key_end = data_shape_key.split('/')
-
-        data_shape_key_start_date = date.fromisoformat(data_shape_key_start)
-        data_shape_key_end_date = date.fromisoformat(data_shape_key_end)
-        group_key_date = date.fromisoformat(group_key)
-        if data_shape_key_start_date <= group_key_date <= data_shape_key_end_date:
+        group_date = date.fromisoformat(group_key)
+        if frame_start_date <= group_date <= frame_end_date:
             return True
 
         return False
+
+    @staticmethod
+    def grouper_key(expense: Expense) -> str:
+        return str(expense.realised_date)
+
+    def prepare_data_frames(self) -> List[AggregationDataFrame]:
+        period_index = pd.period_range(
+            start=self._params.start_date,
+            end=self._params.end_date,
+            freq=self._params.unit.value
+        )
+        return [{'key': str(period), 'value': 0} for period in period_index]
 
     def get_comparator(self) -> Callable:
         mapped_comparators = {
@@ -66,99 +71,90 @@ class GeneralExpensesAggregator:
             AggregationUnits.YEAR: self.default_comparator
         }
 
-        return mapped_comparators[self._options.unit]
+        return mapped_comparators[self._params.unit]
 
-    def aggregate(self, expenses: List[Expense]) -> List[DefaultDataShape]:
-        data_shapes = self.generate_data_shapes()
+    def aggregate(self, expenses: List[Expense]) -> List[AggregationDataFrame]:
+        data_frames = self.prepare_data_frames()
 
-        for group_key, group_items in groupby(expenses, lambda expense: str(expense.realised_date)):
-            for data_shape_index, data_shape in enumerate(data_shapes):
-                data_shape_key = data_shape.get('key')
-                data_shape_value = data_shape.get('value')
+        for group_key, group_items in groupby(expenses, self.grouper_key):
+            for data_frame_index, data_frame in enumerate(data_frames):
+                data_frame_key = data_frame.get('key')
+                data_frame_value = data_frame.get('value')
 
                 comparator_func = self.get_comparator()
-                if comparator_func(data_shape_key, group_key):
+                if comparator_func(data_frame_key, group_key):
                     for item in list(group_items):
-                        data_shape_value += item.amount
+                        data_frame_value += item.amount
 
-                    data_shapes[data_shape_index].update(value=data_shape_value)
+                    data_frames[data_frame_index].update(value=data_frame_value)
 
-        return data_shapes
-
-
-@dataclass(frozen=True)
-class ExpensesByCategoryAggregatorOptions:
-    start_date: date
-    end_date: date
+        return data_frames
 
 
-class ExpensesByCategoryAggregator:
-    def __init__(self, options: ExpensesByCategoryAggregatorOptions):
-        self._options = options
+class CategoryAggregatorMixin:
+    @staticmethod
+    def grouper_key(expense: Expense) -> Union[str, None]:
+        return getattr(expense.category, 'name', None)
 
-    def aggregate(self, expenses: List[Expense]) -> List[DefaultDataShape]:
-        data_shapes = []
+    @staticmethod
+    def find_data_frame_index_by_key(data_frames: List[AggregationDataFrame], key: str) -> int:
+        for data_frame_index, data_frame in enumerate(data_frames):
+            data_frame_key = data_frame.get('key')
+            if data_frame_key == key:
+                return data_frame_index
 
-        for group_key, group_items in groupby(expenses, lambda expense: expense.category.name if expense.category else None):
-            search_data_shape_index = -1
+        return -1
 
-            for data_shape_index in range(len(data_shapes)):
-                data_shape = data_shapes[data_shape_index]
-                data_shape_key = data_shape.get('key')
+    @staticmethod
+    def calculate_total_amount(expenses: List[Expense]) -> float:
+        return sum(list(map(lambda expense: expense.amount, expenses)))
 
-                if data_shape_key == group_key:
-                    search_data_shape_index = data_shape_index
 
-                    break
+class ExpensesByCategoryAggregator(CategoryAggregatorMixin):
+    def aggregate(self, expenses: List[Expense]) -> List[AggregationDataFrame]:
+        data_frames = []
 
-            total_amount = 0
-            for item in list(group_items):
-                total_amount += item.amount
+        for group_key, group_items in groupby(expenses, self.grouper_key):
+            total_amount = self.calculate_total_amount(list(group_items))
+            data_frame_index = self.find_data_frame_index_by_key(data_frames, group_key)
 
-            if search_data_shape_index != -1:
-                data_shapes[search_data_shape_index]['value'] += total_amount
+            if data_frame_index != -1:
+                data_frames[data_frame_index]['value'] += total_amount
             else:
-                data_shapes.append({
+                new_data_frame = {
                     'key': group_key,
                     'value': total_amount
-                })
+                }
+                data_frames.append(new_data_frame)
 
-        return data_shapes
-
-
-class TotalAmountOfExpensesAggregator:
-    def aggregate(self, expenses: List[Expense]) -> DefaultDataShape:
-        total_amount = 0
-        for expense in expenses:
-            total_amount += expense.amount
-
-        data_shape = {'key': 'total_amount', 'value': total_amount}
-
-        return data_shape
+        return data_frames
 
 
-class CountExpensesByCategoryAggregator:
-    def aggregate(self, expenses: List[Expense]) -> List[DefaultDataShape]:
-        data_shapes = []
+class TotalAmountOfExpensesAggregator(CategoryAggregatorMixin):
+    def aggregate(self, expenses: List[Expense]) -> AggregationDataFrame:
+        total_amount = self.calculate_total_amount(expenses)
+        data_frame = {
+            'key': 'total_amount',
+            'value': total_amount
+        }
+        return data_frame
 
-        for group_key, group_items in groupby(expenses, lambda expense: expense.category.name if expense.category else None):
-            search_data_shape_index = -1
 
-            for data_shape_index in range(len(data_shapes)):
-                data_shape = data_shapes[data_shape_index]
-                data_shape_key = data_shape.get('key')
+class CountExpensesByCategoryAggregator(CategoryAggregatorMixin):
+    def aggregate(self, expenses: List[Expense]) -> List[AggregationDataFrame]:
+        data_frames = []
 
-                if data_shape_key == group_key:
-                    search_data_shape_index = data_shape_index
+        for group_key, group_items in groupby(expenses, self.grouper_key):
+            group_items_count = len(list(group_items))
+            data_frame_index = self.find_data_frame_index_by_key(data_frames, group_key)
 
-                    break
-
-            if search_data_shape_index != -1:
-                data_shapes[search_data_shape_index]['value'] += len(list(group_items))
+            if data_frame_index != -1:
+                data_frames[data_frame_index]['value'] += group_items_count
             else:
-                data_shapes.append({
+                new_data_frame = {
                     'key': group_key,
-                    'value': len(list(group_items))
-                })
+                    'value': group_items_count
+                }
+                data_frames.append(new_data_frame)
 
-        return data_shapes
+        return data_frames
