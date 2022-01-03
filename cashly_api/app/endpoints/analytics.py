@@ -5,10 +5,9 @@ from fastapi import APIRouter, Depends, Query
 
 from app.aggregator import (
     AggregationUnits,
+    DefaultAggregatorParams,
     GeneralExpensesAggregator,
-    GeneralExpensesAggregatorOptions,
     ExpensesByCategoryAggregator,
-    ExpensesByCategoryAggregatorOptions,
     TotalAmountOfExpensesAggregator,
     CountExpensesByCategoryAggregator
 )
@@ -36,7 +35,7 @@ def get_general_expenses(
         end_date=date_params.end_date
     )
 
-    options = GeneralExpensesAggregatorOptions(
+    options = DefaultAggregatorParams(
         start_date=date_params.start_date,
         end_date=date_params.end_date,
         unit=unit
@@ -57,11 +56,7 @@ def get_expenses_by_category(
         end_date=date_params.end_date
     )
 
-    options = ExpensesByCategoryAggregatorOptions(
-        start_date=date_params.start_date,
-        end_date=date_params.end_date
-    )
-    aggregator = ExpensesByCategoryAggregator(options)
+    aggregator = ExpensesByCategoryAggregator()
     aggregated_data = aggregator.aggregate(expenses)
 
     return aggregated_data
