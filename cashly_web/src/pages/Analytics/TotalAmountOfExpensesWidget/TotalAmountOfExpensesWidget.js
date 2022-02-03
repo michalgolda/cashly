@@ -28,7 +28,7 @@ export default function TotalAmountOfExpensesWidget() {
 
     return (
         <Widget title="Suma wydatków">
-            {isLoading || isError ? <Skeleton height={32} /> : (
+            {isLoading || isError ? <Skeleton height={32} width={128} /> : (
                 <StyledTotalAmountText>{data.value} PLN</StyledTotalAmountText>
             )}
         </Widget>
