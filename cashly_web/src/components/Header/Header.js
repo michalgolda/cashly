@@ -29,7 +29,12 @@ const StyledLeftContentWrapper = styled.div`
     flex-direction: column;
 `;
 
-const StyledRightContentWrapper = styled.div`margin-left: 8px;`;
+const StyledRightContentWrapper = styled.div`
+    display: flex;
+    row-gap: 16px;
+    margin-left: 8px;
+    flex-direction: column;
+`;
 
 function Header(props) {
     const { title, description, rightElement } = props;

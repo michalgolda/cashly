@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
 
 import { Header } from "../../../components";
-import AddExpenseButton from "../AddExpenseButton/AddExpenseButton";
+import RightElements from "./RightElements/RightElements";
 
 
 function CategoryPageHeader({ showRightElement }) {
-    const rightElement = showRightElement ? <AddExpenseButton /> : null;
+    const rightElement = showRightElement ? <RightElements /> : null;
     
     return (
         <Header 
