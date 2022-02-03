@@ -12,7 +12,9 @@ from .expense import (
     DeleteExpenseRequest,
 
     UpdateExpenseUseCase,
-    UpdateExpenseRequest
+    UpdateExpenseRequest,
+
+    ExportExpensesUseCase
 )
 from .expense_category import (
     GetAllExpenseCategoriesUseCase,
