@@ -1,4 +1,5 @@
 from uuid import UUID
+from io import BytesIO
 from datetime import date
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
@@ -6,6 +7,7 @@ from typing import List, Union, NoReturn
 
 from app.entities import Expense
 from app.exceptions import DomainException
+from app.exporter import AbstractExpensesExporter
 from app.repositories import (
     AbstractExpenseRepository,
     AbstractExpenseCategoryRepository
@@ -216,4 +218,32 @@ class UpdateExpenseUseCase(AbstractUpdateExpenseUseCase):
 
         result = UpdateExpenseResult(expense)
 
+        return result
+
+
+@dataclass(frozen=True)
+class ExportExpensesResult:
+    exporter_buffer: BytesIO
+
+
+class AbstractExportExpensesUseCase(ABC):
+    def __init__(
+        self,
+        expense_repo: AbstractExpenseRepository,
+        expenses_exporter: AbstractExpensesExporter
+    ):
+        self.expense_repo = expense_repo
+        self.expenses_exporter = expenses_exporter
+
+    @abstractmethod
+    def execute(self) -> ExportExpensesResult:
+        pass
+
+
+class ExportExpensesUseCase(AbstractExportExpensesUseCase):
+    def execute(self) -> ExportExpensesResult:
+        expenses = self.expense_repo.get_all()
+        exporter_buffer = self.expenses_exporter.export(expenses)
+
+        result = ExportExpensesResult(exporter_buffer)
         return result

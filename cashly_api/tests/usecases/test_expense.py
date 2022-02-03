@@ -5,7 +5,8 @@ from app.usecases import (
     GetExpenseByIdUseCase,
     CreateExpenseUseCase,
     DeleteExpenseUseCase,
-    UpdateExpenseUseCase
+    UpdateExpenseUseCase,
+    ExportExpensesUseCase
 )
 from app.entities import Expense
 from app.usecases.expense import ExpenseNotFoundError
@@ -272,3 +273,22 @@ def test_update_expense_with_category_when_category_not_found(mocker):
     mock_expense_category_repo.get_by_id.assert_called_once_with(
         mock_usecase_request.expense_category_id
     )
+
+
+def test_export_expenses(mocker):
+    mock_expense_repo = mocker.patch('app.repositories.AbstractExpenseRepository')
+    mock_exporter_buffer = mocker.MagicMock()
+    mock_expenses_exporter = mocker.patch('app.exporter.ExpensesExporter')
+    mock_expenses_exporter.export.return_value = mock_exporter_buffer
+
+    usecase = ExportExpensesUseCase(
+        expense_repo=mock_expense_repo,
+        expenses_exporter=mock_expenses_exporter
+    )
+    result = usecase.execute()
+
+    mock_expense_repo.get_all.assert_called_once()
+
+    mock_expenses_exporter.export.assert_called_once()
+
+    assert result.exporter_buffer == mock_exporter_buffer
