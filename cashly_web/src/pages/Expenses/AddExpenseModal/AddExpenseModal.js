@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { useMutation, useQueryClient } from "react-query";
 import NiceModal, { useModal, bootstrapDialog } from "@ebay/nice-modal-react";
 
@@ -9,22 +10,12 @@ export default NiceModal.create(() => {
     const modal = useModal();
     const queryClient = useQueryClient();
     
-    const getDefaultRealisedDate = () => {
-        const currentDate = new Date();
-
-        const day = currentDate.getDate();
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth() + 1;
-    
-        const formatedDate = `${year}-${month}-${day}`;
-
-        return formatedDate;
-    };
+    const defaultRealisedDate = moment().format('YYYY-MM-DD');
 
     const initialValues = { 
         amount: 0, 
-        expense_category_id: null,
-        realised_date: getDefaultRealisedDate()
+        expense_category_id: '',
+        realised_date: defaultRealisedDate
     };
 
     const mutation = useMutation(createExpense, {
