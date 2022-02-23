@@ -1,4 +1,5 @@
 import moment from 'moment';
+import currency from 'currency.js';
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { useModal } from "@ebay/nice-modal-react";
@@ -66,9 +67,12 @@ function ExpenseListItem({ id, amount, category, realised_date }) {
         onSuccess: () => queryClient.invalidateQueries("expenses")
     });
 
+    const formattedAmount = currency(amount, { symbol: 'PLN', pattern: '# !' }).format();
+    const formattedRealisedDate = moment(realised_date).format('YYYY-MM-DD');
+
     return (
         <StyledListItem>
-            <StyledSpan>{amount.toFixed(2)} PLN</StyledSpan>
+            <StyledSpan>{formattedAmount}</StyledSpan>
             {category ? (
                 <StyledCategory color={category.color}>
                     {category.name}
@@ -78,7 +82,7 @@ function ExpenseListItem({ id, amount, category, realised_date }) {
                     Bez kategorii
                 </StyledCategory>
             )}
-            <StyledSpan>{moment(realised_date).format('YYYY-MM-DD')}</StyledSpan>
+            <StyledSpan>{formattedRealisedDate}</StyledSpan>
             <StyledActions>
                 <StyledEditButton 
                     icon={<FontAwesomeIcon icon={faEdit} />} 
