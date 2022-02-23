@@ -1,3 +1,4 @@
+import moment from 'moment';
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { useModal } from "@ebay/nice-modal-react";
@@ -6,7 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
 
 import { deleteExpense } from "../../../mutations";
-import { dateToISOString } from "../../../utilities/date";
 import { ListItem, IconButton } from "../../../components";
 import EditExpenseModal from "../EditExpenseModal/EditExpenseModal";
 
@@ -78,7 +78,7 @@ function ExpenseListItem({ id, amount, category, realised_date }) {
                     Bez kategorii
                 </StyledCategory>
             )}
-            <StyledSpan>{dateToISOString(new Date(realised_date))}</StyledSpan>
+            <StyledSpan>{moment(realised_date).format('YYYY-MM-DD')}</StyledSpan>
             <StyledActions>
                 <StyledEditButton 
                     icon={<FontAwesomeIcon icon={faEdit} />} 
