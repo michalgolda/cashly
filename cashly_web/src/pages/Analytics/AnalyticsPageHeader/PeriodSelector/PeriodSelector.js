@@ -1,61 +1,23 @@
+import moment from 'moment';
 import { createContext, useContext, useState } from "react";
 
 import { Input } from "../../../../components";
-import { dateToISOString } from "../../../../utilities/date";
 
 
-function getPeriods() {
-    const currentDate = new Date();
-
-    const getLastSevenDaysPeriod = () => {
-        const startDate = new Date();
-        startDate.setDate(currentDate.getDate() - 6);
-
-        return {
-            unit: 'D',
-            start_date: dateToISOString(startDate),
-            end_date: dateToISOString(currentDate)
-        }
-    };
-
-    const getLastFourWeeksPeriod = () => {
-        const startDate = new Date();
-        startDate.setDate(currentDate.getDate() - 27);
-
-        return {
-            unit: 'D',
-            start_date: dateToISOString(startDate),
-            end_date: dateToISOString(currentDate)
-        }
-    };
-
-    const getLastThreeMonthsPeriod = () => {
-        const startDate = new Date();
-        startDate.setMonth(currentDate.getMonth() - 2);
-
-        return {
-            unit: 'W',
-            start_date: dateToISOString(startDate),
-            end_date: dateToISOString(currentDate)
-        }
-    };
-
-    const getLastTwentyMonthsPeriod = () => {
-        const startDate = new Date();
-        startDate.setMonth(currentDate.getMonth() - 11);
-
-        return {
-            unit: 'M',
-            start_date: dateToISOString(startDate),
-            end_date: dateToISOString(currentDate)
-        }
-    };
-
+const getPeriod = (unit, subtractAmount, subtractUnit) => {
     return {
-        lastSevenDays: getLastSevenDaysPeriod(),
-        lastFourWeeks: getLastFourWeeksPeriod(),
-        lastThreeMonths: getLastThreeMonthsPeriod(),
-        lastTwentyMonths: getLastTwentyMonthsPeriod()
+        unit,
+        end_date: moment().format('YYYY-MM-DD'),
+        start_date: moment().subtract(subtractAmount, subtractUnit).format('YYYY-MM-DD')
+    }
+}
+
+const getPeriods = () => {
+    return {
+        lastSevenDays: getPeriod('D', 7, 'd'),
+        lastFourWeeks: getPeriod('D', 4, 'w'),
+        lastThreeMonths: getPeriod('W', 3, 'M'),
+        lastTwentyMonths: getPeriod('M', 12, 'M')
     }
 }
 
