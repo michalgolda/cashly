@@ -26,7 +26,7 @@ class ExpensesExporter(AbstractExpensesExporter):
         )
         exporter_buffer = BytesIO()
         data_frame = pd.DataFrame(data)
-        data_frame.to_csv(exporter_buffer)
+        data_frame.to_csv(exporter_buffer, index_label='lp')
         exporter_buffer.seek(0)
 
         return exporter_buffer
