@@ -5,9 +5,10 @@ from dataclasses import dataclass
 from abc import ABC, abstractmethod
 from typing import List, Union, NoReturn
 
-from app.entities import Expense
 from app.exceptions import DomainException
+from app.entities import Expense, ExpenseCategory
 from app.exporter import AbstractExpensesExporter
+from app.importer import AbstractExpensesImporter
 from app.repositories import (
     AbstractExpenseRepository,
     AbstractExpenseCategoryRepository
@@ -247,3 +248,45 @@ class ExportExpensesUseCase(AbstractExportExpensesUseCase):
 
         result = ExportExpensesResult(exporter_buffer)
         return result
+
+
+@dataclass(frozen=True)
+class ImportExpensesRequest:
+    uploaded_file: BytesIO
+
+
+class AbstractImportExpensesUseCase(ABC):
+    def __init__(
+        self, 
+        expense_repo: AbstractExpenseRepository,
+        expenses_importer: AbstractExpensesImporter,
+        expense_category_repo: AbstractExpenseCategoryRepository
+    ):
+        self.expense_repo = expense_repo
+        self.expenses_importer = expenses_importer
+        self.expense_category_repo = expense_category_repo
+
+    @abstractmethod
+    def execute(self, request: ImportExpensesRequest) -> None:
+        pass
+
+
+class ImportExpensesUseCase(AbstractImportExpensesUseCase):
+    def execute(self, request: ImportExpensesRequest) -> None:
+        parsed_expenses = self.expenses_importer.make(request.uploaded_file)
+        for parsed_expense in parsed_expenses:
+            amount = parsed_expense.get('amount')
+            realised_date = parsed_expense.get('realised_date')
+            category_name = parsed_expense.get('category_name')
+
+            category = None
+            if category_name:
+                category = self.expense_category_repo.get_by_name(category_name)
+                
+            expense = Expense(
+                amount=amount,
+                category=category,
+                realised_date=realised_date
+            )
+
+            self.expense_repo.add(expense)
