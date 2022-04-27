@@ -36,3 +36,14 @@ export async function exportExpenses({ fileFormat }) {
 	const requestURL = `${config.apiURL}/expenses/export?file_format=${fileFormat}`;
 	return await axios.get(requestURL);
 }
+
+export async function importExpenses({ formData }) {
+	const requestURL = `${config.apiURL}/expenses/import`;
+	return await axios.post(
+		requestURL, 
+		formData, 
+		{
+			headers: { "Content-Type": "multipart/form-data" }
+		}
+	)
+}
