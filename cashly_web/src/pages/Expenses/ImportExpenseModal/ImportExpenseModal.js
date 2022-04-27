@@ -31,6 +31,10 @@ export default NiceModal.create(() => {
 		e.preventDefault();
 
 		const formData = new FormData(e.target);
+		const file = formData.get("file");
+		formData.delete("file");
+		formData.set("uploaded_file", file);
+		
 		mutation.mutate({ formData });
 	};
 
