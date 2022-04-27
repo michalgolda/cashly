@@ -1,4 +1,5 @@
 import AddCategoryButton from "../../AddExpenseButton/AddExpenseButton";
+import ImportExpenseButton from "../../ImportExpensesButton/ImportExpensesButton";
 import ExportExpensesButton from "../../ExportExpensesButton/ExportExpensesButton";
 
 
@@ -7,6 +8,7 @@ function RightElements() {
 		<>
 			<AddCategoryButton />
 			<ExportExpensesButton />
+			<ImportExpenseButton />
 		</>
 	);
 }

@@ -1,27 +1,25 @@
 from uuid import UUID
 from typing import List
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, File, UploadFile, HTTPException
 from fastapi.responses import StreamingResponse
 
 from app.usecases import (
     GetAllExpensesUseCase,
-
     GetExpenseByIdUseCase,
     GetExpenseByIdRequest,
-
     CreateExpenseUseCase,
     CreateExpenseRequest,
-
     UpdateExpenseUseCase,
     UpdateExpenseRequest,
-
     DeleteExpenseUseCase,
     DeleteExpenseRequest,
-
-    ExportExpensesUseCase
+    ExportExpensesUseCase,
+    ImportExpensesRequest,
+    ImportExpensesUseCase
 )
 from app.exporter import ExpensesExporter
+from app.importer import ExpensesImporter, SUPPORTED_FILE_CONTENT_TYPES
 from app.schemas import ExpenseOut, ExpenseCreate, ExpenseUpdate
 from app.dependencies import get_expense_repo, get_expense_category_repo
 from app.repositories import AbstractExpenseRepository, AbstractExpenseCategoryRepository
@@ -44,6 +42,30 @@ def export_expenses(
             'Content-Disposition': 'attachment; filename=expenses.csv'
         }
     )
+
+
+@expense_router.post('/expenses/import/')
+def import_expenses(
+    uploaded_file: UploadFile = File(...),
+    expense_repo: AbstractExpenseRepository = Depends(get_expense_repo),
+    expense_category_repo: AbstractExpenseCategoryRepository = Depends(get_expense_category_repo)
+):
+    if uploaded_file.content_type not in SUPPORTED_FILE_CONTENT_TYPES:
+        raise HTTPException(
+            status_code=400,
+            detail='File content type not supported.'
+        )
+
+    expenses_importer = ExpensesImporter()
+    usecase = ImportExpensesUseCase(
+        expense_repo,
+        expenses_importer,
+        expense_category_repo
+    )
+    request = ImportExpensesRequest(uploaded_file.file)
+    usecase.execute(request)
+
+    return {'message': 'Successfull imported.'}
 
 
 @expense_router.get('/expenses/', response_model=List[ExpenseOut])
