@@ -105,7 +105,7 @@ export default function Sidebar() {
                 )}
             </StyledNavLinkList>
             <StyledFooter className="sidebarFooter">
-                <strong>© 2021 Cashly app</strong> <br />
+                <strong>© 2022 Cashly app</strong> <br />
                 by Michał Gołda
             </StyledFooter>
         </StyledNav>
