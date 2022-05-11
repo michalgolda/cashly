@@ -24,3 +24,7 @@ from .expense_category import (
     UpdateExpenseCategoryUseCase,
     UpdateExpenseCategoryRequest
 )
+from .user import (
+    GetUserByIdUseCase,
+    GetUserByIdRequest
+)
