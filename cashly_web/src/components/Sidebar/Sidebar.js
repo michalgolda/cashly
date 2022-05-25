@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { IconButton } from "../../components";
+import { IconButton, Logo } from "../../components";
 import NavLinkButton from "./NavLinkButton/NavLinkButton";
 import NavLinkIconButton from "./NavLinkIconButton/NavLinkIconButton";
 
@@ -42,11 +42,6 @@ const StyledHeader = styled.div`
     justify-content: space-between;
 `;
 
-const StyledAppName = styled.h2`
-    text-transform: uppercase;
-    font-weight: ${({ theme }) => theme.fontWeights.extraBold};
-`;
-
 const StyledNavLinkList = styled.ul`
     display: grid;
     row-gap: 16px;
@@ -66,7 +61,7 @@ export default function Sidebar() {
     return (
         <StyledNav expand={expand}>
             <StyledHeader>
-                <StyledAppName className="sidebarAppName">Cashly</StyledAppName>
+                <Logo className="sidebarAppName">Cashly</Logo>
                 <IconButton 
                     variant="text" 
                     className="sidebarCollapse"
