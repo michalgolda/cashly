@@ -7,9 +7,11 @@ const StyledForm = styled.form`
 	margin: 16px auto;
 `;
 
-export default function AuthForm({ children }) {
+export default function AuthForm(props) {
+    const { children } = props;
+    
     return (
-        <StyledForm>
+        <StyledForm {...props}>
             {children}
         </StyledForm>
     )
