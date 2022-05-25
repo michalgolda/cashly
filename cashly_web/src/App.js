@@ -6,7 +6,6 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import config from "./config";
 import routes from "./routes";
-import { Layout } from "./components";
 import { theme, GlobalStyle } from "./styles";
 
 
@@ -19,18 +18,16 @@ function App() {
                 <NiceModalProvider>
                     <GlobalStyle />
                     <Router>    
-                        <Layout>
-                            <Switch>
-                                {routes.map(({ path, exact, component }, index) => (
-                                    <Route 
-                                        key={index}
-                                        path={path} 
-                                        exact={exact}
-                                        component={component} 
-                                    />
-                                ))}
-                            </Switch>
-                        </Layout>
+                        <Switch>
+                            {routes.map(({ path, exact, component }, index) => (
+                                <Route 
+                                    key={index}
+                                    path={path} 
+                                    exact={exact}
+                                    component={component} 
+                                />
+                            ))}
+                        </Switch>
                     </Router>
                 </NiceModalProvider>
             </ThemeProvider>
