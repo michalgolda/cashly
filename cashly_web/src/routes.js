@@ -1,6 +1,13 @@
 import { Redirect } from "react-router";
 
-import { Expenses, Categories, NotFound, Analytics } from "./pages";
+import { 
+    Expenses, 
+    Categories, 
+    NotFound, 
+    Analytics,
+    Login,
+    Register 
+} from "./pages";
 
 
 const routes = [
@@ -23,6 +30,16 @@ const routes = [
         exact: true,
         path: "/analytics",
         component: Analytics
+    },
+    {
+        exact: true,
+        path: "/login",
+        component: Login
+    },
+    {
+        exact: true,
+        path: "/register",
+        component: Register
     },
     {
         path: "*",
