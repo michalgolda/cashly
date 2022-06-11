@@ -26,5 +26,7 @@ from .expense_category import (
 )
 from .user import (
     GetUserByIdUseCase,
-    GetUserByIdRequest
+    GetUserByIdRequest,
+    CreateUserUseCase,
+    CreateUserRequest
 )
