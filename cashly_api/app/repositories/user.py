@@ -13,6 +13,10 @@ class AbstractUserRepository(ABC):
         pass
 
     @abstractmethod
+    def get_by_email(self, user_email: str) -> Union[None, User]:
+        pass
+
+    @abstractmethod
     def add(self, user: User) -> User:
         pass
 
@@ -35,6 +39,9 @@ class SQLAlchemyUserRepository(AbstractUserRepository):
             .first()
 
         return user
+
+    def get_by_email(self, user_email: str) -> Union[None, User]:
+        return self._session.query(User).filter_by(email=user_email).first()
 
     def add(self, user: User) -> User:
         self._session.add(user)
