@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import run_mappers, metadata
 from app.exceptions import exception_handlers_loader
-from app.endpoints import expense_category_router, expense_router, analytics_router
+from app.endpoints import expense_category_router, expense_router, analytics_router, auth_router
 
 
 def create_app() -> FastAPI:
@@ -12,6 +12,7 @@ def create_app() -> FastAPI:
     app.include_router(expense_router)
     app.include_router(analytics_router)
     app.include_router(expense_category_router)
+    app.include_router(auth_router)
 
     exception_handlers_loader(app)
 
