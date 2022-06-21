@@ -1,8 +1,7 @@
-import bcrypt
 from uuid import UUID
 from typing import Optional
 from datetime import datetime
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 
 @dataclass
