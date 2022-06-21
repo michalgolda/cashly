@@ -1,42 +1,50 @@
-from typing import NoReturn, Callable, Dict, Type
+from typing import NoReturn
 
-from fastapi import Request, FastAPI
+from fastapi import Request
 from fastapi.responses import JSONResponse
 
 
-MAPPED_EXCEPTIONS: Dict[Type[Exception], Callable] = {}
-
-
-def exception_handlers_loader(app: FastAPI) -> NoReturn:
-    for exc_class, exc_handler in MAPPED_EXCEPTIONS.items():
-        app.add_exception_handler(exc_class, exc_handler)
-
-
-def map_exception_handler(exc_class: Type[Exception]) -> Callable:
-    def wrapper(exc_handler: Callable) -> Callable:
-        MAPPED_EXCEPTIONS[exc_class] = exc_handler
-
-        return exc_handler
-    return wrapper
-
-
 class DomainException(Exception):
-    def __init__(self, code: str, message: str, status_code: int):
+    def __init__(self, code: str, message: str, status_code: int) -> NoReturn:
         self.code = code
         self.message = message
         self.status_code = status_code
 
+        super().__init__(message)
 
-@map_exception_handler(DomainException)
-async def domain_exception_handler(request: Request, exc: DomainException) -> JSONResponse:
-    exc_code = exc.code
-    exc_message = exc.message
-    exc_status_code = exc.status_code
 
+class UserEmailAlreadyUsedError(DomainException):
+    def __init__(self) -> NoReturn:
+        super().__init__(
+            'UserEmailAlreadyUsed', 
+            'Podany adres email jest już w użyciu', 
+            400
+        )
+
+
+class BadAuthenticationCredentialsError(DomainException):
+    def __init__(self) -> NoReturn:
+        super().__init__(
+            'BadAuthenticationCredentials', 
+            'Podany adres email lub hasło są nieprawidłowe', 
+            400
+        )
+
+
+class UserNotFoundError(DomainException):
+    def __init__(self) -> NoReturn:
+        self.code = 'UserNotFoundError'
+        self.message = 'Użytkownik o podanych właściwościach nie istnieje'
+        self.status_code = 400
+
+        super().__init__(self.code, self.message, self.status_code)
+
+
+async def domain_exception_handler(request: Request, exception: DomainException) -> JSONResponse:
     return JSONResponse(
-        status_code=exc_status_code,
+        status_code=exception.status_code,
         content={
-            'code': exc_code,
-            'message': exc_message
+            'code': exception.code,
+            'message': exception.message
         }
     )
