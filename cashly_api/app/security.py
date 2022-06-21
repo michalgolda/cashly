@@ -6,6 +6,8 @@ from typing import Optional
 from dataclasses import dataclass
 from abc import ABC, abstractmethod, abstractstaticmethod
 
+from app.settings import settings
+
 from fastapi import HTTPException, Request
 from fastapi.security import HTTPBearer
 
@@ -31,9 +33,6 @@ class SecurityManager(ABC):
 
 
 class DefaultSecurityManager(SecurityManager):
-  def __init__(self, secret_key: str) -> None:
-    self._secret_key = secret_key
-
   @staticmethod
   def generate_password_hash(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')  
@@ -42,18 +41,18 @@ class DefaultSecurityManager(SecurityManager):
   def verify_password_hash(password: str, hashed_password: str) -> bool:
     return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
 
-  def generate_access_token(self, subject: UUID, expiration: int = 1800) -> str:
+  def generate_access_token(self, subject: UUID) -> str:
     return jwt.encode(
       dict(
         sub=str(subject), 
-        exp=datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=expiration
-      )
+        exp=datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=settings.ACCESS_TOKEN_EXPIRATION)
     ), 
-    self._secret_key
+    self._secret_key,
+    algorithm=settings.ACCESS_TOKEN_ALGORITHM
   )
 
   def verify_access_token(self, access_token: str) -> AccessTokenPayload:
-    decoded_payload = jwt.decode(access_token.encode('utf-8'), self._secret_key, 'HS256')
+    decoded_payload = jwt.decode(access_token.encode('utf-8'), self._secret_key, settings.ACCESS_TOKEN_ALGORITHM)
     return AccessTokenPayload(
       sub=UUID(decoded_payload['sub']),
       exp=datetime.datetime.fromtimestamp(decoded_payload['exp'])
