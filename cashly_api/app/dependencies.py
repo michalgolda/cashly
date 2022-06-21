@@ -26,7 +26,7 @@ def get_user_repo() -> UserRepository:
     return SQLAlchemyUserRepository(session)
 
 def get_security_manager() -> SecurityManager:
-    return DefaultSecurityManager(settings.SECRET_KEY)
+    return DefaultSecurityManager()
 
 def get_current_user(
     user_repo: UserRepository = Depends(get_user_repo),
