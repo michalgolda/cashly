@@ -1,24 +1,42 @@
-import bcrypt
 from fastapi import APIRouter, Depends
 
-from app.schemas import UserCreate
-from app.dependencies import get_user_repo
-from app.repositories import AbstractUserRepository
-from app.authentication import generate_password_hash
-from app.usecases import CreateUserRequest, CreateUserUseCase
+from app.security import SecurityManager
+from app.repositories import UserRepository
+from app.schemas.authentication import AuthenticationCredentials
+from app.usecases.authentication import (
+  RegisterUseCase,
+  RegisterUseCaseInput,
+  LoginUseCase,
+  LoginUseCaseInput  
+)
+from app.dependencies import get_user_repo, get_security_manager
 
-auth_router = APIRouter()
+authentication_router = APIRouter()
 
-@auth_router.post('/auth/register', status_code=201)
-def create_user(
-  user: UserCreate,
-  user_repo: AbstractUserRepository = Depends(get_user_repo)
-): 
-  request = CreateUserRequest(
-    email=user.email,
-    password=generate_password_hash(user.password)
-  ) 
-  usecase = CreateUserUseCase(user_repo)
-  usecase.execute(request)
-  
-  return {'msg': 'Successfully created new user'}
+@authentication_router.post('/auth/register', status_code=201)
+def register(
+  credentials: AuthenticationCredentials,
+  user_repo: UserRepository = Depends(get_user_repo), 
+  security_manager: SecurityManager = Depends(get_security_manager)
+):
+  register_usecase_input = RegisterUseCaseInput(
+    email=credentials.email, 
+    password=credentials.password
+  )
+  register_usecase = RegisterUseCase(user_repo, security_manager)
+  register_usecase.execute(register_usecase_input)
+
+@authentication_router.post('/auth/login', status_code=200)
+def login(
+  credentials: AuthenticationCredentials,
+  user_repo: UserRepository = Depends(get_user_repo),
+  security_manager: SecurityManager = Depends(get_security_manager)
+):
+  login_usecase_input = LoginUseCaseInput(
+    email=credentials.email, 
+    password=credentials.password
+  )
+  login_usecase = LoginUseCase(user_repo, security_manager)
+  login_usecase_output = login_usecase.execute(login_usecase_input)
+
+  return dict(access_token=login_usecase_output.access_token)
