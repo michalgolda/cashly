@@ -14,7 +14,7 @@ def create_app() -> FastAPI:
     app.include_router(expense_category_router)
     app.include_router(auth_router)
 
-    exception_handlers_loader(app)
+    app.add_exception_handler(DomainException, domain_exception_handler)
 
     app.add_middleware(
         CORSMiddleware,
