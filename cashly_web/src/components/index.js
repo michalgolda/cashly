@@ -12,6 +12,7 @@ import Skeleton from "./Skeleton/Skeleton";
 import PageMain from "./PageMain/PageMain";
 import IconButton from "./IconButton/IconButton";
 import LinkButton from "./LinkButton/LinkButton";
+import Logo from "./Logo/Logo";
 
 export { 
     Page,
@@ -27,5 +28,6 @@ export {
     ListItem,
     PageMain,
     IconButton,
-    LinkButton
+    LinkButton,
+    Logo
 }

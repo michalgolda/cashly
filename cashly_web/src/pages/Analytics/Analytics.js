@@ -1,5 +1,5 @@
 import WidgetList from "./WidgetList/WidgetList";
-import { Page, PageMain } from "../../components";
+import { Page, PageMain, Layout } from "../../components";
 import AnalyticsPageHeader from "./AnalyticsPageHeader/AnalyticsPageHeader";
 import { PeriodSelectorContextProvider } from "./AnalyticsPageHeader/PeriodSelector/PeriodSelector";
 
@@ -7,12 +7,14 @@ import { PeriodSelectorContextProvider } from "./AnalyticsPageHeader/PeriodSelec
 export default function Analytics() {
 	return (
 		<Page title="Cashly - Analityka">
-			<PeriodSelectorContextProvider>
-				<AnalyticsPageHeader />
-				<PageMain>
-					<WidgetList />
-				</PageMain>
-			</PeriodSelectorContextProvider>
+			<Layout>
+				<PeriodSelectorContextProvider>
+					<AnalyticsPageHeader />
+					<PageMain>
+						<WidgetList />
+					</PageMain>
+				</PeriodSelectorContextProvider>
+			</Layout>
 		</Page>
 	);
 }

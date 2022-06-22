@@ -8,3 +8,4 @@ from .expense import (
     ExpenseCreate,
     ExpenseUpdate
 )
+from .user import User, UserOut

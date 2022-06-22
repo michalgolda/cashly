@@ -1,3 +1,4 @@
+from email.policy import default
 from uuid import UUID, uuid4
 
 from sqlalchemy.sql import func as sql_func
@@ -10,7 +11,7 @@ from sqlalchemy import (
 )
 
 from app.settings import settings
-from app.entities import Expense, ExpenseCategory
+from app.entities import Expense, ExpenseCategory, User
 
 
 engine = create_engine(
@@ -82,6 +83,15 @@ expense_category = Table(
     Column('updated_at', DateTime(timezone=True), onupdate=sql_func.now())
 )
 
+user = Table(
+    'user',
+    metadata,
+    Column('id', SQLAlchemyUUID(), index=True, primary_key=True, default=lambda: str(uuid4())),
+    Column('email', String(255), index=True),
+    Column('password', String(255)),
+    Column('created_at', DateTime(timezone=True), server_default=sql_func.now()),
+    Column('updated_at', DateTime(timezone=True), onupdate=sql_func.now())
+)
 
 def run_mappers():
     mapper(
@@ -89,5 +99,5 @@ def run_mappers():
         expense,
         properties={'category': relationship(ExpenseCategory, backref='expense_category')}
     )
-
     mapper(ExpenseCategory, expense_category)
+    mapper(User, user)

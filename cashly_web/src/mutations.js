@@ -47,3 +47,7 @@ export async function importExpenses({ formData }) {
 		}
 	)
 }
+
+export async function register(data) {
+	return await axios.post(`${config.apiURL}/auth/register`, data);
+}
