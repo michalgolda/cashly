@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 from fastapi import APIRouter, Depends, Query
 
+from app.entities import User
 from app.aggregator import (
     AggregationUnits,
     DefaultAggregatorParams,
@@ -11,8 +12,9 @@ from app.aggregator import (
     TotalAmountOfExpensesAggregator,
     CountExpensesByCategoryAggregator
 )
-from app.dependencies import get_expense_repo
-from app.repositories import AbstractExpenseRepository
+from app.repositories import ExpenseRepository
+from app.repositories.expense import ExpenseRepository
+from app.dependencies import get_expense_repo, get_current_user
 
 
 analytics_router = APIRouter()
@@ -27,12 +29,14 @@ class AnalyticsDateParams:
 @analytics_router.get('/analytics/general_expenses/')
 def get_general_expenses(
     unit: AggregationUnits = Query(...),
+    current_user: User = Depends(get_current_user),
     date_params: AnalyticsDateParams = Depends(),
-    expense_repo: AbstractExpenseRepository = Depends(get_expense_repo)
+    expense_repo: ExpenseRepository = Depends(get_expense_repo)
 ):
-    expenses = expense_repo.get_by_date_range(
+    expenses = expense_repo.get_by_date_range_and_user_id(
         start_date=date_params.start_date,
-        end_date=date_params.end_date
+        end_date=date_params.end_date,
+        user_id=current_user.id
     )
 
     options = DefaultAggregatorParams(
@@ -48,12 +52,14 @@ def get_general_expenses(
 
 @analytics_router.get('/analytics/expenses_by_category/')
 def get_expenses_by_category(
+    current_user: User = Depends(get_current_user),
     date_params: AnalyticsDateParams = Depends(),
-    expense_repo: AbstractExpenseRepository = Depends(get_expense_repo)
+    expense_repo: ExpenseRepository = Depends(get_expense_repo)
 ):
-    expenses = expense_repo.get_by_date_range(
+    expenses = expense_repo.get_by_id_and_user_id(
         start_date=date_params.start_date,
-        end_date=date_params.end_date
+        end_date=date_params.end_date,
+        user_id=current_user.id
     )
 
     aggregator = ExpensesByCategoryAggregator()
@@ -64,12 +70,14 @@ def get_expenses_by_category(
 
 @analytics_router.get('/analytics/total_amount_of_expenses/')
 def get_total_amount_of_expenses(
+    current_user: User = Depends(get_current_user),
     date_params: AnalyticsDateParams = Depends(),
-    expense_repo: AbstractExpenseRepository = Depends(get_expense_repo)
+    expense_repo: ExpenseRepository = Depends(get_expense_repo)
 ):
-    expenses = expense_repo.get_by_date_range(
+    expenses = expense_repo.get_by_date_range_and_user_id(
         start_date=date_params.start_date,
-        end_date=date_params.end_date
+        end_date=date_params.end_date,
+        user_id=current_user.id
     )
 
     aggregator = TotalAmountOfExpensesAggregator()
@@ -80,17 +88,18 @@ def get_total_amount_of_expenses(
 
 @analytics_router.get('/analytics/count_expenses_by_category/')
 def get_count_expenses_by_category(
+    current_user: User = Depends(get_current_user),
     date_params: AnalyticsDateParams = Depends(),
-    expense_repo: AbstractExpenseRepository = Depends(get_expense_repo)
+    expense_repo: ExpenseRepository = Depends(get_expense_repo)
 ):
-    expenses = expense_repo.get_by_date_range(
+    expenses = expense_repo.get_by_date_range_and_user_id(
         start_date=date_params.start_date,
-        end_date=date_params.end_date
+        end_date=date_params.end_date,
+        user_id=current_user.id
     )
 
     aggregator = CountExpensesByCategoryAggregator()
     aggregated_data = aggregator.aggregate(expenses)
 
     return aggregated_data
-
-
+    

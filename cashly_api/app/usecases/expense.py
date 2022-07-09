@@ -1,292 +1,126 @@
 from uuid import UUID
-from io import BytesIO
 from datetime import date
 from dataclasses import dataclass
-from abc import ABC, abstractmethod
-from typing import List, Union, NoReturn
+from typing import List, NoReturn, Optional
 
-from app.exceptions import DomainException
-from app.entities import Expense, ExpenseCategory
-from app.exporter import AbstractExpensesExporter
-from app.importer import AbstractExpensesImporter
-from app.repositories import (
-    AbstractExpenseRepository,
-    AbstractExpenseCategoryRepository
-)
-from app.usecases.expense_category import ExpenseCategoryNotFoundError
-
-
-class ExpenseNotFoundError(DomainException):
-    def __init__(self, expense_id: UUID):
-        self.code = 'ExpenseNotFound'
-        self.message = f'Nie znaleziono wydatku o podanym id {str(expense_id)}'
-        self.status_code = 404
-
-        super().__init__(self.code, self.message, self.status_code)
+from app.usecases import UseCase
+from app.entities import User, Expense
+from app.exceptions import ExpenseCategoryNotFoundError, ExpenseNotFoundError
+from app.repositories import ExpenseRepository, ExpenseCategoryRepository
 
 
 @dataclass(frozen=True)
-class GetAllExpensesResult:
-    expenses: List[Expense]
-
-
-class AbstractGetAllExpensesUseCase(ABC):
-    def __init__(
-        self,
-        expense_repo: AbstractExpenseRepository
-    ):
-        self._expense_repo = expense_repo
-
-    @abstractmethod
-    def execute(self) -> GetAllExpensesResult:
-        pass
-
-
-class GetAllExpensesUseCase(AbstractGetAllExpensesUseCase):
-    def execute(self) -> GetAllExpensesResult:
-        expenses = self._expense_repo.get_all()
-
-        result = GetAllExpensesResult(expenses)
-
-        return result
+class GetAllExpensesUseCaseInput:
+  user: User
 
 
 @dataclass(frozen=True)
-class GetExpenseByIdRequest:
-    expense_id: UUID
+class GetAllExpensesUseCaseOutput:
+  expenses: List[Expense]
+
+
+class GetAllExpensesUseCase(UseCase[GetAllExpensesUseCaseInput, GetAllExpensesUseCaseOutput]):
+  def __init__(self, expense_repo: ExpenseRepository) -> None:
+    self._expense_repo = expense_repo
+
+  def execute(self, input: GetAllExpensesUseCaseInput) -> GetAllExpensesUseCaseOutput:
+    return GetAllExpensesUseCaseOutput(self._expense_repo.get_all_by_user_id(input.user.id))
 
 
 @dataclass(frozen=True)
-class GetExpenseByIdResult:
-    expense: Expense
-
-
-class AbstractGetExpenseByIdUseCase(ABC):
-    def __init__(
-        self,
-        expense_repo: AbstractExpenseRepository
-    ):
-        self._expense_repo = expense_repo
-
-    @abstractmethod
-    def execute(self, request: GetExpenseByIdRequest) -> GetExpenseByIdResult:
-        pass
-
-
-class GetExpenseByIdUseCase(AbstractGetExpenseByIdUseCase):
-    def execute(self, request: GetExpenseByIdRequest) -> GetExpenseByIdResult:
-        expense_id = request.expense_id
-        expense = self._expense_repo.get_by_id(expense_id)
-
-        if not expense:
-            raise ExpenseNotFoundError(expense_id)
-
-        result = GetExpenseByIdResult(expense)
-
-        return result
+class CreateExpenseUseCaseInput:
+  user: User
+  amount: float
+  realised_date: date
+  expense_category_id: Optional[UUID] = None
 
 
 @dataclass(frozen=True)
-class CreateExpenseRequest:
-    amount: float
-    realised_date: date
-    expense_category_id: Union[UUID, None]
+class CreateExpenseUseCaseOutput:
+  expense: Expense
+
+
+class CreateExpenseUseCase(UseCase[CreateExpenseUseCaseInput, CreateExpenseUseCaseOutput]):
+  def __init__(self, expense_repo: ExpenseRepository, expense_category_repo: ExpenseCategoryRepository) -> None:
+    self._expense_repo = expense_repo
+    self._expense_category_repo = expense_category_repo
+    
+  def execute(self, input: CreateExpenseUseCaseInput) -> CreateExpenseUseCaseOutput:
+    existing_expense_category = None
+    if input.expense_category_id:
+      existing_expense_category = self._expense_category_repo.get_by_id_and_user_id(
+        input.expense_category_id, 
+        input.user.id
+      )
+
+      if not existing_expense_category:
+        raise ExpenseCategoryNotFoundError()
+
+    new_expense = Expense(
+      user=input.user,
+      amount=input.amount,
+      realised_date=input.realised_date,
+      category=existing_expense_category
+    )
+    self._expense_repo.add(new_expense)
+    
+    return CreateExpenseUseCaseOutput(new_expense)
 
 
 @dataclass(frozen=True)
-class CreateExpenseResult:
-    expense: Expense
-
-
-class AbstractCreateExpenseUseCase(ABC):
-    def __init__(
-        self,
-        expense_repo: AbstractExpenseRepository,
-        expense_category_repo: AbstractExpenseCategoryRepository
-    ):
-        self._expense_repo = expense_repo
-        self._expense_category_repo = expense_category_repo
-
-    @abstractmethod
-    def execute(self, request: CreateExpenseRequest) -> CreateExpenseResult:
-        pass
-
-
-class CreateExpenseUseCase(AbstractCreateExpenseUseCase):
-    def execute(self, request: CreateExpenseRequest) -> CreateExpenseResult:
-        expense_category_id = request.expense_category_id
-        expense_category = None
-
-        if expense_category_id:
-            expense_category = self._expense_category_repo.get_by_id(expense_category_id)
-
-            if not expense_category:
-                raise ExpenseCategoryNotFoundError(expense_category_id)
-
-        new_expense_amount = request.amount
-        new_expense_realised_date = request.realised_date
-        new_expense = Expense(
-            amount=new_expense_amount,
-            category=expense_category,
-            realised_date=new_expense_realised_date
-        )
-        self._expense_repo.add(new_expense)
-
-        result = CreateExpenseResult(expense=new_expense)
-
-        return result
+class UpdateExpenseUseCaseInput:
+  expense_id: UUID
+  user: User
+  amount: float
+  realised_date: date
+  expense_category_id: Optional[UUID] = None
 
 
 @dataclass(frozen=True)
-class DeleteExpenseRequest:
-    expense_id: UUID
+class UpdateExpenseUseCaseOutput:
+  expense: Expense
 
 
-class AbstractDeleteExpenseUseCase(ABC):
-    def __init__(
-        self,
-        expense_repo: AbstractExpenseRepository
-    ):
-        self._expense_repo = expense_repo
+class UpdateExpenseUseCase(UseCase[UpdateExpenseUseCaseInput, UpdateExpenseUseCaseOutput]):
+  def __init__(self, expense_repo: ExpenseRepository, expense_category_repo: ExpenseCategoryRepository) -> None:
+    self._expense_repo = expense_repo
+    self._expense_category_repo = expense_category_repo
 
-    @abstractmethod
-    def execute(self, request: DeleteExpenseRequest) -> NoReturn:
-        pass
-
-
-class DeleteExpenseUseCase(AbstractDeleteExpenseUseCase):
-    def execute(self, request: DeleteExpenseRequest) -> NoReturn:
-        expense_id = request.expense_id
-        expense = self._expense_repo.get_by_id(expense_id)
-
-        if not expense:
-            raise ExpenseNotFoundError(expense_id)
-
-        self._expense_repo.delete(expense)
+  def execute(self, input: UpdateExpenseUseCaseInput) -> UpdateExpenseUseCaseOutput:
+    existing_expense = self._expense_repo.get_by_id_and_user_id(input.expense_id, input.user.id)
+    if not existing_expense:
+      raise ExpenseNotFoundError()
 
 
-@dataclass(frozen=True)
-class UpdateExpenseRequest:
-    amount: float
-    expense_id: UUID
-    realised_date: date
-    expense_category_id: Union[UUID, None]
+    exisitng_expense_category = None
+    if input.expense_category_id:
+      exisitng_expense_category = self._expense_category_repo.get_by_id_and_user_id(input.expense_category_id, input.user.id)
+      if not exisitng_expense_category:
+        raise ExpenseCategoryNotFoundError()
+
+    existing_expense.amount = input.amount
+    existing_expense.realised_date = input.realised_date
+    existing_expense.category = exisitng_expense_category
+
+    self._expense_repo.save(existing_expense)
+
+
+    return UpdateExpenseUseCaseOutput(existing_expense)
 
 
 @dataclass(frozen=True)
-class UpdateExpenseResult:
-    expense: Expense
+class DeleteExpenseUseCaseInput:
+  expense_id: UUID
+  user: User
 
 
-class AbstractUpdateExpenseUseCase(ABC):
-    def __init__(
-        self,
-        expense_repo: AbstractExpenseRepository,
-        expense_category_repo: AbstractExpenseCategoryRepository
-    ):
-        self._expense_repo = expense_repo
-        self._expense_category_repo = expense_category_repo
+class DeleteExpenseUseCase(UseCase[DeleteExpenseUseCaseInput, NoReturn]):
+  def __init__(self, expense_repo: ExpenseRepository) -> None:
+    self._expense_repo = expense_repo
 
-    @abstractmethod
-    def execute(self, request: UpdateExpenseRequest) -> UpdateExpenseResult:
-        pass
+  def execute(self, input: DeleteExpenseUseCaseInput) -> NoReturn:
+    existing_expense = self._expense_repo.get_by_id_and_user_id(input.expense_id, input.user.id)
+    if not existing_expense:
+      raise ExpenseNotFoundError()
 
-
-class UpdateExpenseUseCase(AbstractUpdateExpenseUseCase):
-    def execute(self, request: UpdateExpenseRequest) -> UpdateExpenseResult:
-        expense_id = request.expense_id
-        expense = self._expense_repo.get_by_id(expense_id)
-
-        if not expense:
-            raise ExpenseNotFoundError(expense_id)
-
-        expense_category = None
-        expense_category_id = request.expense_category_id
-        if expense_category_id:
-            expense_category = self._expense_category_repo.get_by_id(
-                expense_category_id
-            )
-
-            if not expense_category:
-                raise ExpenseCategoryNotFoundError(expense_category_id)
-
-        new_expense_amount = request.amount
-        new_expense_realised_date = request.realised_date
-        expense.amount = new_expense_amount
-        expense.category = expense_category
-        expense.realised_date = new_expense_realised_date
-        self._expense_repo.save(expense)
-
-        result = UpdateExpenseResult(expense)
-
-        return result
-
-
-@dataclass(frozen=True)
-class ExportExpensesResult:
-    exporter_buffer: BytesIO
-
-
-class AbstractExportExpensesUseCase(ABC):
-    def __init__(
-        self,
-        expense_repo: AbstractExpenseRepository,
-        expenses_exporter: AbstractExpensesExporter
-    ):
-        self.expense_repo = expense_repo
-        self.expenses_exporter = expenses_exporter
-
-    @abstractmethod
-    def execute(self) -> ExportExpensesResult:
-        pass
-
-
-class ExportExpensesUseCase(AbstractExportExpensesUseCase):
-    def execute(self) -> ExportExpensesResult:
-        expenses = self.expense_repo.get_all()
-        exporter_buffer = self.expenses_exporter.export(expenses)
-
-        result = ExportExpensesResult(exporter_buffer)
-        return result
-
-
-@dataclass(frozen=True)
-class ImportExpensesRequest:
-    uploaded_file: BytesIO
-
-
-class AbstractImportExpensesUseCase(ABC):
-    def __init__(
-        self, 
-        expense_repo: AbstractExpenseRepository,
-        expenses_importer: AbstractExpensesImporter,
-        expense_category_repo: AbstractExpenseCategoryRepository
-    ):
-        self.expense_repo = expense_repo
-        self.expenses_importer = expenses_importer
-        self.expense_category_repo = expense_category_repo
-
-    @abstractmethod
-    def execute(self, request: ImportExpensesRequest) -> None:
-        pass
-
-
-class ImportExpensesUseCase(AbstractImportExpensesUseCase):
-    def execute(self, request: ImportExpensesRequest) -> None:
-        parsed_expenses = self.expenses_importer.make(request.uploaded_file)
-        for parsed_expense in parsed_expenses:
-            amount = parsed_expense.get('amount')
-            realised_date = parsed_expense.get('realised_date')
-            category_name = parsed_expense.get('category_name')
-
-            category = None
-            if category_name:
-                category = self.expense_category_repo.get_by_name(category_name)
-                
-            expense = Expense(
-                amount=amount,
-                category=category,
-                realised_date=realised_date
-            )
-
-            self.expense_repo.add(expense)
+    self._expense_repo.delete(existing_expense)

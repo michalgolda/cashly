@@ -47,12 +47,12 @@ class DefaultSecurityManager(SecurityManager):
         sub=str(subject), 
         exp=datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=settings.ACCESS_TOKEN_EXPIRATION)
     ), 
-    self._secret_key,
+    settings.SECRET_KEY,
     algorithm=settings.ACCESS_TOKEN_ALGORITHM
   )
 
   def verify_access_token(self, access_token: str) -> AccessTokenPayload:
-    decoded_payload = jwt.decode(access_token.encode('utf-8'), self._secret_key, settings.ACCESS_TOKEN_ALGORITHM)
+    decoded_payload = jwt.decode(access_token.encode('utf-8'), settings.SECRET_KEY, settings.ACCESS_TOKEN_ALGORITHM)
     return AccessTokenPayload(
       sub=UUID(decoded_payload['sub']),
       exp=datetime.datetime.fromtimestamp(decoded_payload['exp'])

@@ -1,253 +1,89 @@
 import pytest
 
-from app.entities import ExpenseCategory
-from app.usecases import (
-    GetAllExpenseCategoriesUseCase,
-    GetExpenseCategoryByIdUseCase,
-    CreateExpenseCategoryUseCase,
-    DeleteExpenseCategoryUseCase,
-    UpdateExpenseCategoryUseCase
-)
+from app.entities.expense_category import ExpenseCategory
+from app.exceptions import ExpenseCategoryNameAlreadyUsedError, ExpenseCategoryNotFoundError
 from app.usecases.expense_category import (
-    ExpenseCategoryNotFoundError,
-    ExpenseCategoryNameIsAlreadyUsedError
+    CreateExpenseCategoryUseCase,
+    GetAllExpenseCategoriesUseCase, 
+    UpdateExpenseCategoryUseCase
 )
 
 
 def test_get_all_expense_categories(mocker):
-    mock_expense_category = mocker.patch('app.entities.ExpenseCategory')
-    mock_expense_category_repo = mocker.patch(
-        'app.repositories.AbstractExpenseCategoryRepository'
-    )
-    mock_expense_category_repo.get_all.return_value = [mock_expense_category]
+    mock_expense_category_entity = mocker.patch('app.entities.ExpenseCategory')
+    mock_expense_category_repo = mocker.patch('app.repositories.ExpenseCategoryRepository')
+    mock_expense_category_repo.get_all_by_user_id.return_value = [mock_expense_category_entity]
 
-    usecase = GetAllExpenseCategoriesUseCase(
-        expense_category_repo=mock_expense_category_repo
-    )
-    result = usecase.execute()
+    mock_usecase_input = mocker.patch('app.usecases.expense_category.GetAllExpenseCategoriesUseCaseInput')
+    usecase = GetAllExpenseCategoriesUseCase(expense_category_repo=mock_expense_category_repo)
+    usecase_output = usecase.execute(mock_usecase_input)
 
-    mock_expense_category_repo.get_all.assert_called_once()
+    assert usecase_output.expense_categories == [mock_expense_category_entity]
 
-    assert result.expense_categories == [mock_expense_category]
-
-
-def test_get_expense_category_by_id(mocker):
-    mock_expense_category = mocker.patch('app.entities.ExpenseCategory')
-    mock_expense_category_repo = mocker.patch(
-        'app.repositories.AbstractExpenseCategoryRepository'
-    )
-    mock_expense_category_repo.get_by_id.return_value = mock_expense_category
-
-    usecase = GetExpenseCategoryByIdUseCase(
-        expense_category_repo=mock_expense_category_repo
-    )
-    mock_usecase_request = mocker.patch(
-        'app.usecases.expense_category.GetExpenseCategoryByIdRequest'
-    )
-    result = usecase.execute(request=mock_usecase_request)
-
-    mock_expense_category_repo.get_by_id.assert_called_once_with(
-        mock_usecase_request.expense_category_id
-    )
-
-    assert result.expense_category == mock_expense_category
-
-
-def test_get_expense_category_by_id_when_expense_category_not_found(mocker):
-    mock_expense_category_repo = mocker.patch(
-        'app.repositories.AbstractExpenseCategoryRepository'
-    )
-    mock_expense_category_repo.get_by_id.return_value = None
-
-    usecase = GetExpenseCategoryByIdUseCase(
-        expense_category_repo=mock_expense_category_repo
-    )
-    mock_usecase_request = mocker.patch(
-        'app.usecases.expense_category.GetExpenseCategoryByIdRequest'
-    )
-
-    with pytest.raises(ExpenseCategoryNotFoundError):
-        usecase.execute(request=mock_usecase_request)
-
-    mock_expense_category_repo.get_by_id.assert_called_once_with(
-        mock_usecase_request.expense_category_id
-    )
+    mock_expense_category_repo.get_all_by_user_id.assert_called_once_with(mock_usecase_input.user_id)
 
 
 def test_create_expense_category(mocker):
-    mock_expense_category_repo = mocker.patch(
-        'app.repositories.AbstractExpenseCategoryRepository'
-    )
-    mock_expense_category_repo.get_by_name.return_value = None
+    mock_expense_category_repo = mocker.patch('app.repositories.ExpenseCategoryRepository')
+    mock_expense_category_repo.get_by_name_and_user_id.return_value = None
 
-    usecase = CreateExpenseCategoryUseCase(
-        expense_category_repo=mock_expense_category_repo
-    )
-    mock_usecase_request = mocker.patch(
-        'app.usecases.expense_category.CreateExpenseCategoryRequest'
-    )
-    result = usecase.execute(request=mock_usecase_request)
-
-    mock_expense_category_repo.get_by_name.assert_called_once_with(
-        mock_usecase_request.name
-    )
+    mock_usecase_input = mocker.patch('app.usecases.expense_category.CreateExpenseCategoryUseCaseInput')
+    usecase = CreateExpenseCategoryUseCase(mock_expense_category_repo)
+    usecase_output = usecase.execute(mock_usecase_input)
 
     new_expense_category = ExpenseCategory(
-        name=mock_usecase_request.name,
-        color=mock_usecase_request.color
+        name=mock_usecase_input.name, 
+        color=mock_usecase_input.color,
+        user=mock_usecase_input.user
     )
 
+    assert usecase_output.expense_category == new_expense_category
+
+    mock_expense_category_repo.get_by_name_and_user_id.assert_called_once_with(mock_usecase_input.name, mock_usecase_input.user.id)
     mock_expense_category_repo.add.assert_called_once_with(new_expense_category)
 
-    assert result.expense_category == new_expense_category
+def test_create_expense_category_when_name_already_used(mocker):
+    mock_expense_category_repo = mocker.patch('app.repositories.ExpenseCategoryRepository')
+    mock_usecase_input = mocker.patch('app.usecases.expense_category.CreateExpenseCategoryUseCaseInput')
+    usecase = CreateExpenseCategoryUseCase(mock_expense_category_repo)
 
+    with pytest.raises(ExpenseCategoryNameAlreadyUsedError):
+        usecase.execute(mock_usecase_input)
 
-def test_create_expense_category_when_expense_category_name_is_already_used(mocker):
-    mock_expense_category_repo = mocker.patch(
-        'app.repositories.AbstractExpenseCategoryRepository'
-    )
-    mock_expense_category_repo.get_by_name.return_value = True
-
-    usecase = CreateExpenseCategoryUseCase(
-        expense_category_repo=mock_expense_category_repo
-    )
-    mock_usecase_request = mocker.patch(
-        'app.usecases.expense_category.CreateExpenseCategoryRequest'
-    )
-
-    with pytest.raises(ExpenseCategoryNameIsAlreadyUsedError):
-        usecase.execute(request=mock_usecase_request)
-
-    mock_expense_category_repo.get_by_name.assert_called_once_with(
-        mock_usecase_request.name
-    )
-
-
-def test_delete_expense_category(mocker):
-    mock_expense_category = mocker.patch('app.entities.ExpenseCategory')
-    mock_expense_category_repo = mocker.patch(
-        'app.repositories.AbstractExpenseCategoryRepository'
-    )
-    mock_expense_category_repo.get_by_id.return_value = mock_expense_category
-
-    usecase = DeleteExpenseCategoryUseCase(
-        expense_category_repo=mock_expense_category_repo
-    )
-    mock_usecase_request = mocker.patch(
-        'app.usecases.expense_category.DeleteExpenseCategoryRequest'
-    )
-    usecase.execute(mock_usecase_request)
-
-    mock_expense_category_repo.get_by_id.assert_called_once_with(
-        mock_usecase_request.expense_category_id
-    )
-
-    mock_expense_category_repo.delete.assert_called_once_with(
-        mock_expense_category
-    )
-
-
-def test_delete_expense_category_when_expense_category_not_found(mocker):
-    mock_expense_category_repo = mocker.patch(
-        'app.repositories.AbstractExpenseCategoryRepository'
-    )
-    mock_expense_category_repo.get_by_id.return_value = None
-
-    usecase = DeleteExpenseCategoryUseCase(
-        expense_category_repo=mock_expense_category_repo
-    )
-    mock_usecase_request = mocker.patch(
-        'app.usecases.expense_category.DeleteExpenseCategoryRequest'
-    )
-
-    with pytest.raises(ExpenseCategoryNotFoundError):
-        usecase.execute(mock_usecase_request)
-
-    mock_expense_category_repo.get_by_id.assert_called_once_with(
-        mock_usecase_request.expense_category_id
-    )
-
+    mock_expense_category_repo.get_by_name_and_user_id.assert_called_once_with(mock_usecase_input.name, mock_usecase_input.user.id)
 
 def test_update_expense_category(mocker):
-    mock_expense_category = mocker.patch('app.entities.ExpenseCategory')
-    mock_expense_category_repo = mocker.patch(
-        'app.repositories.AbstractExpenseCategoryRepository'
+    mock_expense_category_entity = mocker.patch('app.entities.ExpenseCategory')
+    mock_expense_category_repo = mocker.patch('app.repositories.ExpenseCategoryRepository')
+    mock_expense_category_repo.get_by_id_and_user_id.return_value = mock_expense_category_entity
+    mock_expense_category_repo.get_by_name_and_user_id.return_value = None
+
+    mock_usecase_input = mocker.patch('app.usecases.expense_category.UpdateExpenseCategoryUseCaseInput')
+    update_expense_category_usecase = UpdateExpenseCategoryUseCase(mock_expense_category_repo)
+    usecase_output = update_expense_category_usecase.execute(mock_usecase_input)
+
+    mock_expense_category_entity.name = mock_usecase_input.name
+    mock_expense_category_entity.color = mock_usecase_input.color
+
+    assert usecase_output.expense_category == mock_expense_category_entity
+
+    mock_expense_category_repo.get_by_id_and_user_id.assert_called_once_with(
+        mock_usecase_input.expense_category_id, 
+        mock_usecase_input.user.id
     )
-    mock_expense_category_repo.get_by_id.return_value = mock_expense_category
-    mock_expense_category_repo.get_by_name.return_value = False
-
-    usecase = UpdateExpenseCategoryUseCase(
-        expense_category_repo=mock_expense_category_repo
-    )
-
-    mock_usecase_request = mocker.patch(
-        'app.usecases.expense_category.UpdateExpenseCategoryRequest'
-    )
-
-    result = usecase.execute(mock_usecase_request)
-
-    mock_expense_category_repo.get_by_id.assert_called_once_with(
-        mock_usecase_request.expense_category_id
-    )
-
-    mock_expense_category_repo.get_by_name.assert_called_once_with(
-        mock_usecase_request.name
-    )
-
-    mock_expense_category.name = mock_usecase_request.name
-    mock_expense_category.color = mock_usecase_request.color
-
-    mock_expense_category_repo.save.assert_called_once_with(
-        mock_expense_category
-    )
-
-    assert result.expense_category == mock_expense_category
-
+    mock_expense_category_repo.save.assert_called_once_with(mock_expense_category_entity)
 
 def test_update_expense_category_when_expense_category_not_found(mocker):
-    mock_expense_category_repo = mocker.patch(
-        'app.repositories.AbstractExpenseCategoryRepository'
-    )
-    mock_expense_category_repo.get_by_id.return_value = None
+    mock_expense_category_repo = mocker.patch('app.repositories.ExpenseCategoryRepository')
+    mock_expense_category_repo.get_by_id_and_user_id.return_value = None
 
-    usecase = UpdateExpenseCategoryUseCase(
-        expense_category_repo=mock_expense_category_repo
-    )
-
-    mock_usecase_request = mocker.patch(
-        'app.usecases.expense_category.UpdateExpenseCategoryRequest'
-    )
-
+    mock_usecase_input = mocker.patch('app.usecases.expense_category.UpdateExpenseCategoryUseCaseInput')
+    usecase = UpdateExpenseCategoryUseCase(mock_expense_category_repo)
+    
     with pytest.raises(ExpenseCategoryNotFoundError):
-        usecase.execute(mock_usecase_request)
+        usecase.execute(mock_usecase_input)
 
-    mock_expense_category_repo.get_by_id.assert_called_once_with(
-        mock_usecase_request.expense_category_id
-    )
-
-
-def test_update_expense_category_when_expense_category_name_is_already_used(mocker):
-    mock_expense_category = mocker.patch('app.entities.ExpenseCategory')
-    mock_expense_category_repo = mocker.patch(
-        'app.repositories.AbstractExpenseCategoryRepository'
-    )
-    mock_expense_category_repo.get_by_id.return_value = mock_expense_category
-
-    usecase = UpdateExpenseCategoryUseCase(
-        expense_category_repo=mock_expense_category_repo
-    )
-
-    mock_usecase_request = mocker.patch(
-        'app.usecases.expense_category.UpdateExpenseCategoryRequest'
-    )
-
-    with pytest.raises(ExpenseCategoryNameIsAlreadyUsedError):
-        usecase.execute(mock_usecase_request)
-
-    mock_expense_category_repo.get_by_id.assert_called_once_with(
-        mock_usecase_request.expense_category_id
-    )
-
-    mock_expense_category_repo.get_by_name.assert_called_once_with(
-        mock_usecase_request.name
+    mock_expense_category_repo.get_by_id_and_user_id.assert_called_once_with(
+        mock_usecase_input.expense_category_id, 
+        mock_usecase_input.user.id
     )

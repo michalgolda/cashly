@@ -1,60 +1,84 @@
 from uuid import UUID
-from abc import ABC, abstractmethod
-from typing import Union, List, NoReturn
+from abc import abstractmethod
+from typing import Union, List, Optional, NoReturn
 
 from sqlalchemy.orm.session import Session
 
-from app.entities import ExpenseCategory
+from app.repositories import Repository
+from app.entities import User, ExpenseCategory
 
 
-class AbstractExpenseCategoryRepository(ABC):
+class ExpenseCategoryRepository(Repository[ExpenseCategory]):
     @abstractmethod
-    def get_by_id(self, expense_category_id: UUID) -> Union[ExpenseCategory, None]:
-        pass
-
-    @abstractmethod
-    def get_by_name(self, expense_category_name: str) -> Union[ExpenseCategory, None]:
-        pass
+    def get_all_by_user_id(self, user_id: UUID) -> List[ExpenseCategory]: ...
 
     @abstractmethod
-    def get_all(self) -> List[ExpenseCategory]:
-        pass
+    def get_by_id_and_user_id(self, id: UUID, user_id: UUID) -> Union[ExpenseCategory, None]: ...
 
     @abstractmethod
-    def add(self, expense_category: ExpenseCategory) -> ExpenseCategory:
-        pass
-
-    @abstractmethod
-    def delete(self, expense_category: ExpenseCategory) -> NoReturn:
-        pass
-
-    @abstractmethod
-    def save(self, expense_category: ExpenseCategory) -> ExpenseCategory:
-        pass
+    def get_by_name_and_user_id(self, name: str, user_id: UUID) -> Union[ExpenseCategory, None]: ...
 
 
-class SQLAlchemyExpenseCategoryRepository(AbstractExpenseCategoryRepository):
+class MemoryExpenseCategoryRepository(ExpenseCategoryRepository):
+    def __init__(self, expense_categories: Optional[List[ExpenseCategory]] = None) -> None:
+        self._expense_categories = expense_categories or []
+    
+    def get_by_id(self, id: UUID) -> Union[ExpenseCategory, None]:
+        for expense_category in self._expense_categories:
+            if expense_category.id == id:
+                return expense_category
+        return None
+
+    def get_all_by_user_id(self, user_id: UUID) -> List[ExpenseCategory]:
+        existing_expense_categories = []
+        for expense_category in self._expense_categories:
+            if expense_category.user.id == user_id:
+                existing_expense_categories.append(expense_category)
+        return existing_expense_categories
+
+    def get_by_id_and_user_id(self, id: UUID, user_id: UUID) -> Union[ExpenseCategory, None]:
+        for expense_category in self._expense_categories:
+            if expense_category.id == id and expense_category.user.id == user_id:
+                return expense_category
+        return None
+
+    def get_by_name_and_user_id(self, name: str, user_id: UUID) -> Union[ExpenseCategory, None]:
+        for expense_category in self._expense_categories:
+            if expense_category.name == name and expense_category.user.id == user_id:
+                return expense_category
+        return None
+
+    def add(self, entity: ExpenseCategory) -> ExpenseCategory:
+        self._expense_categories.append(entity)
+        return entity
+
+    def save(self, entity: ExpenseCategory) -> ExpenseCategory:
+        duplicate_of_expense_categories = self._expense_categories
+        for i, expense_category in enumerate(self._expense_categories):
+            if expense_category.id == entity.id:
+                duplicate_of_expense_categories[i] = entity
+        self._expense_categories = duplicate_of_expense_categories
+        return entity
+
+    def delete(self, entity: ExpenseCategory) -> NoReturn:
+        self._expense_categories = [expense_category for expense_category in self._expense_categories if expense_category.id != entity.id]
+
+
+class SQLAlchemyExpenseCategoryRepository(ExpenseCategoryRepository):
     def __init__(self, session: Session):
         self._session = session
 
-    def get_by_id(self, expense_category_id: UUID) -> Union[ExpenseCategory, None]:
-        expense_category = self._session.query(ExpenseCategory) \
-                      .filter_by(id=expense_category_id) \
-                      .first()
+    def get_by_id(self, id: UUID) -> Union[ExpenseCategory, None]:
+        return self._session.query(ExpenseCategory).filter_by(id=id).first()
 
-        return expense_category
+    def get_all_by_user_id(self, user_id: UUID) -> List[ExpenseCategory]:
+        return self._session.query(ExpenseCategory).filter(User.id == user_id).all()
 
-    def get_by_name(self, expense_category_name: str) -> Union[ExpenseCategory, None]:
-        expense_category = self._session.query(ExpenseCategory) \
-                      .filter_by(name=expense_category_name) \
-                      .first()
+    def get_by_id_and_user_id(self, id: UUID, user_id: UUID) -> Union[ExpenseCategory, None]:
+        return self._session.query(ExpenseCategory).filter_by(id=id).filter(User.id == user_id).first()
 
-        return expense_category
-
-    def get_all(self) -> List[ExpenseCategory]:
-        expense_categories = self._session.query(ExpenseCategory).all()
-
-        return expense_categories
+    def get_by_name_and_user_id(self, name: str, user_id: UUID) -> List[ExpenseCategory]:
+        return self._session.query(ExpenseCategory).filter_by(name=name).filter(User.id == user_id).first()
 
     def add(self, expense_category: ExpenseCategory) -> ExpenseCategory:
         self._session.add(expense_category)

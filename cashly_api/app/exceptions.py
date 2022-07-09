@@ -16,7 +16,7 @@ class DomainException(Exception):
 class UserEmailAlreadyUsedError(DomainException):
     def __init__(self) -> NoReturn:
         super().__init__(
-            'UserEmailAlreadyUsed', 
+            'UserEmailAlreadyUsedError', 
             'Podany adres email jest już w użyciu', 
             400
         )
@@ -25,20 +25,46 @@ class UserEmailAlreadyUsedError(DomainException):
 class BadAuthenticationCredentialsError(DomainException):
     def __init__(self) -> NoReturn:
         super().__init__(
-            'BadAuthenticationCredentials', 
+            'BadAuthenticationCredentialsError', 
             'Podany adres email lub hasło są nieprawidłowe', 
+            400
+        )
+
+
+class ExpenseCategoryNameAlreadyUsedError(DomainException):
+    def __init__(self) -> NoReturn:
+        super().__init__(
+            'ExpenseCategoryNameAlreadyUsedError', 
+            'Kategoria wydatku o podanej nazwie już istnieje', 
             400
         )
 
 
 class UserNotFoundError(DomainException):
     def __init__(self) -> NoReturn:
-        self.code = 'UserNotFoundError'
-        self.message = 'Użytkownik o podanych właściwościach nie istnieje'
-        self.status_code = 400
+        super().__init__(
+            'UserNotFoundError'
+            'Użytkownik o podanych właściwościach nie istnieje',
+            404
+        )
 
-        super().__init__(self.code, self.message, self.status_code)
 
+class ExpenseCategoryNotFoundError(DomainException):
+    def __init__(self) -> NoReturn:
+        super().__init__(
+            'ExpenseCategoryNotFoundError',
+            'Kategoria wydatku o podanych właściwościach nie istnieje',
+            404
+        )
+
+
+class ExpenseNotFoundError(DomainException):
+    def __init__(self) -> NoReturn:
+        super().__init__(
+            'ExpenseNotFoundError',
+            'Wydatek o podanych właściwościach nie istnieje',
+            404
+        )
 
 async def domain_exception_handler(request: Request, exception: DomainException) -> JSONResponse:
     return JSONResponse(

@@ -4,6 +4,7 @@ from app.entities import User
 from app.repositories import MemoryUserRepository
 from app.dependencies import get_user_repo, get_security_manager
 
+
 security_manager = get_security_manager()
 
 def test_register(client):

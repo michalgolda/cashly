@@ -1,222 +1,106 @@
 from uuid import UUID
 from typing import List, NoReturn
 from dataclasses import dataclass
-from abc import ABC, abstractmethod
 
-from app.entities import ExpenseCategory
-from app.exceptions import DomainException
-from app.repositories import AbstractExpenseCategoryRepository
-
-
-class ExpenseCategoryNotFoundError(DomainException):
-    def __init__(self, expense_category_id: UUID):
-        self.code = 'ExpenseCategoryNotFound'
-        self.message = (
-            'Kategoria o podanym id ' 
-            f'{str(expense_category_id)} nie istnieje'
-        )
-        self.status_code = 404
-
-        super().__init__(self.code, self.message, self.status_code)
-
-
-class ExpenseCategoryNameIsAlreadyUsedError(DomainException):
-    def __init__(self, expense_category_name: str):
-        self.code = 'ExpenseCategoryNameIsAlreadyUsed'
-        self.message = (
-            f'Nazwa kategorii {expense_category_name} '
-            'jest już w użyciu'
-        )
-        self.status_code = 419
-
-        super().__init__(self.code, self.message, self.status_code)
+from app.usecases import UseCase
+from app.entities import User, ExpenseCategory
+from app.repositories import ExpenseCategoryRepository
+from app.exceptions import ExpenseCategoryNameAlreadyUsedError, ExpenseCategoryNotFoundError
 
 
 @dataclass(frozen=True)
-class GetAllExpenseCategoriesResult:
+class GetAllExpenseCategoriesUseCaseInput:
+    user_id: UUID
+
+
+@dataclass(frozen=True)
+class GetAllExpenseCategoriesUseCaseOutput:
     expense_categories: List[ExpenseCategory]
 
 
-class AbstractGetAllExpenseCategoriesUseCase(ABC):
-    def __init__(
-        self,
-        expense_category_repo: AbstractExpenseCategoryRepository
-    ):
+class GetAllExpenseCategoriesUseCase(UseCase[GetAllExpenseCategoriesUseCaseInput, GetAllExpenseCategoriesUseCaseOutput]):
+    def __init__(self, expense_category_repo: ExpenseCategoryRepository) -> None:
         self._expense_category_repo = expense_category_repo
 
-    @abstractmethod
-    def execute(self) -> GetAllExpenseCategoriesResult:
-        pass
-
-
-class GetAllExpenseCategoriesUseCase(AbstractGetAllExpenseCategoriesUseCase):
-    def execute(self) -> GetAllExpenseCategoriesResult:
-        expense_categories = self._expense_category_repo.get_all()
-
-        response = GetAllExpenseCategoriesResult(expense_categories)
-
-        return response
+    def execute(self, input: GetAllExpenseCategoriesUseCaseInput) -> GetAllExpenseCategoriesUseCaseOutput:
+        existing_expense_categories = self._expense_category_repo.get_all_by_user_id(input.user_id)
+        return GetAllExpenseCategoriesUseCaseOutput(existing_expense_categories)
 
 
 @dataclass(frozen=True)
-class GetExpenseCategoryByIdRequest:
-    expense_category_id: UUID
+class CreateExpenseCategoryUseCaseInput:
+     name: str
+     color: str
+     user: User
 
 
 @dataclass(frozen=True)
-class GetExpenseCategoryByIdResult:
+class CreateExpenseCategoryUseCaseOutput:
     expense_category: ExpenseCategory
 
 
-class AbstractGetExpenseCategoryByIdUseCase(ABC):
-    def __init__(
-        self,
-        expense_category_repo: AbstractExpenseCategoryRepository
-    ):
+class CreateExpenseCategoryUseCase(UseCase[CreateExpenseCategoryUseCaseInput, CreateExpenseCategoryUseCaseOutput]):
+    def __init__(self, expense_category_repo: ExpenseCategoryRepository) -> None:
         self._expense_category_repo = expense_category_repo
 
-    @abstractmethod
-    def execute(self, request: GetExpenseCategoryByIdRequest) -> GetExpenseCategoryByIdResult:
-        pass
+    def execute(self, input: CreateExpenseCategoryUseCaseInput) -> CreateExpenseCategoryUseCaseOutput:
+        exisitng_expense_category = self._expense_category_repo.get_by_name_and_user_id(input.name, input.user.id)
+        if exisitng_expense_category:
+            raise ExpenseCategoryNameAlreadyUsedError()
 
-
-class GetExpenseCategoryByIdUseCase(AbstractGetExpenseCategoryByIdUseCase):
-    def execute(self, request: GetExpenseCategoryByIdRequest) -> GetExpenseCategoryByIdResult:
-        expense_category_id = request.expense_category_id
-        expense_category = self._expense_category_repo.get_by_id(expense_category_id)
-
-        if not expense_category:
-            raise ExpenseCategoryNotFoundError(expense_category_id)
-
-        result = GetExpenseCategoryByIdResult(expense_category)
-
-        return result
-
-
-@dataclass(frozen=True)
-class CreateExpenseCategoryRequest:
-    name: str
-    color: str
-
-
-@dataclass(frozen=True)
-class CreateExpenseCategoryResult:
-    expense_category: ExpenseCategory
-
-
-class AbstractCreateExpenseCategoryUseCase(ABC):
-    def __init__(
-        self,
-        expense_category_repo: AbstractExpenseCategoryRepository
-    ):
-        self._expense_category_repo = expense_category_repo
-
-    @abstractmethod
-    def execute(self, request: CreateExpenseCategoryRequest) -> CreateExpenseCategoryResult:
-        pass
-
-
-class CreateExpenseCategoryUseCase(AbstractCreateExpenseCategoryUseCase):
-    def execute(self, request: CreateExpenseCategoryRequest) -> CreateExpenseCategoryResult:
-        new_expense_category_name = request.name
-        new_expense_category_color = request.color
-
-        expense_category_name_is_already_used = bool(
-            self._expense_category_repo.get_by_name(new_expense_category_name)
-        )
-
-        if expense_category_name_is_already_used:
-            raise ExpenseCategoryNameIsAlreadyUsedError(new_expense_category_name)
-
-        new_expense_category = ExpenseCategory(
-            name=new_expense_category_name,
-            color=new_expense_category_color
-        )
+        new_expense_category = ExpenseCategory(name=input.name, color=input.color, user=input.user)
         self._expense_category_repo.add(new_expense_category)
 
-        result = CreateExpenseCategoryResult(
-            expense_category=new_expense_category
-        )
-
-        return result
+        return CreateExpenseCategoryUseCaseOutput(new_expense_category)
 
 
 @dataclass(frozen=True)
-class DeleteExpenseCategoryRequest:
-    expense_category_id: UUID
-
-
-class AbstractDeleteExpenseCategoryUseCase(ABC):
-    def __init__(
-        self,
-        expense_category_repo: AbstractExpenseCategoryRepository
-    ):
-        self._expense_category_repo = expense_category_repo
-
-    @abstractmethod
-    def execute(self, request: DeleteExpenseCategoryRequest) -> NoReturn:
-        pass
-
-
-class DeleteExpenseCategoryUseCase(AbstractDeleteExpenseCategoryUseCase):
-    def execute(self, request: DeleteExpenseCategoryRequest) -> NoReturn:
-        expense_category_id = request.expense_category_id
-        expense_category = self._expense_category_repo.get_by_id(expense_category_id)
-
-        if not expense_category:
-            raise ExpenseCategoryNotFoundError(expense_category_id)
-
-        self._expense_category_repo.delete(expense_category)
-
-
-@dataclass(frozen=True)
-class UpdateExpenseCategoryRequest:
+class UpdateExpenseCategoryUseCaseInput:
     name: str
     color: str
     expense_category_id: UUID
+    user: User
 
 
 @dataclass(frozen=True)
-class UpdateExpenseCategoryResult:
+class UpdateExpenseCategoryUseCaseOutput:
     expense_category: ExpenseCategory
 
 
-class AbstractUpdateExpenseCategoryUseCase(ABC):
-    def __init__(
-        self,
-        expense_category_repo: AbstractExpenseCategoryRepository
-    ):
+class UpdateExpenseCategoryUseCase(UseCase[UpdateExpenseCategoryUseCaseInput, UpdateExpenseCategoryUseCaseOutput]):
+    def __init__(self, expense_category_repo: ExpenseCategoryRepository) -> None:
         self._expense_category_repo = expense_category_repo
 
-    @abstractmethod
-    def execute(self, request: UpdateExpenseCategoryRequest) -> UpdateExpenseCategoryResult:
-        pass
+    def execute(self, input: UpdateExpenseCategoryUseCaseInput) -> UpdateExpenseCategoryUseCaseOutput:
+        existing_expense_category = self._expense_category_repo.get_by_id_and_user_id(input.expense_category_id, input.user.id)
+        if not existing_expense_category:
+            raise ExpenseCategoryNotFoundError()
+
+        if input.name != existing_expense_category.name:
+            if self._expense_category_repo.get_by_name_and_user_id(input.name, input.user.id):
+                raise ExpenseCategoryNameAlreadyUsedError()
+            
+        existing_expense_category.name = input.name
+        existing_expense_category.color = input.color
+
+        self._expense_category_repo.save(existing_expense_category)
+        
+        return UpdateExpenseCategoryUseCaseOutput(existing_expense_category)
 
 
-class UpdateExpenseCategoryUseCase(AbstractUpdateExpenseCategoryUseCase):
-    def execute(self, request: UpdateExpenseCategoryRequest) -> UpdateExpenseCategoryResult:
-        expense_category_id = request.expense_category_id
-        expense_category = self._expense_category_repo.get_by_id(expense_category_id)
+@dataclass(frozen=True)
+class DeleteExpenseCategoryUseCaseInput:
+    expense_category_id: UUID
+    user: User
 
-        if not expense_category:
-            raise ExpenseCategoryNotFoundError(expense_category_id)
 
-        new_expense_category_name = request.name
-        old_expense_category_name = expense_category.name
+class DeleteExpenseCategoryUseCase(UseCase[DeleteExpenseCategoryUseCaseInput, NoReturn]):
+    def __init__(self, expense_category_repo: ExpenseCategoryRepository) -> None:
+        self._expense_category_repo = expense_category_repo
 
-        if new_expense_category_name != old_expense_category_name:
-            expense_category_name_is_already_used = bool(
-                self._expense_category_repo.get_by_name(new_expense_category_name)
-            )
-            if expense_category_name_is_already_used:
-                raise ExpenseCategoryNameIsAlreadyUsedError(new_expense_category_name)
+    def execute(self, input: DeleteExpenseCategoryUseCaseInput) -> NoReturn:
+        existing_expense_category = self._expense_category_repo.get_by_id_and_user_id(input.expense_category_id, input.user.id)
+        if not existing_expense_category:
+            raise ExpenseCategoryNotFoundError()
 
-        new_expense_category_color = request.color
-        expense_category.name = new_expense_category_name
-        expense_category.color = new_expense_category_color
-
-        self._expense_category_repo.save(expense_category)
-
-        result = UpdateExpenseCategoryResult(expense_category)
-
-        return result
+        self._expense_category_repo.delete(existing_expense_category)

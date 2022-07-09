@@ -2,7 +2,6 @@ from fastapi import Depends
 
 from app.entities import User
 from app.database import session
-from app.settings import settings
 from app.security import (
     AccessTokenPayload, 
     HTTPAccessToken, 
@@ -10,13 +9,14 @@ from app.security import (
     DefaultSecurityManager
 )
 from app.repositories import (
+    ExpenseRepository,
     SQLAlchemyExpenseRepository, 
     SQLAlchemyExpenseCategoryRepository, 
     UserRepository,
     SQLAlchemyUserRepository
 )
 
-def get_expense_repo():
+def get_expense_repo() -> ExpenseRepository:
     return SQLAlchemyExpenseRepository(session)
 
 def get_expense_category_repo():
