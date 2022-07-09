@@ -1,94 +1,76 @@
 from uuid import UUID
 from typing import List
-
 from fastapi import APIRouter, Depends
 
-from app.schemas import (
-    ExpenseCategoryOut,
-    ExpenseCategoryCreate,
-    ExpenseCategoryUpdate
-)
-from app.dependencies import get_expense_category_repo
-from app.usecases import (
-    GetExpenseCategoryByIdUseCase,
-    GetExpenseCategoryByIdRequest,
-
-    GetAllExpenseCategoriesUseCase,
-
+from app.entities import User
+from app.repositories import ExpenseCategoryRepository
+from app.schemas.expense_category import ExpenseCategoryCreate, ExpenseCategoryOut, ExpenseCategoryUpdate
+from app.dependencies import get_current_user, get_expense_category_repo
+from app.usecases.expense_category import (
     CreateExpenseCategoryUseCase,
-    CreateExpenseCategoryRequest,
-
-    UpdateExpenseCategoryUseCase,
-    UpdateExpenseCategoryRequest,
-
+    CreateExpenseCategoryUseCaseInput,
     DeleteExpenseCategoryUseCase,
-    DeleteExpenseCategoryRequest
+    DeleteExpenseCategoryUseCaseInput,
+    GetAllExpenseCategoriesUseCase, 
+    GetAllExpenseCategoriesUseCaseInput,
+    UpdateExpenseCategoryUseCase,
+    UpdateExpenseCategoryUseCaseInput
 )
-from app.repositories import AbstractExpenseCategoryRepository
 
 
 expense_category_router = APIRouter()
 
-
-@expense_category_router.get('/expense_categories/', response_model=List[ExpenseCategoryOut])
+@expense_category_router.get('/expense_categories', response_model=List[ExpenseCategoryOut])
 def get_all_expense_categories(
-        expense_category_repo: AbstractExpenseCategoryRepository = Depends(get_expense_category_repo)
+    current_user: User = Depends(get_current_user),
+    expense_category_repo: ExpenseCategoryRepository = Depends(get_expense_category_repo)
 ):
+    usecase_input = GetAllExpenseCategoriesUseCaseInput(current_user.id)
     usecase = GetAllExpenseCategoriesUseCase(expense_category_repo)
-    result = usecase.execute()
+    usecase_output = usecase.execute(usecase_input)
 
-    return result.expense_categories
-
-
-@expense_category_router.get('/expense_categories/{expense_category_id}', response_model=ExpenseCategoryOut)
-def get_expense_category_by_id(
-        expense_category_id: UUID,
-        expense_category_repo: AbstractExpenseCategoryRepository = Depends(get_expense_category_repo)
-):
-    usecase = GetExpenseCategoryByIdUseCase(expense_category_repo)
-    request = GetExpenseCategoryByIdRequest(expense_category_id)
-    result = usecase.execute(request)
-
-    return result.expense_category
-
-
-@expense_category_router.post('/expense_categories/', response_model=ExpenseCategoryOut, status_code=201)
+    return usecase_output.expense_categories
+    
+@expense_category_router.post('/expense_categories', response_model=ExpenseCategoryOut, status_code=201)
 def create_expense_category(
-        expense_category: ExpenseCategoryCreate,
-        expense_category_repo: AbstractExpenseCategoryRepository = Depends(get_expense_category_repo)
+    expense_category: ExpenseCategoryCreate,
+    current_user: User = Depends(get_current_user),
+    expense_category_repo: ExpenseCategoryRepository = Depends(get_expense_category_repo)
 ):
-    usecase = CreateExpenseCategoryUseCase(expense_category_repo)
-    request = CreateExpenseCategoryRequest(
-        name=expense_category.name,
-        color=expense_category.color
-    )
-    result = usecase.execute(request)
-
-    return result.expense_category
-
-
-@expense_category_router.put('/expense_categories/{expense_category_id}/', response_model=ExpenseCategoryOut)
-def update_expense_category(
-        expense_category_id: UUID,
-        expense_category: ExpenseCategoryUpdate,
-        expense_category_repo: AbstractExpenseCategoryRepository = Depends(get_expense_category_repo)
-):
-    usecase = UpdateExpenseCategoryUseCase(expense_category_repo)
-    request = UpdateExpenseCategoryRequest(
+    usecase_input = CreateExpenseCategoryUseCaseInput(
         name=expense_category.name,
         color=expense_category.color,
-        expense_category_id=expense_category_id
+        user=current_user
     )
-    result = usecase.execute(request)
+    usecase = CreateExpenseCategoryUseCase(expense_category_repo)
+    usecase_output = usecase.execute(usecase_input)
 
-    return result.expense_category
+    return usecase_output.expense_category
 
-
-@expense_category_router.delete('/expense_categories/{expense_category_id}/')
-def delete_expense_category(
-        expense_category_id: UUID,
-        expense_category_repo: AbstractExpenseCategoryRepository = Depends(get_expense_category_repo)
+@expense_category_router.put('/expense_categories/{expense_category_id}', response_model=ExpenseCategoryOut)
+def update_expense_category(
+    expense_category_id: UUID,
+    expense_category: ExpenseCategoryUpdate,
+    current_user: User = Depends(get_current_user),
+    expense_category_repo: ExpenseCategoryRepository = Depends(get_expense_category_repo)
 ):
+    usecase_input = UpdateExpenseCategoryUseCaseInput(
+        name=expense_category.name,
+        color=expense_category.color,
+        expense_category_id=expense_category_id,
+        user=current_user
+    )
+    usecase = UpdateExpenseCategoryUseCase(expense_category_repo)
+    usecase_output = usecase.execute(usecase_input)
+
+    return usecase_output.expense_category
+
+@expense_category_router.delete('/expense_categories/{expense_category_id}')
+def delete_expense_category(
+    expense_category_id: UUID,
+    current_user: User = Depends(get_current_user),
+    expense_category_repo: ExpenseCategoryRepository = Depends(get_expense_category_repo)
+):
+    usecase_input = DeleteExpenseCategoryUseCaseInput(expense_category_id=expense_category_id, user=current_user)
     usecase = DeleteExpenseCategoryUseCase(expense_category_repo)
-    request = DeleteExpenseCategoryRequest(expense_category_id)
-    usecase.execute(request)
+    usecase.execute(usecase_input)

@@ -1,5 +1,6 @@
 from uuid import UUID
-from datetime import datetime, date
+from datetime import  date
+from typing import Optional
 
 from pydantic import BaseModel
 
@@ -19,10 +20,10 @@ class ExpenseUpdate(Expense):
     expense_category_id: UUID = None
 
 
-class ExpenseOut(Expense):
-    id: UUID
-    created_at: datetime
-    updated_at: datetime = None
+class ExpenseOut(BaseModel):
+    id: Optional[UUID]
+    amount: float
+    realised_date: date
     category: ExpenseCategoryOut = None
 
     class Config:

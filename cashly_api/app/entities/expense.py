@@ -3,11 +3,13 @@ from typing import Optional
 from dataclasses import dataclass
 from datetime import date, datetime
 
-from app.entities.expense_category import ExpenseCategory
+from .user import User
+from .expense_category import ExpenseCategory
 
 
 @dataclass
 class Expense:
+    user: User
     amount: float
     realised_date: date
     id: Optional[UUID] = None

@@ -1,77 +1,97 @@
 from uuid import UUID
 from datetime import date
-from abc import ABC, abstractmethod
-from typing import Union, List, NoReturn
+from abc import abstractmethod
+from typing import List, Optional, Union, NoReturn
 
 from sqlalchemy.orm.session import Session
 
-from app.entities import Expense
+from app.repositories import Repository
+from app.entities import User, Expense
 
 
-class AbstractExpenseRepository(ABC):
+class ExpenseRepository(Repository[Expense]):
     @abstractmethod
-    def get_by_id(self, expense_id: UUID) -> Union[Expense, None]:
-        pass
-
-    @abstractmethod
-    def get_by_date_range(self, start_date: date, end_date: date) -> List[Expense]:
-        pass
+    def get_all_by_user_id(self, user_id: UUID) -> List[Expense]: ...
 
     @abstractmethod
-    def get_all(self) -> List[Expense]:
-        pass
+    def get_by_id_and_user_id(self, id: UUID, user_id: UUID) -> Union[Expense, None]: ...
 
     @abstractmethod
-    def add(self, expense: Expense) -> Expense:
-        pass
-
-    @abstractmethod
-    def save(self, expense: Expense) -> Expense:
-        pass
-
-    @abstractmethod
-    def delete(self, expense: Expense) -> NoReturn:
-        pass
+    def get_by_date_range_and_user_id(self, start_date: date, end_date: date, user_id: UUID) -> List[Expense]: ...
 
 
-class SQLAlchemyExpenseRepository(AbstractExpenseRepository):
-    def __init__(self, session: Session):
+class MemoryExpenseRepository(ExpenseRepository):
+    def __init__(self, expenses: Optional[List[Expense]] = None) -> None:
+        self._expenses = expenses or []
+
+    def get_by_id(self, id: UUID) -> Union[Expense, None]:
+        for expense in self._expenses:
+            if expense.id == id:
+                return expense
+        return False
+
+    def get_by_id_and_user_id(self, id: UUID, user_id: UUID) -> Union[Expense, None]:
+        for expense in self._expenses:
+            if expense.id == id and expense.user.id == user_id:
+                return expense
+        return False
+
+    def get_all_by_user_id(self, user_id: UUID) -> List[Expense]:
+        return [expense for expense in self._expenses if expense.user.id == user_id]
+
+    def get_by_date_range_and_user_id(self, start_date: date, end_date: date, user_id: UUID) -> List[Expense]:
+        return [
+            expense for expense in self._expenses 
+            if expense.realised_date >= start_date and expense.realised_date <= end_date
+        ]
+
+    def add(self, entity: Expense) -> Expense:
+        self._expenses.append(entity)
+        return entity
+
+    def save(self, entity: Expense) -> Expense:
+        duplicate_of_expenses = self._expenses
+        for i, expense in enumerate(duplicate_of_expenses):
+            if expense.id == entity.id:
+                duplicate_of_expenses[i] = entity
+        self._expenses = duplicate_of_expenses
+        return entity
+
+    def delete(self, entity: Expense) -> NoReturn:
+        self._expenses = [expense for expense in self._expenses if expense.id != entity.id]
+
+
+class SQLAlchemyExpenseRepository(ExpenseRepository):
+    def __init__(self, session: Session) -> None:
         self._session = session
 
-    def get_by_id(self, expense_id: UUID) -> Union[Expense, None]:
-        expense = self._session.query(Expense) \
-            .filter_by(id=expense_id) \
-            .first()
+    def get_by_id(self, id: UUID) -> Union[Expense, None]:
+        return self._session.query(Expense).filter_by(id=id).first()
 
-        return expense
+    def get_all_by_user_id(self, user_id: UUID) -> List[Expense]:
+        return self._session.query(Expense).filter(User.id == user_id).all()
 
-    def get_by_date_range(self, start_date: date, end_date: date) -> List[Expense]:
-        expenses = self._session.query(Expense) \
-            .filter(
-                (Expense.realised_date >= start_date),
-                (Expense.realised_date <= end_date)
-            ) \
-            .all()
+    def get_by_id_and_user_id(self, id: UUID, user_id: UUID) -> Union[Expense, None]:
+        return self._session.query(Expense).filter(User.id == user_id).filter_by(id=id).first()
 
-        return expenses
+    def get_by_date_range_and_user_id(self, start_date: date, end_date: date, user_id: UUID) -> List[Expense]:
+        return self._session.query(Expense).filter(
+            Expense.realised_date >= start_date, 
+            Expense.realised_date <= end_date, 
+            User.id == user_id
+        )
 
-    def get_all(self) -> List[Expense]:
-        expenses = self._session.query(Expense).all()
-
-        return expenses
-
-    def add(self, expense: Expense) -> Expense:
-        self._session.add(expense)
+    def add(self, entity: Expense) -> Expense:
+        self._session.add(entity)
         self._session.commit()
+        
+        return entity
 
-        return expense
-
-    def save(self, expense: Expense) -> Expense:
+    def save(self, entity: Expense) -> Expense:
         self._session.commit()
-        self._session.refresh(expense)
+        self._session.refresh()
 
-        return expense
+        return entity
 
-    def delete(self, expense: Expense) -> NoReturn:
-        self._session.delete(expense)
-        self._session.commit()
+    def delete(self, entity: Expense) -> NoReturn:
+        self._session.delete(entity)

@@ -1,4 +1,3 @@
-from email.policy import default
 from uuid import UUID, uuid4
 
 from sqlalchemy.sql import func as sql_func
@@ -77,6 +76,7 @@ expense_category = Table(
     'expense_category',
     metadata,
     Column('id', SQLAlchemyUUID(), index=True, primary_key=True, default=lambda: str(uuid4())),
+    Column('user_id', ForeignKey('user.id')),
     Column('name', String(20)),
     Column('color', String(7)),
     Column('created_at', DateTime(timezone=True), server_default=sql_func.now()),
@@ -94,10 +94,14 @@ user = Table(
 )
 
 def run_mappers():
+    mapper(User, user)
     mapper(
         Expense,
         expense,
         properties={'category': relationship(ExpenseCategory, backref='expense_category')}
     )
-    mapper(ExpenseCategory, expense_category)
-    mapper(User, user)
+    mapper(
+        ExpenseCategory,
+        expense_category,
+        properties={'user': relationship(User, backref='user')}
+    )

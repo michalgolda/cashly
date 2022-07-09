@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response
 
 from app.security import SecurityManager
 from app.repositories import UserRepository
@@ -10,6 +10,7 @@ from app.usecases.authentication import (
   LoginUseCaseInput  
 )
 from app.dependencies import get_user_repo, get_security_manager
+
 
 authentication_router = APIRouter()
 
@@ -28,6 +29,7 @@ def register(
 
 @authentication_router.post('/auth/login', status_code=200)
 def login(
+  response: Response,
   credentials: AuthenticationCredentials,
   user_repo: UserRepository = Depends(get_user_repo),
   security_manager: SecurityManager = Depends(get_security_manager)
@@ -38,5 +40,7 @@ def login(
   )
   login_usecase = LoginUseCase(user_repo, security_manager)
   login_usecase_output = login_usecase.execute(login_usecase_input)
+
+  response.set_cookie('access_token', login_usecase_output.access_token, httponly=True, samesite='Strict')
 
   return dict(access_token=login_usecase_output.access_token)
