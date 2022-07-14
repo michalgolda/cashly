@@ -13,21 +13,25 @@ import PageMain from "./PageMain/PageMain";
 import IconButton from "./IconButton/IconButton";
 import LinkButton from "./LinkButton/LinkButton";
 import Logo from "./Logo/Logo";
+import NonFieldError from "./NonFieldError/NonFieldError";
+import Avatar from "./Avatar/Avatar";
 
-export { 
-    Page,
-    List,
-    Input,
-    Modal,
-    Layout,
-    Button, 
-    Header, 
-    Sidebar,
-    Informer, 
-    Skeleton,
-    ListItem,
-    PageMain,
-    IconButton,
-    LinkButton,
-    Logo
-}
+export {
+  Page,
+  List,
+  Input,
+  Modal,
+  Layout,
+  Button,
+  Header,
+  Sidebar,
+  Informer,
+  Skeleton,
+  ListItem,
+  PageMain,
+  IconButton,
+  LinkButton,
+  Logo,
+  NonFieldError,
+  Avatar,
+};
