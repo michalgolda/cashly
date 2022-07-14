@@ -1,19 +1,21 @@
 import pandas as pd
 from io import BytesIO
-from typing import List
 from abc import ABC, abstractmethod
+from typing import Generic, List, TypeVar
 
 from app.entities import Expense
 
 
-class AbstractExpensesExporter(ABC):
+TExportEntity = TypeVar('TExportEntity')
+
+class Exporter(Generic[TExportEntity], ABC):
     @abstractmethod
-    def export(self, expenses: List[Expense]) -> BytesIO:
+    def export(self, entities: List[TExportEntity]) -> BytesIO:
         pass
 
 
-class ExpensesExporter(AbstractExpensesExporter):
-    def export(self, expenses: List[Expense]) -> BytesIO:
+class ExpensesExporter(Exporter[Expense]):
+    def export(self, entities: List[Expense]) -> BytesIO:
         data = list(
             map(
                 lambda expense: {
@@ -21,12 +23,12 @@ class ExpensesExporter(AbstractExpensesExporter):
                     'kategoria': expense.category.name if expense.category else None,
                     'data realizacji': expense.realised_date
                 },
-                expenses
+                entities
             )
         )
-        exporter_buffer = BytesIO()
+        file_buffer = BytesIO()
         data_frame = pd.DataFrame(data)
-        data_frame.to_csv(exporter_buffer, index_label='lp')
-        exporter_buffer.seek(0)
+        data_frame.to_csv(file_buffer, index_label='lp')
+        file_buffer.seek(0)
 
-        return exporter_buffer
+        return file_buffer
