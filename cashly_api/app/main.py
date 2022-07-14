@@ -4,20 +4,20 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.database import run_mappers, metadata
 from app.exceptions import DomainException, domain_exception_handler
 from app.endpoints import (
-    # expense_router, 
-    # analytics_router, 
+    expense_router, 
+    analytics_router, 
     user_router,
     authentication_router,
-    # expense_category_router
+    expense_category_router
 )
 
 
 def create_app() -> FastAPI:
     app = FastAPI()
 
-    # app.include_router(expense_router)
-    # app.include_router(analytics_router)
-    # app.include_router(expense_category_router)
+    app.include_router(expense_router)
+    app.include_router(analytics_router)
+    app.include_router(expense_category_router)
     app.include_router(user_router)
     app.include_router(authentication_router)
 
