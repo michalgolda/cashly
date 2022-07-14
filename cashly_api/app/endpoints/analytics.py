@@ -56,7 +56,7 @@ def get_expenses_by_category(
     date_params: AnalyticsDateParams = Depends(),
     expense_repo: ExpenseRepository = Depends(get_expense_repo)
 ):
-    expenses = expense_repo.get_by_id_and_user_id(
+    expenses = expense_repo.get_by_date_range_and_user_id(
         start_date=date_params.start_date,
         end_date=date_params.end_date,
         user_id=current_user.id
