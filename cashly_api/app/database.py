@@ -65,6 +65,7 @@ expense = Table(
     'expense',
     metadata,
     Column('id', SQLAlchemyUUID(), index=True, primary_key=True, default=lambda: str(uuid4())),
+    Column('user_id', ForeignKey('user.id')),
     Column('amount', Float),
     Column('realised_date', Date),
     Column('category_id', ForeignKey('expense_category.id')),
@@ -98,10 +99,13 @@ def run_mappers():
     mapper(
         Expense,
         expense,
-        properties={'category': relationship(ExpenseCategory, backref='expense_category')}
+        properties={
+            'user': relationship(User, backref='expense_user'),
+            'category': relationship(ExpenseCategory, backref='expense_category')
+        }
     )
     mapper(
         ExpenseCategory,
         expense_category,
-        properties={'user': relationship(User, backref='user')}
+        properties={'user': relationship(User, backref='expense_category_user')}
     )
