@@ -66,20 +66,23 @@ class SQLAlchemyExpenseRepository(ExpenseRepository):
         self._session = session
 
     def get_by_id(self, id: UUID) -> Union[Expense, None]:
-        return self._session.query(Expense).filter_by(id=id).first()
+        return self._session.query(Expense).filter(Expense.id == id).first()
 
     def get_all_by_user_id(self, user_id: UUID) -> List[Expense]:
-        return self._session.query(Expense).filter(User.id == user_id).all()
-
+        return self._session.query(Expense).join(User).filter(User.id == user_id).all()
+        
     def get_by_id_and_user_id(self, id: UUID, user_id: UUID) -> Union[Expense, None]:
-        return self._session.query(Expense).filter(User.id == user_id).filter_by(id=id).first()
+        return self._session.query(Expense).join(User).filter(
+            Expense.id == id,
+            User.id == user_id 
+        ).first()
 
     def get_by_date_range_and_user_id(self, start_date: date, end_date: date, user_id: UUID) -> List[Expense]:
-        return self._session.query(Expense).filter(
+        return self._session.query(Expense).join(User).filter(
             Expense.realised_date >= start_date, 
-            Expense.realised_date <= end_date, 
+            Expense.realised_date <= end_date,
             User.id == user_id
-        )
+        ).all()
 
     def add(self, entity: Expense) -> Expense:
         self._session.add(entity)
@@ -89,9 +92,10 @@ class SQLAlchemyExpenseRepository(ExpenseRepository):
 
     def save(self, entity: Expense) -> Expense:
         self._session.commit()
-        self._session.refresh()
+        self._session.refresh(entity)
 
         return entity
 
     def delete(self, entity: Expense) -> NoReturn:
         self._session.delete(entity)
+        self._session.commit()

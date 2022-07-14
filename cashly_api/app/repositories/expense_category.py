@@ -69,16 +69,22 @@ class SQLAlchemyExpenseCategoryRepository(ExpenseCategoryRepository):
         self._session = session
 
     def get_by_id(self, id: UUID) -> Union[ExpenseCategory, None]:
-        return self._session.query(ExpenseCategory).filter_by(id=id).first()
+        return self._session.query(ExpenseCategory).filter(ExpenseCategory.id == id).first()
 
     def get_all_by_user_id(self, user_id: UUID) -> List[ExpenseCategory]:
-        return self._session.query(ExpenseCategory).filter(User.id == user_id).all()
+        return self._session.query(ExpenseCategory).join(User).filter(User.id == user_id).all()
 
     def get_by_id_and_user_id(self, id: UUID, user_id: UUID) -> Union[ExpenseCategory, None]:
-        return self._session.query(ExpenseCategory).filter_by(id=id).filter(User.id == user_id).first()
+        return self._session.query(ExpenseCategory).join(User).filter(
+            ExpenseCategory.id == id, 
+            User.id == user_id
+        ).first()
 
     def get_by_name_and_user_id(self, name: str, user_id: UUID) -> List[ExpenseCategory]:
-        return self._session.query(ExpenseCategory).filter_by(name=name).filter(User.id == user_id).first()
+        return self._session.query(ExpenseCategory).join(User).filter(
+            ExpenseCategory.name == name,
+            User.id == user_id
+        ).first()
 
     def add(self, expense_category: ExpenseCategory) -> ExpenseCategory:
         self._session.add(expense_category)
