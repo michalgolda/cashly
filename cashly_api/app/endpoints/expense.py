@@ -1,9 +1,12 @@
 from uuid import UUID
 from typing import List
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
+from fastapi.responses import StreamingResponse
 
 from app.entities import User
+from app.exporter import ExpensesExporter
+from app.importer import SUPPORTED_FILE_CONTENT_TYPES, ExpensesImporter
 from app.schemas import ExpenseOut
 from app.repositories import ExpenseRepository, ExpenseCategoryRepository
 from app.dependencies import (
@@ -16,9 +19,13 @@ from app.usecases.expense import (
     CreateExpenseUseCase, 
     CreateExpenseUseCaseInput,
     DeleteExpenseUseCase,
-    DeleteExpenseUseCaseInput, 
+    DeleteExpenseUseCaseInput,
+    ExportExpensesUseCase,
+    ExportExpensesUseCaseInput, 
     GetAllExpensesUseCase, 
     GetAllExpensesUseCaseInput,
+    ImportExpensesUseCase,
+    ImportExpensesUseCaseInput,
     UpdateExpenseUseCase,
     UpdateExpenseUseCaseInput
 )
@@ -86,140 +93,44 @@ def delete_expense(
     usecase = DeleteExpenseUseCase(expense_repo)
     usecase.execute(usecase_input)
 
-# from uuid import UUID
-# from typing import List
+@expense_router.get('/expenses/export')
+def export_expenses(
+    current_user: User = Depends(get_current_user),
+    expense_repo: ExpenseRepository = Depends(get_expense_repo)
+):
+    exporter = ExpensesExporter()
+    usecase_input = ExportExpensesUseCaseInput(current_user)
+    usecase = ExportExpensesUseCase(expense_repo=expense_repo, expenses_exporter=exporter)
+    usecase_result = usecase.execute(usecase_input)
 
-# from fastapi import APIRouter, Depends, Query, File, UploadFile, HTTPException
-# from fastapi.responses import StreamingResponse
+    return StreamingResponse(
+        usecase_result.exported_file,
+        headers={
+            'Content-Disposition': 'attachment; filename=expenses.csv'
+        }
+    )
 
-# from app.usecases import (
-#     GetAllExpensesUseCase,
-#     GetExpenseByIdUseCase,
-#     GetExpenseByIdRequest,
-#     CreateExpenseUseCase,
-#     CreateExpenseRequest,
-#     UpdateExpenseUseCase,
-#     UpdateExpenseRequest,
-#     DeleteExpenseUseCase,
-#     DeleteExpenseRequest,
-#     ExportExpensesUseCase,
-#     ImportExpensesRequest,
-#     ImportExpensesUseCase
-# )
-# from app.exporter import ExpensesExporter
-# from app.importer import ExpensesImporter, SUPPORTED_FILE_CONTENT_TYPES
-# from app.schemas import ExpenseOut, ExpenseCreate, ExpenseUpdate
-# from app.dependencies import get_expense_repo, get_expense_category_repo
-# from app.repositories import AbstractExpenseRepository, AbstractExpenseCategoryRepository
+@expense_router.post('/expenses/import')
+def import_expenses(
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user),
+    expense_repo: ExpenseRepository = Depends(get_expense_repo),
+    expense_category_repo: ExpenseCategoryRepository = Depends(get_expense_category_repo)
+):
+    if file.content_type not in SUPPORTED_FILE_CONTENT_TYPES:
+        raise HTTPException(
+            status_code=400,
+            detail='File content type not supported.'
+        )
 
-
-# expense_router = APIRouter()
-
-
-# @expense_router.get('/expenses/export/')
-# def export_expenses(
-#     expense_repo: AbstractExpenseRepository = Depends(get_expense_repo)
-# ):
-#     expense_exporter = ExpensesExporter()
-#     usecase = ExportExpensesUseCase(expense_repo, expense_exporter)
-#     result = usecase.execute()
-
-#     return StreamingResponse(
-#         result.exporter_buffer,
-#         headers={
-#             'Content-Disposition': 'attachment; filename=expenses.csv'
-#         }
-#     )
-
-
-# @expense_router.post('/expenses/import/')
-# def import_expenses(
-#     uploaded_file: UploadFile = File(...),
-#     expense_repo: AbstractExpenseRepository = Depends(get_expense_repo),
-#     expense_category_repo: AbstractExpenseCategoryRepository = Depends(get_expense_category_repo)
-# ):
-#     if uploaded_file.content_type not in SUPPORTED_FILE_CONTENT_TYPES:
-#         raise HTTPException(
-#             status_code=400,
-#             detail='File content type not supported.'
-#         )
-
-#     expenses_importer = ExpensesImporter()
-#     usecase = ImportExpensesUseCase(
-#         expense_repo,
-#         expenses_importer,
-#         expense_category_repo
-#     )
-#     request = ImportExpensesRequest(uploaded_file.file)
-#     usecase.execute(request)
-
-#     return {'message': 'Successfull imported.'}
-
-
-# @expense_router.get('/expenses/', response_model=List[ExpenseOut])
-# def get_all_expenses(
-#     expense_repo: AbstractExpenseRepository = Depends(get_expense_repo)
-# ):
-#     usecase = GetAllExpensesUseCase(expense_repo)
-#     result = usecase.execute()
-
-#     return result.expenses
-
-
-# @expense_router.get('/expenses/{expense_id}/', response_model=ExpenseOut)
-# def get_expense_by_id(
-#     expense_id: UUID,
-#     expense_repo: AbstractExpenseRepository = Depends(get_expense_repo)
-# ):
-#     usecase = GetExpenseByIdUseCase(expense_repo)
-#     request = GetExpenseByIdRequest(expense_id)
-#     result = usecase.execute(request)
-
-#     return result.expense
-
-
-# @expense_router.post('/expenses/', response_model=ExpenseOut, status_code=201)
-# def create_expense(
-#     expense: ExpenseCreate,
-#     expense_repo: AbstractExpenseRepository = Depends(get_expense_repo),
-#     expense_category_repo: AbstractExpenseCategoryRepository = Depends(get_expense_category_repo)
-# ):
-#     usecase = CreateExpenseUseCase(expense_repo, expense_category_repo)
-#     request = CreateExpenseRequest(
-#         amount=expense.amount,
-#         realised_date=expense.realised_date,
-#         expense_category_id=expense.expense_category_id
-#     )
-#     result = usecase.execute(request)
-
-#     return result.expense
-
-
-# @expense_router.put('/expenses/{expense_id}/', response_model=ExpenseOut)
-# def update_expense(
-#     expense_id: UUID,
-#     expense: ExpenseUpdate,
-#     expense_repo: AbstractExpenseRepository = Depends(get_expense_repo),
-#     expense_category_repo: AbstractExpenseCategoryRepository = Depends(get_expense_category_repo)
-# ):
-#     usecase = UpdateExpenseUseCase(expense_repo, expense_category_repo)
-#     request = UpdateExpenseRequest(
-#         expense_id=expense_id,
-#         amount=expense.amount,
-#         realised_date=expense.realised_date,
-#         expense_category_id=expense.expense_category_id
-#     )
-#     result = usecase.execute(request)
-
-#     return result.expense
-
-
-# @expense_router.delete('/expenses/{expense_id}/')
-# def delete_expense(
-#     expense_id: UUID,
-#     expense_repo: AbstractExpenseRepository = Depends(get_expense_repo)
-# ):
-#     usecase = DeleteExpenseUseCase(expense_repo)
-#     request = DeleteExpenseRequest(expense_id)
-#     usecase.execute(request)
-
+    importer = ExpensesImporter()
+    usecase_input = ImportExpensesUseCaseInput(
+        user=current_user,
+        uploaded_file=file.file
+    )
+    usecase = ImportExpensesUseCase(
+        expense_repo=expense_repo,
+        expense_category_repo=expense_category_repo,
+        expenses_importer=importer,
+    )
+    usecase.execute(usecase_input)

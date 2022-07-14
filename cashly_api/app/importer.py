@@ -1,7 +1,7 @@
 from io import BytesIO
 from datetime import datetime
 from abc import ABC, abstractmethod
-from typing import List, TypedDict, Union
+from typing import List, TypedDict, Union, TypeVar, Generic
 
 import numpy as np
 import pandas as pd
@@ -13,6 +13,13 @@ SUPPORTED_FILE_CONTENT_TYPES = [
     'application/vnd.ms-excel'
 ]
 
+TParsedEntity = TypeVar('TParsedEntity')
+
+class Importer(Generic[TParsedEntity], ABC):
+    @abstractmethod
+    def make(self, file: BytesIO) -> List[TParsedEntity]:
+        pass
+
 
 class ParsedExpense(TypedDict):
     amount: float
@@ -20,17 +27,11 @@ class ParsedExpense(TypedDict):
     realised_date: datetime
 
 
-class AbstractExpensesImporter(ABC):
-    @abstractmethod
-    def make(self, uploaded_file: BytesIO) -> List[ParsedExpense]:
-        pass
-
-
-class ExpensesImporter(AbstractExpensesImporter):
-    def make(self, uploaded_file: BytesIO) -> List[ParsedExpense]:
+class ExpensesImporter(Importer[ParsedExpense]):
+    def make(self, file: BytesIO) -> List[ParsedExpense]:
         parsed_expenses = []
-
-        data_frame = pd.read_csv(uploaded_file)
+        print(file)
+        data_frame = pd.read_csv(file)
         data_frame = data_frame.replace({ np.nan: None })
         
         row_count = len(data_frame.axes[0])
