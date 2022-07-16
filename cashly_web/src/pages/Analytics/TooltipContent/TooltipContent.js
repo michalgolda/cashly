@@ -30,7 +30,7 @@ export default function TooltipContent({
   const hidden = !(active && payload && payload.length);
   useEffect(() => {
     if (!hidden) setValue(payload[0].value);
-  }, []);
+  }, [payload]);
 
   return hidden ? null : (
     <StyledTooltip>
