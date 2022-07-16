@@ -1,4 +1,3 @@
-import currency from "currency.js";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { useModal } from "@ebay/nice-modal-react";
@@ -7,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
 
 import { expenseAPI } from "@/api";
+import { defaultCurrencyFormat } from "@/utils";
 import { ListItem, IconButton } from "@/components";
 import EditExpenseModal from "../EditExpenseModal/EditExpenseModal";
 
@@ -75,14 +75,10 @@ function ExpenseListItem({ id, amount, category, realisedDate }) {
   const deleteExpenseMutation = useMutation(expenseAPI.deleteExpense, {
     onSuccess: () => queryClient.invalidateQueries("expenses"),
   });
-  const formattedAmount = currency(amount, {
-    symbol: "PLN",
-    pattern: "# !",
-  }).format();
 
   return (
     <StyledListItem>
-      <StyledSpan>{formattedAmount}</StyledSpan>
+      <StyledSpan>{defaultCurrencyFormat.format(amount)}</StyledSpan>
       {category ? (
         <StyledCategory color={category.color}>{category.name}</StyledCategory>
       ) : (
