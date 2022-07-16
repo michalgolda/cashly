@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const StyledTooltip = styled.div`
@@ -28,7 +28,9 @@ export default function TooltipContent({
   const [value, setValue] = useState(null);
 
   const hidden = !(active && payload && payload.length);
-  if (!hidden) setValue(payload[0].value);
+  useEffect(() => {
+    if (!hidden) setValue(payload[0].value);
+  }, []);
 
   return hidden ? null : (
     <StyledTooltip>
