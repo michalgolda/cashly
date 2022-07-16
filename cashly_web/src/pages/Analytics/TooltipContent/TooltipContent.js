@@ -1,14 +1,3 @@
-<<<<<<< HEAD:cashly_web/src/pages/Analytics/ExpensesByCategoryWidget/Chart/CustomTooltip/CustomTooltip.js
-import { defaultCurrencyFormat } from "@/utils";
-import Tooltip from "@/pages/Analytics/Tooltip/Tooltip";
-
-export default function CustomTooltip({ active, payload, label }) {
-  return !(active && payload && payload.length) ? null : (
-    <Tooltip
-      label={label ? label : "Brak kategorii"}
-      value={defaultCurrencyFormat.format(payload[0].value)}
-    />
-=======
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -50,6 +39,5 @@ export default function TooltipContent({
         {valueFormatter ? valueFormatter(value) : value}
       </StyledValue>
     </StyledTooltip>
->>>>>>> f67a1c4 (refactor: remove repeated code by creating new 'TooltipContent' component):cashly_web/src/pages/Analytics/TooltipContent/TooltipContent.js
   );
 }
