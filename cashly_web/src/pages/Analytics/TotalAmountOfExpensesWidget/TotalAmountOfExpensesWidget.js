@@ -5,6 +5,7 @@ import { useQuery } from "react-query";
 import Widget from "../Widget/Widget";
 import { Skeleton } from "@/components";
 import { analyticsAPI } from "@/api";
+import { defaultCurrencyFormat } from "@/utils";
 import { PeriodSelectorContext } from "../AnalyticsPageHeader/PeriodSelector/PeriodSelector";
 
 const StyledTotalAmountText = styled.p`
@@ -29,7 +30,9 @@ export default function TotalAmountOfExpensesWidget() {
       {isLoading || isError ? (
         <Skeleton height={32} width={128} />
       ) : (
-        <StyledTotalAmountText>{data.value} PLN</StyledTotalAmountText>
+        <StyledTotalAmountText>
+          {defaultCurrencyFormat.format(data.value)}
+        </StyledTotalAmountText>
       )}
     </Widget>
   );
