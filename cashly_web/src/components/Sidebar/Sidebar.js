@@ -66,12 +66,6 @@ const StyledNavLinkList = styled.ul`
   grid-auto-rows: auto;
 `;
 
-const StyledFooter = styled.footer`
-  margin-top: auto;
-  color: ${({ theme }) => theme.colors.gray600};
-  font-size: ${({ theme }) => theme.fontSizes.h6};
-`;
-
 export default function Sidebar() {
   const [expand, setExpand] = useState(true);
   const { user, logout } = useAuth();
@@ -129,10 +123,6 @@ export default function Sidebar() {
           </>
         )}
       </StyledNavLinkList>
-      <StyledFooter className="sidebarFooter">
-        <strong>© 2022 Cashly app</strong> <br />
-        by Michał Gołda
-      </StyledFooter>
     </StyledNav>
   );
 }
