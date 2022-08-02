@@ -15,6 +15,7 @@ import LinkButton from "./LinkButton/LinkButton";
 import Logo from "./Logo/Logo";
 import NonFieldError from "./NonFieldError/NonFieldError";
 import Avatar from "./Avatar/Avatar";
+import Footer from "./Footer/Footer";
 
 export {
   Page,
@@ -34,4 +35,5 @@ export {
   Logo,
   NonFieldError,
   Avatar,
+  Footer,
 };
