@@ -1,128 +1,160 @@
 import { useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import {
   faReceipt,
   faChartPie,
   faAngleLeft,
   faAngleRight,
   faGripVertical,
-  faArrowRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import { useAuth } from "@/hooks/auth";
-import { IconButton, Logo, Avatar, Button, Skeleton } from "@/components";
-import UserInfo from "./UserInfo/UserInfo";
-import UserInfoSkeleton from "./UserInfoSkeleton/UserInfoSkeleton";
+import { IconButton, Logo } from "@/components";
 import NavLinkButton from "./NavLinkButton/NavLinkButton";
 import NavLinkIconButton from "./NavLinkIconButton/NavLinkIconButton";
+import CurrentUserDetails from "./CurrentUserDetails/CurrentUserDetails";
 
 const StyledNav = styled.nav`
+  max-width: ${({ isExpanded }) => (isExpanded ? "256px" : "80px")};
+  width: 100%;
   height: 100vh;
   display: flex;
-  padding: 32px;
-  width: min-content;
   flex-direction: column;
   background-color: white;
   border-right: 2px solid ${({ theme }) => theme.colors.gray400};
+  transition-duration: 0.5s;
 
-  .sidebarCollapse {
-    margin-left: 64px;
+  .header {
+    justify-content: ${({ isExpanded }) =>
+      isExpanded ? "space-between" : "center"};
   }
 
-  ${({ expand }) =>
-    expand &&
-    css`
-      .sidebarExpand {
-        display: none;
-      }
-    `}
+  .appName {
+    display: ${({ isExpanded }) => (isExpanded ? "inherit" : "none")};
+  }
 
-  ${({ expand }) =>
-    !expand &&
-    css`
-      .sidebarAppName {
-        display: none;
-      }
-      .sidebarCollapse {
-        display: none;
-      }
-      .sidebarFooter {
-        display: none;
-      }
-    `}
+  .leftExpandBtn {
+    display: ${({ isExpanded }) => (isExpanded ? "inherit" : "none")};
+  }
+
+  .rightExpandBtn {
+    display: ${({ isExpanded }) => (isExpanded ? "none" : "inherit")};
+  }
+
+  .navLinkBtn {
+    display: ${({ isExpanded }) => (isExpanded ? "flex" : "none")};
+  }
+
+  .navLinkIconBtn {
+    display: ${({ isExpanded }) => (isExpanded ? "none" : "flex")};
+  }
+
+  .menu {
+    align-items: ${({ isExpanded }) => (isExpanded ? "inherit" : "center")};
+  }
+
+  .currentUserDetails {
+    row-gap: 16px;
+    flex-direction: ${({ isExpanded }) => (isExpanded ? "row" : "column")};
+  }
+
+  .currentUserEmail {
+    display: ${({ isExpanded }) => (isExpanded ? "unset" : "none")};
+  }
 `;
 
 const StyledHeader = styled.div`
   display: flex;
-  align-items: center;
+  padding: 16px;
   justify-content: space-between;
 `;
 
-const StyledNavLinkList = styled.ul`
-  display: grid;
-  row-gap: 16px;
-  margin-top: 32px;
-  grid-auto-rows: auto;
+const StyledMenu = styled.ul`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  row-gap: 8px;
+  list-style: none;
+  padding: 32px 16px 32px 16px;
+`;
+
+const StyledMenuItem = styled.li``;
+
+const StyledSeparator = styled.span`
+  height: 2px;
+  width: 100%;
+  display: block;
+  background-color: ${({ theme }) => theme.colors.gray400};
 `;
 
 export default function Sidebar() {
-  const [expand, setExpand] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(true);
   const { user, logout } = useAuth();
 
   return (
-    <StyledNav expand={expand}>
-      <StyledHeader>
-        <Logo className="sidebarAppName">Cashly</Logo>
+    <StyledNav isExpanded={isExpanded}>
+      <StyledHeader className="header">
+        <Logo className="appName" />
         <IconButton
+          onClick={() => setIsExpanded(false)}
+          className="leftExpandBtn"
           variant="text"
-          className="sidebarCollapse"
-          onClick={() => setExpand(false)}
           icon={<FontAwesomeIcon icon={faAngleLeft} />}
         />
         <IconButton
+          onClick={() => setIsExpanded(true)}
+          className="rightExpandBtn"
           variant="text"
-          className="sidebarExpand"
-          onClick={() => setExpand(true)}
           icon={<FontAwesomeIcon icon={faAngleRight} />}
         />
       </StyledHeader>
-      <StyledNavLinkList className="sidebarNavLinkList">
-        {expand ? (
-          <>
-            {user ? <UserInfo email={user.email} /> : <UserInfoSkeleton />}
-            <NavLinkButton to="/expenses">Wydatki</NavLinkButton>
-            <NavLinkButton to="/categories">Kategorie</NavLinkButton>
-            <NavLinkButton to="/analytics">Analityka</NavLinkButton>
-            <Button onClick={() => logout()}>Wyloguj się</Button>
-          </>
-        ) : (
-          <>
-            {user ? (
-              <Avatar email={user.email} />
-            ) : (
-              <Skeleton width={45} height={45} />
-            )}
-            <NavLinkIconButton
-              to="/expenses"
-              icon={<FontAwesomeIcon icon={faReceipt} />}
-            />
-            <NavLinkIconButton
-              to="/categories"
-              icon={<FontAwesomeIcon icon={faGripVertical} />}
-            />
-            <NavLinkIconButton
-              to="/analytics"
-              icon={<FontAwesomeIcon icon={faChartPie} />}
-            />
-            <IconButton
-              style={{ width: 40 }}
-              onClick={() => logout()}
-              icon={<FontAwesomeIcon icon={faArrowRightFromBracket} />}
-            />
-          </>
-        )}
-      </StyledNavLinkList>
+      <StyledSeparator />
+      <StyledMenu className="menu">
+        <StyledMenuItem>
+          <NavLinkButton
+            to="/expenses"
+            className="navLinkBtn"
+            startIcon={<FontAwesomeIcon icon={faReceipt} />}
+          >
+            Wydatki
+          </NavLinkButton>
+          <NavLinkIconButton
+            to="/expenses"
+            className="navLinkIconBtn"
+            icon={<FontAwesomeIcon icon={faReceipt} />}
+          />
+        </StyledMenuItem>
+        <StyledMenuItem>
+          <NavLinkButton
+            to="/categories"
+            className="navLinkBtn"
+            startIcon={<FontAwesomeIcon icon={faGripVertical} />}
+          >
+            Kategorie
+          </NavLinkButton>
+          <NavLinkIconButton
+            to="/categories"
+            className="navLinkIconBtn"
+            icon={<FontAwesomeIcon icon={faGripVertical} />}
+          />
+        </StyledMenuItem>
+        <StyledMenuItem>
+          <NavLinkButton
+            to="/analytics"
+            className="navLinkBtn"
+            startIcon={<FontAwesomeIcon icon={faChartPie} />}
+          >
+            Analityka
+          </NavLinkButton>
+          <NavLinkIconButton
+            to="/analytics"
+            className="navLinkIconBtn"
+            icon={<FontAwesomeIcon icon={faChartPie} />}
+          />
+        </StyledMenuItem>
+      </StyledMenu>
+      <StyledSeparator />
+      <CurrentUserDetails user={user} logoutHandler={() => logout()} />
     </StyledNav>
   );
 }
