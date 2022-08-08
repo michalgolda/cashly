@@ -1,24 +1,10 @@
-import PropTypes from "prop-types";
-import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import * as S from "./IconButton.styles";
 
-import { Button } from "../../components";
-
-
-const StyledButton = styled(Button)`
-    padding: 10.42px;
-    
-    svg {
-        width: ${({ theme }) => theme.fontSizes.h5} !important;
-        height: ${({ theme }) => theme.fontSizes.h5} !important;
-    }
-`;
-
-function IconButton(props) {
-    const { icon } = props;
-    
-    return <StyledButton {...props}>{icon}</StyledButton>;
+export default function IconButton({ icon, ...props }) {
+  return (
+    <S.IconButton {...props}>
+      <FontAwesomeIcon icon={icon} />
+    </S.IconButton>
+  );
 }
-
-IconButton.propTypes = { icon: PropTypes.element.isRequired };
-
-export default IconButton;

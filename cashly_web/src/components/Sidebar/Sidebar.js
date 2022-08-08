@@ -99,13 +99,13 @@ export default function Sidebar() {
           onClick={() => setIsExpanded(false)}
           className="leftExpandBtn"
           variant="text"
-          icon={<FontAwesomeIcon icon={faAngleLeft} />}
+          icon={faAngleLeft}
         />
         <IconButton
           onClick={() => setIsExpanded(true)}
           className="rightExpandBtn"
           variant="text"
-          icon={<FontAwesomeIcon icon={faAngleRight} />}
+          icon={faAngleRight}
         />
       </StyledHeader>
       <StyledSeparator />
@@ -121,7 +121,7 @@ export default function Sidebar() {
           <NavLinkIconButton
             to="/expenses"
             className="navLinkIconBtn"
-            icon={<FontAwesomeIcon icon={faReceipt} />}
+            icon={faReceipt}
           />
         </StyledMenuItem>
         <StyledMenuItem>
@@ -135,7 +135,7 @@ export default function Sidebar() {
           <NavLinkIconButton
             to="/categories"
             className="navLinkIconBtn"
-            icon={<FontAwesomeIcon icon={faGripVertical} />}
+            icon={faGripVertical}
           />
         </StyledMenuItem>
         <StyledMenuItem>
@@ -149,7 +149,7 @@ export default function Sidebar() {
           <NavLinkIconButton
             to="/analytics"
             className="navLinkIconBtn"
-            icon={<FontAwesomeIcon icon={faChartPie} />}
+            icon={faChartPie}
           />
         </StyledMenuItem>
       </StyledMenu>

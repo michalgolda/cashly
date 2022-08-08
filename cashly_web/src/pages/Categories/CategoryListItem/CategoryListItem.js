@@ -74,11 +74,11 @@ function CategoryListItem({ id, name, color }) {
         <StyledCategoryName>{name}</StyledCategoryName>
       </StyledCategory>
       <StyledEditButton
-        icon={<FontAwesomeIcon icon={faEdit} />}
+        icon={faEdit}
         onClick={() => editCategoryModal.show({ id, name, color })}
       />
       <StyledDeleteButton
-        icon={<FontAwesomeIcon icon={faTrashAlt} />}
+        icon={faTrashAlt}
         onClick={() => deleteCategoryMutation.mutate({ id })}
       />
     </StyledListItem>

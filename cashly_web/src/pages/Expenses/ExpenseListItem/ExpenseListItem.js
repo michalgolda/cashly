@@ -87,7 +87,7 @@ function ExpenseListItem({ id, amount, category, realisedDate }) {
       <StyledSpan>{realisedDate}</StyledSpan>
       <StyledActions>
         <StyledEditButton
-          icon={<FontAwesomeIcon icon={faEdit} />}
+          icon={faEdit}
           onClick={() => {
             editExpenseModal.show({
               id,
@@ -98,7 +98,7 @@ function ExpenseListItem({ id, amount, category, realisedDate }) {
           }}
         />
         <StyledDeleteButton
-          icon={<FontAwesomeIcon icon={faTrashAlt} />}
+          icon={faTrashAlt}
           onClick={() => deleteExpenseMutation.mutate({ id })}
         />
       </StyledActions>

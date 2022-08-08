@@ -1,6 +1,5 @@
 import { IconButton, Skeleton } from "@/components";
 import { getLetterFromEmail } from "@/utils";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import * as S from "./CurrentUserDetails.styled";
 
@@ -12,7 +11,7 @@ export default function CurrentUserDetails({ user, logoutHandler, ...props }) {
       <IconButton
         onClick={logoutHandler}
         variant="text"
-        icon={<FontAwesomeIcon icon={faArrowRightFromBracket} />}
+        icon={faArrowRightFromBracket}
       />
     </S.Container>
   ) : (
