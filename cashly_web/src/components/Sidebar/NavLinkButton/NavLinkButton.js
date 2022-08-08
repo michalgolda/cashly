@@ -28,12 +28,17 @@ const StyledNavLinkButton = styled(Button)`
     `}
 `;
 
-function NavLinkButton({ children, to }) {
+function NavLinkButton({ children, to, ...props }) {
   const isActive = useMatch({ path: to });
 
   return (
     <StyledNavLink to={to}>
-      <StyledNavLinkButton variant="text" isActive={isActive} fullWidth>
+      <StyledNavLinkButton
+        variant="text"
+        isActive={isActive}
+        fullWidth
+        {...props}
+      >
         {children}
       </StyledNavLinkButton>
     </StyledNavLink>
