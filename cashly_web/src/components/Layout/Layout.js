@@ -1,31 +1,16 @@
 import PropTypes from "prop-types";
-import styled from "styled-components";
-
+import * as S from "./Layout.styles";
 import { Sidebar, Footer } from "@/components";
 
-const StyledLayout = styled.div`
-  height: auto;
-  display: flex;
-  flex-direction: row;
-`;
-
-const StyledContentWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  overflow-y: auto;
-  max-height: 100vh;
-  flex-direction: column;
-`;
-
-function Layout({ children }) {
+function Layout({ children, ...props }) {
   return (
-    <StyledLayout>
+    <S.Layout {...props}>
       <Sidebar />
-      <StyledContentWrapper>
+      <S.Content>
         {children}
         <Footer />
-      </StyledContentWrapper>
-    </StyledLayout>
+      </S.Content>
+    </S.Layout>
   );
 }
 

@@ -1,17 +1,7 @@
-import styled from "styled-components";
+import * as S from "./NonFieldError.styles";
 
-const StyledMessage = styled.p`
-  color: white;
-  padding: 6px 8px;
-  text-align: center;
-  word-break: break-word;
-  font-size: ${({ theme }) => theme.fontSizes.h6};
-  background-color: ${({ theme }) => theme.colors.red400};
-  font-weight: ${({ theme }) => theme.fontWeights.semiBold};
-`;
-
-function NonFieldError({ message }) {
-  return <StyledMessage>{message}</StyledMessage>;
+function NonFieldError({ message, ...props }) {
+  return <S.Message {...props}>{message}</S.Message>;
 }
 
 export default NonFieldError;

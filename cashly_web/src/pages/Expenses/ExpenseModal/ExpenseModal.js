@@ -1,29 +1,19 @@
 import * as yup from "yup";
 import PropTypes from "prop-types";
 import { useFormik } from "formik";
-import styled from "styled-components";
 import { useQuery } from "react-query";
-
+import * as S from "./ExpenseModal.styles";
 import { expenseCategoryAPI } from "@/api";
-import { Modal, Button, Input } from "@/components";
+import { Button, Input } from "@/components";
 
-const StyledModal = styled(Modal)`
-  text-align: center;
-`;
-
-const StyledTextContainer = styled.div`
-  margin: 16px 0 32px 0;
-`;
-
-const StyledForm = styled.form`
-  display: grid;
-  row-gap: 1rem;
-  margin-top: 16px;
-`;
-
-function ExpenseModal(props) {
-  const { title, onSubmit, submitText, description, initialValues } = props;
-
+function ExpenseModal({
+  title,
+  onSubmit,
+  submitText,
+  description,
+  initialValues,
+  ...props
+}) {
   initialValues.amount = Number(initialValues.amount).toFixed(2);
 
   const validationSchema = yup.object().shape({
@@ -49,12 +39,12 @@ function ExpenseModal(props) {
   );
 
   return (
-    <StyledModal {...props}>
-      <StyledTextContainer>
+    <S.Modal {...props}>
+      <S.TextContainer>
         <h2>{title}</h2>
         <p>{description}</p>
-      </StyledTextContainer>
-      <StyledForm onSubmit={handleSubmit}>
+      </S.TextContainer>
+      <S.Form onSubmit={handleSubmit}>
         <Input
           step="any"
           type="number"
@@ -96,8 +86,8 @@ function ExpenseModal(props) {
         <Button type="submit" fullWidth>
           {submitText}
         </Button>
-      </StyledForm>
-    </StyledModal>
+      </S.Form>
+    </S.Modal>
   );
 }
 

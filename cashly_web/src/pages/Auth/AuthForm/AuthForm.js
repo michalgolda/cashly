@@ -1,20 +1,11 @@
-import styled from "styled-components";
-import { NonFieldError } from "../../../components";
+import * as S from "./AuthForm.styles";
+import { NonFieldError } from "@/components";
 
-const StyledForm = styled.form`
-  width: 100%;
-  display: grid;
-  row-gap: 1rem;
-  margin: 16px auto;
-`;
-
-export default function AuthForm(props) {
-  const { children, nonFieldError } = props;
-
+export default function AuthForm({ children, nonFieldError, ...props }) {
   return (
-    <StyledForm {...props}>
+    <S.Form {...props}>
       {nonFieldError && <NonFieldError message={nonFieldError} />}
       {children}
-    </StyledForm>
+    </S.Form>
   );
 }

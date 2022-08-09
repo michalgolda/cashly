@@ -1,7 +1,5 @@
-import styled from "styled-components";
-
-const StyledText = styled.p`text-align: center;`;
+import * as S from "./AuthBottomText.styles";
 
 export default function AuthBottomText({ children }) {
-    return <StyledText>{children}</StyledText>;
+  return <S.Text>{children}</S.Text>;
 }

@@ -1,55 +1,30 @@
 import PropTypes from "prop-types";
-import styled from "styled-components";
+import * as S from "./Informer.styles";
 
-
-const StyledContainer = styled.div`
-    text-align: center;
-    padding: 0 32px 0 32px;
-`;
-
-const StyledIllustration = styled.img`
-    width: 100%;
-    max-width: 256px;
-`;
-
-const StyledText = styled.p`
-    margin-top: 16px;
-    font-size: ${({ theme }) => theme.fontSizes.h3};
-    font-weight: ${({ theme }) => theme.fontWeights.semiBold};
-`;
-
-const StyledBottomElementWrapper = styled.div`margin-top: 32px;`;
-
-function Informer(props) {
-    const { 
-        text, 
-        bottomElement, 
-        illustrationSource,
-        illustrationStyles
-    } = props;
-
-    return (
-        <StyledContainer {...props}>
-            {illustrationSource && (
-                <StyledIllustration 
-                    src={illustrationSource} 
-                    style={illustrationStyles} 
-                />
-            )}
-            <StyledText>{text}</StyledText>
-            {bottomElement && (
-                <StyledBottomElementWrapper>
-                    {bottomElement}
-                </StyledBottomElementWrapper>
-            )}
-        </StyledContainer>
-    );
+function Informer({
+  text,
+  bottomElement,
+  illustrationSource,
+  illustrationStyles,
+  ...props
+}) {
+  return (
+    <S.Container {...props}>
+      {illustrationSource && (
+        <S.Illustration src={illustrationSource} style={illustrationStyles} />
+      )}
+      <S.Text>{text}</S.Text>
+      {bottomElement && (
+        <S.BottomElementWrapper>{bottomElement}</S.BottomElementWrapper>
+      )}
+    </S.Container>
+  );
 }
 
 Informer.propTypes = {
-    bottomElement: PropTypes.element,
-    text: PropTypes.string.isRequired,
-    illustrationSource: PropTypes.string
+  bottomElement: PropTypes.element,
+  text: PropTypes.string.isRequired,
+  illustrationSource: PropTypes.string,
 };
 
 export default Informer;

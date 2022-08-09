@@ -1,22 +1,5 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
-
-const StyledTooltip = styled.div`
-  padding: 15px;
-  border-radius: 2px;
-  background-color: #fff;
-  border: 1px solid ${({ theme }) => theme.colors.gray400};
-`;
-
-const StyledLabel = styled.p`
-  font-size: ${({ theme }) => theme.fontSizes.h5};
-  font-weight: ${({ theme }) => theme.fontWeights.semiBold};
-`;
-
-const StyledValue = styled.p`
-  color: ${({ theme }) => theme.colors.blue400};
-  font-size: ${({ theme }) => theme.fontSizes.h5};
-`;
+import * as S from "./TooltipContent.styles";
 
 export default function TooltipContent({
   active,
@@ -33,13 +16,9 @@ export default function TooltipContent({
   }, [payload]);
 
   return hidden ? null : (
-    <StyledTooltip>
-      <StyledLabel>
-        {labelFormatter ? labelFormatter(label) : label}
-      </StyledLabel>
-      <StyledValue>
-        {valueFormatter ? valueFormatter(value) : value}
-      </StyledValue>
-    </StyledTooltip>
+    <S.Tooltip>
+      <S.Label>{labelFormatter ? labelFormatter(label) : label}</S.Label>
+      <S.Value>{valueFormatter ? valueFormatter(value) : value}</S.Value>
+    </S.Tooltip>
   );
 }

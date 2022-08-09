@@ -1,40 +1,14 @@
 import PropTypes from "prop-types";
-import styled, { css } from "styled-components";
-import { NavLink, useMatch } from "react-router-dom";
+import * as S from "./NavLinkIconButton.styles";
+import { useMatch } from "react-router-dom";
 
-import IconButton from "../../IconButton/IconButton";
-
-const StyledNavLink = styled(NavLink)`
-  text-decoration: none;
-`;
-
-const StyledNavLinkIconButton = styled(IconButton)`
-  color: ${({ theme }) => theme.colors.gray600};
-  font-weight: ${({ theme }) => theme.fontWeights.semiBold};
-
-  ${({ isActive }) =>
-    isActive &&
-    css`
-      color: ${({ theme }) => theme.colors.primary400};
-      background-color: ${({ theme }) => theme.colors.gray300};
-
-      &:hover {
-        background-color: ${({ theme }) => theme.colors.gray300};
-      }
-      &:active {
-        background-color: ${({ theme }) => theme.colors.gray300};
-      }
-    `}
-`;
-
-function NavLinkIconButton(props) {
-  const { to } = props;
+function NavLinkIconButton({ to, ...props }) {
   const isActive = useMatch({ path: to });
 
   return (
-    <StyledNavLink to={to}>
-      <StyledNavLinkIconButton variant="text" isActive={isActive} {...props} />
-    </StyledNavLink>
+    <S.NavLink to={to}>
+      <S.NavLinkButton variant="text" isActive={isActive} {...props} />
+    </S.NavLink>
   );
 }
 

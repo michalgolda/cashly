@@ -1,24 +1,9 @@
 import { useFormik } from "formik";
-import styled from "styled-components";
 import { useMutation } from "react-query";
 import NiceModal, { useModal, bootstrapDialog } from "@ebay/nice-modal-react";
-
+import * as S from "./ExportExpensesModal.styles";
 import { expenseAPI } from "@/api";
-import { Modal, Input, Button } from "@/components";
-
-const StyledModal = styled(Modal)`
-  text-align: center;
-`;
-
-const StyledTextContainer = styled.div`
-  margin: 16px 0 32px 0;
-`;
-
-const StyledForm = styled.form`
-  display: grid;
-  row-gap: 1rem;
-  margin-top: 16px;
-`;
+import { Input, Button } from "@/components";
 
 export default NiceModal.create(() => {
   const modal = useModal();
@@ -41,15 +26,15 @@ export default NiceModal.create(() => {
   });
 
   return (
-    <StyledModal {...bootstrapDialog(modal)}>
-      <StyledTextContainer>
+    <S.Modal {...bootstrapDialog(modal)}>
+      <S.TextContainer>
         <h2>Eksportuj wydatki</h2>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt.
         </p>
-      </StyledTextContainer>
-      <StyledForm onSubmit={handleSubmit}>
+      </S.TextContainer>
+      <S.Form onSubmit={handleSubmit}>
         <Input
           as="select"
           name="fileFormat"
@@ -61,7 +46,7 @@ export default NiceModal.create(() => {
           <option value="CSV">CSV</option>
         </Input>
         <Button fullWidth>Eksportuj</Button>
-      </StyledForm>
-    </StyledModal>
+      </S.Form>
+    </S.Modal>
   );
 });

@@ -1,18 +1,11 @@
 import { useContext } from "react";
-import styled from "styled-components";
 import { useQuery } from "react-query";
-
+import * as S from "./TotalAmountOfExpensesWidget.styles";
 import Widget from "../Widget/Widget";
 import { Skeleton } from "@/components";
 import { analyticsAPI } from "@/api";
 import { defaultCurrencyFormat } from "@/utils";
 import { PeriodSelectorContext } from "../AnalyticsPageHeader/PeriodSelector/PeriodSelector";
-
-const StyledTotalAmountText = styled.p`
-  color: ${({ theme }) => theme.colors.blue400};
-  font-size: ${({ theme }) => theme.fontSizes.h5};
-  font-weight: ${({ theme }) => theme.fontWeights.semiBold};
-`;
 
 export default function TotalAmountOfExpensesWidget() {
   const { currentPeriod } = useContext(PeriodSelectorContext);
@@ -30,9 +23,9 @@ export default function TotalAmountOfExpensesWidget() {
       {isLoading || isError ? (
         <Skeleton height={32} width={128} />
       ) : (
-        <StyledTotalAmountText>
+        <S.TotalAmountText>
           {defaultCurrencyFormat.format(data.value)}
-        </StyledTotalAmountText>
+        </S.TotalAmountText>
       )}
     </Widget>
   );

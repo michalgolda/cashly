@@ -1,19 +1,11 @@
-import styled from "styled-components";
-
-const StyledFooter = styled.footer`
-  margin-top: auto;
-  text-align: center;
-  padding-bottom: 16px;
-  color: ${({ theme }) => theme.colors.gray600};
-  font-size: ${({ theme }) => theme.fontSizes.h6};
-`;
+import * as S from "./Footer.styles";
 
 export default function Footer() {
   return (
-    <StyledFooter>
+    <S.Footer>
       <span>
         <strong>© 2022 Cashly app</strong> <br /> by Michał Gołda
       </span>
-    </StyledFooter>
+    </S.Footer>
   );
 }

@@ -1,10 +1,5 @@
-import styled from "styled-components";
-
-const StyledText = styled.h2`
-    text-transform: uppercase;
-    font-weight: ${({ theme }) => theme.fontWeights.extraBold};
-`;
+import * as S from "./Logo.styles";
 
 export default function Logo(props) {
-    return <StyledText {...props}>Cashly</StyledText>;
+  return <S.Text {...props}>Cashly</S.Text>;
 }

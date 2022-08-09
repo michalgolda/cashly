@@ -1,25 +1,18 @@
 import PropTypes from "prop-types";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import * as S from "./LinkButton.styles";
+import { Button } from "@/components";
 
-import { Button } from "../../components";
-
-
-const StyledLink = styled(Link)`text-decoration: none;`;
-
-function LinkButton(props) {
-    const { to, children } = props;
-
-    return (
-        <StyledLink to={to}>
-            <Button {...props}>{children}</Button>
-        </StyledLink>
-    );
+function LinkButton({ to, children, ...props }) {
+  return (
+    <S.Link to={to}>
+      <Button {...props}>{children}</Button>
+    </S.Link>
+  );
 }
 
 LinkButton.propTypes = {
-    to: PropTypes.string.isRequired,
-    children: PropTypes.node.isRequired
+  to: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default LinkButton;

@@ -1,16 +1,8 @@
 import PropTypes from "prop-types";
-import styled from "styled-components";
+import * as S from "./ListItem.styles";
 
-
-const StyledListItem = styled.li`
-    padding: 15px;
-    border-radius: 2px;
-    background-color: white;
-    border: 1px solid ${({ theme }) => theme.colors.gray400};
-`;
-
-function ListItem({ className, children }) {
-    return <StyledListItem className={className}>{children}</StyledListItem>;
+function ListItem({ children, ...props }) {
+  return <S.ListItem {...props}>{children}</S.ListItem>;
 }
 
 ListItem.propTypes = { children: PropTypes.node };
