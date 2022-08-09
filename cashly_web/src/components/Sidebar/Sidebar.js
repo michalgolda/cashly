@@ -7,7 +7,6 @@ import {
   faAngleRight,
   faGripVertical,
 } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAuth } from "@/hooks/auth";
 import { IconButton, Logo } from "@/components";
 import NavLinkButton from "./NavLinkButton/NavLinkButton";
@@ -114,7 +113,7 @@ export default function Sidebar() {
           <NavLinkButton
             to="/expenses"
             className="navLinkBtn"
-            startIcon={<FontAwesomeIcon icon={faReceipt} />}
+            startIcon={faReceipt}
           >
             Wydatki
           </NavLinkButton>
@@ -128,7 +127,7 @@ export default function Sidebar() {
           <NavLinkButton
             to="/categories"
             className="navLinkBtn"
-            startIcon={<FontAwesomeIcon icon={faGripVertical} />}
+            startIcon={faGripVertical}
           >
             Kategorie
           </NavLinkButton>
@@ -142,7 +141,7 @@ export default function Sidebar() {
           <NavLinkButton
             to="/analytics"
             className="navLinkBtn"
-            startIcon={<FontAwesomeIcon icon={faChartPie} />}
+            startIcon={faChartPie}
           >
             Analityka
           </NavLinkButton>
