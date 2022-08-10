@@ -13,22 +13,35 @@ import NavLinkButton from "./NavLinkButton/NavLinkButton";
 import NavLinkIconButton from "./NavLinkIconButton/NavLinkIconButton";
 import CurrentUserDetails from "./CurrentUserDetails/CurrentUserDetails";
 
+const useSidebar = () => {
+  const [isExpanded, setIsExpanded] = useState(
+    JSON.parse(localStorage.getItem("sidebarIsExpanded"))
+  );
+
+  const toggleSidebarExpand = () => {
+    setIsExpanded(!isExpanded);
+    localStorage.setItem("sidebarIsExpanded", !isExpanded);
+  };
+
+  return [isExpanded, toggleSidebarExpand];
+};
+
 export default function Sidebar() {
   const { user, logout } = useAuth();
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, toggleSidebarExpand] = useSidebar();
 
   return (
     <S.Nav isExpanded={isExpanded}>
       <S.Header className="header">
         <Logo className="appName" />
         <IconButton
-          onClick={() => setIsExpanded(false)}
+          onClick={() => toggleSidebarExpand()}
           className="leftExpandBtn"
           variant="text"
           icon={faAngleLeft}
         />
         <IconButton
-          onClick={() => setIsExpanded(true)}
+          onClick={() => toggleSidebarExpand()}
           className="rightExpandBtn"
           variant="text"
           icon={faAngleRight}
