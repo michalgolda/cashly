@@ -4,7 +4,7 @@ import * as S from "./TotalAmountOfExpensesWidget.styles";
 import Widget from "../Widget/Widget";
 import { Skeleton } from "@/components";
 import { analyticsAPI } from "@/api";
-import { defaultCurrencyFormat } from "@/utils";
+import { defaultCurrencyFormat } from "@/helpers/currencyFormat";
 import { PeriodSelectorContext } from "../AnalyticsPageHeader/PeriodSelector/PeriodSelector";
 
 export default function TotalAmountOfExpensesWidget() {

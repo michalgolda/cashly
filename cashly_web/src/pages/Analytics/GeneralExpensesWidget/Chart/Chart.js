@@ -7,8 +7,7 @@ import {
   ReferenceLine,
   ResponsiveContainer,
 } from "recharts";
-
-import { defaultCurrencyFormat } from "@/utils";
+import { defaultCurrencyFormat } from "@/helpers/currencyFormat";
 import TooltipContent from "../../TooltipContent/TooltipContent";
 
 const StyledWrapper = styled.div`

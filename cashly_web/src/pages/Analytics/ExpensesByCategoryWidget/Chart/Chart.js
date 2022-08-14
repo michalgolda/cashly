@@ -1,6 +1,5 @@
 import { Bar, XAxis, BarChart, Tooltip, ResponsiveContainer } from "recharts";
-
-import { defaultCurrencyFormat } from "@/utils";
+import { defaultCurrencyFormat } from "@/helpers/currencyFormat";
 import TooltipContent from "../../TooltipContent/TooltipContent";
 
 export default function Chart({ data }) {

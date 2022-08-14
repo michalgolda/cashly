@@ -4,7 +4,7 @@ import { useModal } from "@ebay/nice-modal-react";
 import { useQueryClient, useMutation } from "react-query";
 import { faTrashAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { expenseAPI } from "@/api";
-import { defaultCurrencyFormat } from "@/utils";
+import { defaultCurrencyFormat } from "@/helpers/currencyFormat";
 import EditExpenseModal from "../../EditExpenseModal/EditExpenseModal";
 
 function ExpenseListItem({ id, amount, category, realisedDate }) {

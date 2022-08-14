@@ -3,7 +3,6 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { QueryClientProvider } from "react-query";
 import { Provider as NiceModalProvider } from "@ebay/nice-modal-react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
 import config from "@/config";
 import {
   Analytics,
@@ -16,7 +15,7 @@ import {
 import { AuthRequired, AuthRedirect } from "@/components";
 import { SessionProvider } from "@/contexts/session";
 import { theme, GlobalStyle } from "@/styles";
-import { queryClient } from "@/utils";
+import { queryClient } from "@/helpers/queryClient";
 
 function App() {
   return (

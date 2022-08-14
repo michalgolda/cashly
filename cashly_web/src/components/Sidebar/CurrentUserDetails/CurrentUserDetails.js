@@ -1,5 +1,5 @@
 import { IconButton, Skeleton } from "@/components";
-import { getLetterFromEmail } from "@/utils";
+import { getLetterFromEmail } from "@/helpers/emailString";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import * as S from "./CurrentUserDetails.styles";
 
