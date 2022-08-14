@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { authAPI, userAPI } from "@/api";
@@ -27,6 +27,15 @@ export const useSessionProvider = () => {
     accessTokenStorage.clear();
     navigate("/login", { replace: true });
   };
+
+  useEffect(() => {
+    getCurrentUserWrapper();
+
+    window.addEventListener("logout", () => logout());
+    window.addEventListener("storage", () =>
+      accessTokenStorage.get() ? getCurrentUserWrapper() : logout()
+    );
+  }, []);
 
   return {
     user,
