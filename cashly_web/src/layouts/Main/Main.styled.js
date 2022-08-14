@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Layout = styled.div`
+const Main = styled.div`
   height: auto;
   display: flex;
   flex-direction: row;
@@ -14,4 +14,4 @@ const Content = styled.div`
   flex-direction: column;
 `;
 
-export { Layout, Content };
+export { Main, Content };

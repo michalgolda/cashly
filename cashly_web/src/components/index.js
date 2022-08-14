@@ -2,7 +2,6 @@ import List from "./List/List";
 import Page from "./Page/Page";
 import Input from "./Input/Input";
 import Modal from "./Modal/Modal";
-import Layout from "./Layout/Layout";
 import Button from "./Button/Button";
 import Header from "./Header/Header";
 import ListItem from "./ListItem/ListItem";
@@ -24,7 +23,6 @@ export {
   List,
   Input,
   Modal,
-  Layout,
   Button,
   Header,
   Sidebar,

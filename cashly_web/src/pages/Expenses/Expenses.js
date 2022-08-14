@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
-
+import { MainLayout } from "@/layouts";
 import { expenseAPI } from "@/api";
-import { Page, PageMain, Layout } from "@/components";
+import { Page, PageMain } from "@/components";
 import ExpenseList from "./ExpenseList/ExpenseList";
 import ExpensePageHeader from "./ExpensePageHeader/ExpensePageHeader";
 
@@ -16,7 +16,7 @@ export default function Expenses() {
 
   return (
     <Page title="Cashly - Wydatki">
-      <Layout>
+      <MainLayout>
         <ExpensePageHeader showRightElement={showRightElementOfHeader} />
         <PageMain>
           <ExpenseList
@@ -25,7 +25,7 @@ export default function Expenses() {
             isLoading={isLoading || isError}
           />
         </PageMain>
-      </Layout>
+      </MainLayout>
     </Page>
   );
 }

@@ -1,7 +1,7 @@
-import AuthLayout from "../AuthLayout/AuthLayout";
 import AuthBottomText from "../AuthBottomText/AuthBottomText";
 import LoginForm from "./LoginForm/LoginForm";
 import { Page } from "../../../components";
+import { AuthLayout } from "@/layouts";
 
 export default function Login() {
   return (

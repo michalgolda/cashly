@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
-
-import { Page, PageMain, Layout } from "@/components";
+import { MainLayout } from "@/layouts";
+import { Page, PageMain } from "@/components";
 import CategoryList from "./CategoryList/CategoryList";
 import { expenseCategoryAPI } from "@/api";
 import CategoryPageHeader from "./CategoryPageHeader/CategoryPageHeader";
@@ -16,7 +16,7 @@ export default function Categories() {
 
   return (
     <Page title="Cashly - Kategorie">
-      <Layout>
+      <MainLayout>
         <CategoryPageHeader showRightElement={showRightElementOfHeader} />
         <PageMain>
           <CategoryList
@@ -25,7 +25,7 @@ export default function Categories() {
             isLoading={isLoading || isError}
           />
         </PageMain>
-      </Layout>
+      </MainLayout>
     </Page>
   );
 }

@@ -1,7 +1,7 @@
-import AuthLayout from "../AuthLayout/AuthLayout";
 import AuthBottomText from "../AuthBottomText/AuthBottomText";
 import RegisterForm from "./RegisterForm/RegisterForm";
 import { Page } from "../../../components";
+import { AuthLayout } from "@/layouts";
 
 export default function Register() {
   return (
