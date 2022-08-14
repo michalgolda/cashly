@@ -1,4 +1,4 @@
-import * as S from "./NotFound.styles";
+import * as S from "./NotFound.styled";
 import { Page, LinkButton, Informer } from "@/components";
 import NotFoundIllustration from "@/assets/notFound.svg";
 

@@ -2,7 +2,7 @@ import * as yup from "yup";
 import PropTypes from "prop-types";
 import { useFormik } from "formik";
 import { Input, Button } from "@/components";
-import * as S from "./CategoryModal.styles";
+import * as S from "./CategoryModal.styled";
 
 function CategoryModal({
   title,

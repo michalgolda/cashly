@@ -1,7 +1,7 @@
 import { IconButton, Skeleton } from "@/components";
 import { getLetterFromEmail } from "@/helpers/emailString";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import * as S from "./CurrentUserDetails.styles";
+import * as S from "./CurrentUserDetails.styled";
 
 export default function CurrentUserDetails({ user, logoutHandler, ...props }) {
   return user ? (

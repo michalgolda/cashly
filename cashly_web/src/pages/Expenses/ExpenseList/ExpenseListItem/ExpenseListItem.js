@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
-import * as S from "./ExpenseListItem.styles";
+import * as S from "./ExpenseListItem.styled";
 import { useModal } from "@ebay/nice-modal-react";
 import { useQueryClient, useMutation } from "react-query";
 import { faTrashAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { expenseAPI } from "@/api";
 import { defaultCurrencyFormat } from "@/helpers/currencyFormat";
-import EditExpenseModal from "../../EditExpenseModal/EditExpenseModal";
+import EditExpenseModal from "@/pages/Expenses/EditExpenseModal";
 
 function ExpenseListItem({ id, amount, category, realisedDate }) {
   const queryClient = useQueryClient();

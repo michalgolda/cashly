@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import * as S from "./Informer.styles";
+import * as S from "./Informer.styled";
 
 function Informer({
   text,

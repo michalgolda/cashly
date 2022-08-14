@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import { useQuery } from "react-query";
 
-import Chart from "./Chart/Chart";
-import Widget from "../Widget/Widget";
+import Chart from "./Chart";
+import Widget from "@/pages/Analytics/Widget/Widget";
 import { Skeleton } from "@/components";
 import { analyticsAPI } from "@/api";
-import { PeriodSelectorContext } from "../AnalyticsPageHeader/PeriodSelector/PeriodSelector";
+import { PeriodSelectorContext } from "@/pages/Analytics/AnalyticsPageHeader/PeriodSelector";
 
 export default function GeneralExpensesWidget() {
   const { currentPeriod } = useContext(PeriodSelectorContext);

@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import * as S from "./Button.styles";
+import * as S from "./Button.styled";
 
 const BUTTON_VARIANTS = {
   text: S.TextButton,

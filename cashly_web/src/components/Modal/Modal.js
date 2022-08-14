@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import * as S from "./Modal.styles";
+import * as S from "./Modal.styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 

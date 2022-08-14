@@ -1,8 +1,8 @@
-import * as S from "./ExpenseListEmptyInformer.styles";
+import * as S from "./ExpenseListEmptyInformer.styled";
 import { Informer } from "@/components";
 import VoidIllustration from "@/assets/void.svg";
-import AddExpenseButton from "../../AddExpenseButton/AddExpenseButton";
-import ImportExpenseButton from "../../ImportExpensesButton/ImportExpensesButton";
+import AddExpenseButton from "@/pages/Expenses/AddExpenseButton";
+import ImportExpenseButton from "@/pages/Expenses/ImportExpensesButton";
 
 export default function ExpenseListEmptyInformer() {
   return (

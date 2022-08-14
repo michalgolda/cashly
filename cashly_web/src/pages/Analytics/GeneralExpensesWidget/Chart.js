@@ -8,7 +8,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { defaultCurrencyFormat } from "@/helpers/currencyFormat";
-import TooltipContent from "../../TooltipContent/TooltipContent";
+import TooltipContent from "@/pages/Analytics/TooltipContent/TooltipContent";
 
 const StyledWrapper = styled.div`
   width: 100%;

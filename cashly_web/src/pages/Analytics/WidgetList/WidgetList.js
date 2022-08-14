@@ -1,4 +1,4 @@
-import * as S from "./WidgetList.styles";
+import * as S from "./WidgetList.styled";
 import GeneralExpensesWidget from "../GeneralExpensesWidget/GeneralExpensesWidget";
 import ExpensesByCategoryWidget from "../ExpensesByCategoryWidget/ExpensesByCategoryWidget";
 import CountExpensesByCategoryWidget from "../CountExpensesByCategoryWidget/CountExpensesByCategoryWidget";

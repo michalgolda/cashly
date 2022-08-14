@@ -1,7 +1,6 @@
 import moment from "moment";
 import { createContext, useContext, useState } from "react";
-
-import { Input } from "../../../../components";
+import { Input } from "@/components";
 
 const getPeriod = (unit, subtractAmount, subtractUnit) => {
   return {

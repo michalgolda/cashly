@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "react-query";
 import NiceModal, { useModal, bootstrapDialog } from "@ebay/nice-modal-react";
 
 import { expenseAPI } from "@/api";
-import ExpenseModal from "../ExpenseModal/ExpenseModal";
+import ExpenseModal from "./ExpenseModal/ExpenseModal";
 
 export default NiceModal.create(
   ({ id, amount, realisedDate, expenseCategoryId }) => {

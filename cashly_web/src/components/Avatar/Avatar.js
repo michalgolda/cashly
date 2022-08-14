@@ -1,4 +1,4 @@
-import * as S from "./Avatar.styles";
+import * as S from "./Avatar.styled";
 
 export default function Avatar({ letter, ...props }) {
   return (

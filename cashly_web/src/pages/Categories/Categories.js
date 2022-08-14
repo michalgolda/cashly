@@ -1,9 +1,9 @@
 import { useQuery } from "react-query";
 import { MainLayout } from "@/layouts";
 import { Page, PageMain } from "@/components";
-import CategoryList from "./CategoryList/CategoryList";
 import { expenseCategoryAPI } from "@/api";
-import CategoryPageHeader from "./CategoryPageHeader/CategoryPageHeader";
+import CategoryPageHeader from "./CategoryPageHeader";
+import CategoryList from "./CategoryList/CategoryList";
 
 export default function Categories() {
   const { data, isLoading, isError } = useQuery(

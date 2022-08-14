@@ -1,4 +1,4 @@
-import * as S from "./AuthForm.styles";
+import * as S from "./AuthForm.styled";
 import { NonFieldError } from "@/components";
 
 export default function AuthForm({ children, nonFieldError, ...props }) {

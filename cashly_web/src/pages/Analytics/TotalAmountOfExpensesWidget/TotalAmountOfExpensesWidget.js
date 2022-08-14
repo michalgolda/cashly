@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import { useQuery } from "react-query";
-import * as S from "./TotalAmountOfExpensesWidget.styles";
+import * as S from "./TotalAmountOfExpensesWidget.styled";
 import Widget from "../Widget/Widget";
 import { Skeleton } from "@/components";
 import { analyticsAPI } from "@/api";
 import { defaultCurrencyFormat } from "@/helpers/currencyFormat";
-import { PeriodSelectorContext } from "../AnalyticsPageHeader/PeriodSelector/PeriodSelector";
+import { PeriodSelectorContext } from "@/pages/Analytics/AnalyticsPageHeader/PeriodSelector";
 
 export default function TotalAmountOfExpensesWidget() {
   const { currentPeriod } = useContext(PeriodSelectorContext);

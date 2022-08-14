@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import * as S from "./Input.styles";
+import * as S from "./Input.styled";
 
 function Input({ className, fullWidth, labelText, error, ...props }) {
   return (

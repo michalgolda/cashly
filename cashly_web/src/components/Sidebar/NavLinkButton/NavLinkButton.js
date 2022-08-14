@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import * as S from "./NavLinkButton.styles";
+import * as S from "./NavLinkButton.styled";
 import { useMatch } from "react-router-dom";
 
 function NavLinkButton({ children, to, ...props }) {

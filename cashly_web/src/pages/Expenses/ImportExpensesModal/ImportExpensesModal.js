@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "react-query";
 import NiceModal, { useModal, bootstrapDialog } from "@ebay/nice-modal-react";
-import * as S from "./ImportExpensesModal.styles";
+import * as S from "./ImportExpensesModal.styled";
 import { expenseAPI } from "@/api";
 import { Input, Button } from "@/components";
 

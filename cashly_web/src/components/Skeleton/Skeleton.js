@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import * as S from "./Skeleton.styles";
+import * as S from "./Skeleton.styled";
 
 const SKELETON_TYPES = {
   circle: S.CircleSkeleton,

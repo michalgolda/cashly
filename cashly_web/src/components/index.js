@@ -1,41 +1,19 @@
-import List from "./List/List";
-import Page from "./Page/Page";
-import Input from "./Input/Input";
-import Modal from "./Modal/Modal";
-import Button from "./Button/Button";
-import Header from "./Header/Header";
-import ListItem from "./ListItem/ListItem";
-import Informer from "./Informer/Informer";
-import Skeleton from "./Skeleton/Skeleton";
-import PageMain from "./PageMain/PageMain";
-import IconButton from "./IconButton/IconButton";
-import Avatar from "./Avatar/Avatar";
-import LinkButton from "./LinkButton/LinkButton";
-import Logo from "./Logo/Logo";
-import NonFieldError from "./NonFieldError/NonFieldError";
-import Footer from "./Footer/Footer";
-import Sidebar from "./Sidebar/Sidebar";
-import AuthRedirect from "./AuthRedirect/AuthRedirect";
-import AuthRequired from "./AuthRequired/AuthRequired";
-
-export {
-  Page,
-  List,
-  Input,
-  Modal,
-  Button,
-  Header,
-  Sidebar,
-  Informer,
-  Skeleton,
-  ListItem,
-  PageMain,
-  IconButton,
-  LinkButton,
-  Logo,
-  NonFieldError,
-  Avatar,
-  Footer,
-  AuthRedirect,
-  AuthRequired,
-};
+export { default as List } from "./List/List";
+export { default as Page } from "./Page";
+export { default as Input } from "./Input/Input";
+export { default as Modal } from "./Modal/Modal";
+export { default as Button } from "./Button/Button";
+export { default as Header } from "./Header/Header";
+export { default as ListItem } from "./ListItem/ListItem";
+export { default as Informer } from "./Informer/Informer";
+export { default as Skeleton } from "./Skeleton/Skeleton";
+export { default as PageMain } from "./PageMain/PageMain";
+export { default as IconButton } from "./IconButton/IconButton";
+export { default as Avatar } from "./Avatar/Avatar";
+export { default as LinkButton } from "./LinkButton/LinkButton";
+export { default as Logo } from "./Logo/Logo";
+export { default as NonFieldError } from "./NonFieldError/NonFieldError";
+export { default as Footer } from "./Footer/Footer";
+export { default as Sidebar } from "./Sidebar/Sidebar";
+export { default as AuthRedirect } from "./AuthRedirect";
+export { default as AuthRequired } from "./AuthRequired";

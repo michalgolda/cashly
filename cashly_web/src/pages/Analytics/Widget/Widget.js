@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import * as S from "./Widget.styles";
+import * as S from "./Widget.styled";
 
 function Widget({ className, children, title, centerContent }) {
   return (

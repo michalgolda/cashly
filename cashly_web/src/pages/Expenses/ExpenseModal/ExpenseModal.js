@@ -2,7 +2,7 @@ import * as yup from "yup";
 import PropTypes from "prop-types";
 import { useFormik } from "formik";
 import { useQuery } from "react-query";
-import * as S from "./ExpenseModal.styles";
+import * as S from "./ExpenseModal.styled";
 import { expenseCategoryAPI } from "@/api";
 import { Button, Input } from "@/components";
 

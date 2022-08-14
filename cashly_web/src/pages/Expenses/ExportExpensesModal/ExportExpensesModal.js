@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import { useMutation } from "react-query";
 import NiceModal, { useModal, bootstrapDialog } from "@ebay/nice-modal-react";
-import * as S from "./ExportExpensesModal.styles";
+import * as S from "./ExportExpensesModal.styled";
 import { expenseAPI } from "@/api";
 import { Input, Button } from "@/components";
 

@@ -1,6 +1,6 @@
 import { Informer } from "@/components";
 import VoidIllustration from "@/assets/void.svg";
-import AddCategoryButton from "../../AddCategoryButton/AddCategoryButton";
+import AddCategoryButton from "@/pages/Categories/AddCategoryButton";
 
 export default function CategoryListEmptyInformer() {
   return (

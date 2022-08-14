@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import { List } from "@/components";
 import CategoryListItem from "./CategoryListItem/CategoryListItem";
-import CategoryListSkeleton from "./CategoryListSkeleton/CategoryListSkeleton";
-import CategoryListEmptyInformer from "./CategoryListEmptyInformer/CategoryListEmptyInformer";
+import CategoryListSkeleton from "./CategoryListSkeleton";
+import CategoryListEmptyInformer from "./CategoryListEmptyInformer";
 
 function CategoryList({ data, isEmpty, isLoading }) {
   return !isLoading && isEmpty ? (

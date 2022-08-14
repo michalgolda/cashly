@@ -1,5 +1,5 @@
 import { useState } from "react";
-import * as S from "./Sidebar.styles";
+import * as S from "./Sidebar.styled";
 import {
   faReceipt,
   faChartPie,

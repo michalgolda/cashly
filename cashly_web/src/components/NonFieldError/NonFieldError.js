@@ -1,4 +1,4 @@
-import * as S from "./NonFieldError.styles";
+import * as S from "./NonFieldError.styled";
 
 function NonFieldError({ message, ...props }) {
   return <S.Message {...props}>{message}</S.Message>;

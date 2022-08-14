@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import * as S from "./Header.styles";
+import * as S from "./Header.styled";
 
 function Header({ title, description, rightElement, ...props }) {
   return (

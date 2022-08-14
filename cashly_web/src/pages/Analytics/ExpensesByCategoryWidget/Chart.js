@@ -1,6 +1,6 @@
 import { Bar, XAxis, BarChart, Tooltip, ResponsiveContainer } from "recharts";
 import { defaultCurrencyFormat } from "@/helpers/currencyFormat";
-import TooltipContent from "../../TooltipContent/TooltipContent";
+import TooltipContent from "@/pages/Analytics/TooltipContent/TooltipContent";
 
 export default function Chart({ data }) {
   const tickFormatter = (tick) => {
