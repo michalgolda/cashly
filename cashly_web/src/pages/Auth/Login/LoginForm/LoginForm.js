@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import { useState } from "react";
 
 import AuthForm from "../../AuthForm/AuthForm";
-import { useAuth } from "@/hooks/auth";
+import { useSession } from "@/hooks/useSession";
 import { Input, Button } from "@/components";
 
 export default function LoginForm() {
@@ -22,13 +22,15 @@ export default function LoginForm() {
     password: yup.string().required("To pole jest wymagane"),
   });
 
-  const { login } = useAuth();
+  const { login } = useSession();
 
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: (values) =>
       login(values).catch((err) => {
+        console.log(err);
+
         if (err.response && err.response.status === 400) {
           const { message } = err.response.data;
           setNonFieldError(message);

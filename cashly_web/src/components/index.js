@@ -16,6 +16,8 @@ import Logo from "./Logo/Logo";
 import NonFieldError from "./NonFieldError/NonFieldError";
 import Footer from "./Footer/Footer";
 import Sidebar from "./Sidebar/Sidebar";
+import AuthRedirect from "./AuthRedirect/AuthRedirect";
+import AuthRequired from "./AuthRequired/AuthRequired";
 
 export {
   Page,
@@ -36,4 +38,6 @@ export {
   NonFieldError,
   Avatar,
   Footer,
+  AuthRedirect,
+  AuthRequired,
 };

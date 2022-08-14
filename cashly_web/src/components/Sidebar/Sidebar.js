@@ -7,7 +7,7 @@ import {
   faAngleRight,
   faGripVertical,
 } from "@fortawesome/free-solid-svg-icons";
-import { useAuth } from "@/hooks/auth";
+import { useSession } from "@/hooks/useSession";
 import { IconButton, Logo } from "@/components";
 import NavLinkButton from "./NavLinkButton/NavLinkButton";
 import NavLinkIconButton from "./NavLinkIconButton/NavLinkIconButton";
@@ -27,7 +27,7 @@ const useSidebar = () => {
 };
 
 export default function Sidebar() {
-  const { user, logout } = useAuth();
+  const { user, logout } = useSession();
   const [isExpanded, toggleSidebarExpand] = useSidebar();
 
   return (

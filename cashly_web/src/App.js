@@ -13,9 +13,10 @@ import {
   NotFound,
   Register,
 } from "@/pages";
-import { AuthProvider } from "@/hooks/auth";
+import { AuthRequired, AuthRedirect } from "@/components";
+import { SessionProvider } from "@/contexts/session";
 import { theme, GlobalStyle } from "@/styles";
-import { AuthRedirect, AuthRequired, queryClient } from "@/utils";
+import { queryClient } from "@/utils";
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <NiceModalProvider>
           <BrowserRouter>
-            <AuthProvider>
+            <SessionProvider>
               <GlobalStyle />
               <Routes>
                 <Route index element={<Navigate to="/expenses" replace />} />
@@ -69,7 +70,7 @@ function App() {
                 />
                 <Route path="*" element={<NotFound />} />
               </Routes>
-            </AuthProvider>
+            </SessionProvider>
           </BrowserRouter>
         </NiceModalProvider>
       </ThemeProvider>
