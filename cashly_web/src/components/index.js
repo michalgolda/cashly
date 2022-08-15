@@ -17,3 +17,4 @@ export { default as Footer } from "./Footer/Footer";
 export { default as Sidebar } from "./Sidebar/Sidebar";
 export { default as AuthRedirect } from "./AuthRedirect";
 export { default as AuthRequired } from "./AuthRequired";
+export { default as LoadingCurtain } from "./LoadingCurtain/LoadingCurtain";
