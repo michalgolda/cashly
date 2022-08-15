@@ -1,5 +1,5 @@
 import { Header } from "@/components";
-import PeriodSelector from "./PeriodSelector";
+import DatePeriodSelectInput from "./DatePeriodSelectInput";
 
 export default function AnalyticsPageHeader() {
   return (
@@ -11,7 +11,7 @@ export default function AnalyticsPageHeader() {
                 Praesent rutrum viverra iaculis. 
                 Phasellus commodo orci vitae venenatis consequat.
             `}
-      rightElement={<PeriodSelector />}
+      rightElement={<DatePeriodSelectInput />}
     />
   );
 }

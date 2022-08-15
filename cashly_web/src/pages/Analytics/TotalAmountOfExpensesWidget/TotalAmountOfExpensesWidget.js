@@ -1,16 +1,15 @@
-import { useContext } from "react";
 import { useQuery } from "react-query";
 import * as S from "./TotalAmountOfExpensesWidget.styled";
-import Widget from "../Widget/Widget";
+import Widget from "@/pages/Analytics/Widget/Widget";
 import { Skeleton } from "@/components";
 import { analyticsAPI } from "@/api";
 import { defaultCurrencyFormat } from "@/helpers/currencyFormat";
-import { PeriodSelectorContext } from "@/pages/Analytics/AnalyticsPageHeader/PeriodSelector";
+import { useDatePeriod } from "@/pages/Analytics/useDatePeriod";
 
 export default function TotalAmountOfExpensesWidget() {
-  const { currentPeriod } = useContext(PeriodSelectorContext);
+  const { currentPeriod } = useDatePeriod();
   const { data, isLoading, isError } = useQuery(
-    ["totalAmountOfExpensesAnalyticsData", { currentPeriod }],
+    ["totalAmountOfExpenses", { currentPeriod }],
     () =>
       analyticsAPI.getTotalAmountOfExpenses({
         startDate: currentPeriod.start_date,

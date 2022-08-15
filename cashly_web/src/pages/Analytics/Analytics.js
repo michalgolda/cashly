@@ -1,19 +1,19 @@
 import WidgetList from "./WidgetList/WidgetList";
 import { MainLayout } from "@/layouts";
 import { Page, PageMain } from "@/components";
-import AnalyticsPageHeader from "./AnalyticsPageHeader/AnalyticsPageHeader";
-import { PeriodSelectorContextProvider } from "./AnalyticsPageHeader/PeriodSelector";
+import AnalyticsPageHeader from "./AnalyticsPageHeader";
+import { DatePeriodProvider } from "./DatePeriodContext";
 
 export default function Analytics() {
   return (
     <Page title="Cashly - Analityka">
       <MainLayout>
-        <PeriodSelectorContextProvider>
+        <DatePeriodProvider>
           <AnalyticsPageHeader />
           <PageMain>
             <WidgetList />
           </PageMain>
-        </PeriodSelectorContextProvider>
+        </DatePeriodProvider>
       </MainLayout>
     </Page>
   );
