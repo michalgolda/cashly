@@ -1,4 +1,4 @@
-import apiClient from "../client";
+import apiClient from "@/api/client";
 
 export const getGeneralExpenses = ({ startDate, endDate, unit }) =>
   apiClient

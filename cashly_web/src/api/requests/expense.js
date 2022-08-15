@@ -1,20 +1,15 @@
-import apiClient from "../client";
+import apiClient from "@/api/client";
 
-export const createExpense = async ({
-  amount,
-  realisedDate,
-  expenseCategoryId,
-}) =>
+export const createExpense = ({ amount, realisedDate, expenseCategoryId }) =>
   apiClient.post("/expenses", {
     amount,
     realised_date: realisedDate,
     expense_category_id: expenseCategoryId,
   });
 
-export const deleteExpense = async ({ id }) =>
-  apiClient.delete(`/expenses/${id}`);
+export const deleteExpense = ({ id }) => apiClient.delete(`/expenses/${id}`);
 
-export const updateExpense = async ({
+export const updateExpense = ({
   id,
   amount,
   realisedDate,
@@ -26,10 +21,10 @@ export const updateExpense = async ({
     expense_category_id: expenseCategoryId,
   });
 
-export const getAllExpenses = async () =>
+export const getAllExpenses = () =>
   apiClient.get("/expenses").then((res) => res.data);
 
-export const importExpenses = async ({ file }) => {
+export const importExpenses = ({ file }) => {
   const formData = new FormData();
   formData.append("file", file);
 
@@ -38,5 +33,5 @@ export const importExpenses = async ({ file }) => {
   });
 };
 
-export const exportExpenses = async ({ fileFormat }) =>
+export const exportExpenses = ({ fileFormat }) =>
   apiClient.get(`/expenses/export?file_format=${fileFormat}`);

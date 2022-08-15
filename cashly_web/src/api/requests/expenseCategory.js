@@ -1,4 +1,4 @@
-import apiClient from "../client";
+import apiClient from "@/api/client";
 
 export const createExpenseCategory = ({ name, color }) =>
   apiClient.post("/expense_categories", { name, color });
