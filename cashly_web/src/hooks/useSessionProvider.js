@@ -1,45 +1,47 @@
-import { useState, useEffect } from "react";
-import { useQueryClient } from "react-query";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient, useQuery, useMutation } from "react-query";
 import { authAPI, userAPI } from "@/api";
 import { accessTokenStorage } from "@/helpers/session";
 
 export const useSessionProvider = () => {
-  const [user, setUser] = useState(null);
+  const currentUserQuery = useQuery("currentUser", userAPI.getCurrentUser, {
+    refetchOnReconnect: true,
+    refetchOnWindowFocus: true,
+    enabled: Boolean(accessTokenStorage.get()),
+  });
+  const loginMutation = useMutation("login", authAPI.login, {
+    onSuccess: (accessToken) => {
+      accessTokenStorage.set(accessToken);
+      currentUserQuery
+        .refetch()
+        .then(({ isSuccess }) => isSuccess && navigate("/", { replace: true }));
+    },
+  });
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const getCurrentUserWrapper = () =>
-    userAPI
-      .getCurrentUser()
-      .then((user) => setUser(user))
-      .catch(() => setUser(null));
-
-  const login = (loginBody) =>
-    authAPI.login(loginBody).then((accessToken) => {
-      accessTokenStorage.set(accessToken);
-      getCurrentUserWrapper().then(() => navigate("/", { replace: true }));
-    });
+  const login = (loginBody) => loginMutation.mutateAsync(loginBody);
 
   const logout = () => {
-    setUser(null);
     queryClient.clear();
     accessTokenStorage.clear();
     navigate("/login", { replace: true });
   };
 
   useEffect(() => {
-    getCurrentUserWrapper();
-
     window.addEventListener("logout", () => logout());
-    window.addEventListener("storage", () =>
-      accessTokenStorage.get() ? getCurrentUserWrapper() : logout()
-    );
+    window.addEventListener("storage", () => {
+      const accessToken = accessTokenStorage.get();
+      accessToken && currentUserQuery.refetch();
+      !accessToken && logout();
+    });
   }, []);
 
   return {
-    user,
     login,
     logout,
+    user: currentUserQuery.data,
+    isLoading: currentUserQuery.isLoading,
   };
 };
