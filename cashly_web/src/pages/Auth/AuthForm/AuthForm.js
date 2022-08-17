@@ -1,10 +1,10 @@
 import * as S from "./AuthForm.styled";
-import { NonFieldError } from "@/components";
+import { FormError } from "@/components";
 
 export default function AuthForm({ children, nonFieldError, ...props }) {
   return (
     <S.Form {...props}>
-      {nonFieldError && <NonFieldError message={nonFieldError} />}
+      {nonFieldError && <FormError>{nonFieldError}</FormError>}
       {children}
     </S.Form>
   );

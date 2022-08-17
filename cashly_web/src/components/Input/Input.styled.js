@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { FormError } from "@/components";
 
 const Wrapper = styled.div`
   width: 256px;
@@ -49,15 +50,9 @@ const Label = styled.label`
   border: 1px solid ${({ theme }) => theme.colors.primary400};
 `;
 
-const Error = styled.p`
-  color: white;
-  padding: 6px 8px;
+const Error = styled(FormError)`
   text-align: left;
-  word-break: break-word;
   border-radius: 0 0 2px 2px;
-  font-size: ${({ theme }) => theme.fontSizes.h6};
-  background-color: ${({ theme }) => theme.colors.red400};
-  font-weight: ${({ theme }) => theme.fontWeights.semiBold};
 `;
 
 export { Wrapper, Input, Label, Error };

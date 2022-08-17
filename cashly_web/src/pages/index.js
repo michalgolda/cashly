@@ -1,8 +1,6 @@
-import NotFound from "./NotFound/NotFound";
-import Expenses from "./Expenses/Expenses";
-import Analytics from "./Analytics/Analytics";
-import Categories from "./Categories/Categories";
-import Login from "./Auth/Login/Login";
-import Register from "./Auth/Register/Register";
-
-export { NotFound, Expenses, Categories, Analytics, Login, Register };
+export { default as Expenses } from "./Expenses/Expenses";
+export { default as Categories } from "./Categories/Categories";
+export { default as Analytics } from "./Analytics/Analytics";
+export { default as Login } from "./Auth/Login/Login";
+export { default as Register } from "./Auth/Register/Register";
+export { default as NotFound } from "./NotFound/NotFound";

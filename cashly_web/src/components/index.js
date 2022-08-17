@@ -1,3 +1,4 @@
+export { default as FormError } from "./FormError/FormError";
 export { default as List } from "./List/List";
 export { default as Page } from "./Page";
 export { default as Input } from "./Input/Input";
@@ -12,7 +13,6 @@ export { default as IconButton } from "./IconButton/IconButton";
 export { default as Avatar } from "./Avatar/Avatar";
 export { default as LinkButton } from "./LinkButton/LinkButton";
 export { default as Logo } from "./Logo/Logo";
-export { default as NonFieldError } from "./NonFieldError/NonFieldError";
 export { default as Footer } from "./Footer/Footer";
 export { default as Sidebar } from "./Sidebar/Sidebar";
 export { default as AuthRedirect } from "./AuthRedirect";
