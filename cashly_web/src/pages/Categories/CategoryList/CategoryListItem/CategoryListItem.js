@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import * as S from "./CategoryListItem.styled";
 import { useModal } from "@ebay/nice-modal-react";
 import { useMutation, useQueryClient } from "react-query";
-import { faTrashAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { expenseCategoryAPI } from "@/api";
 import EditCategoryModal from "@/pages/Categories/EditCategoryModal";
 import { EditListItemButton, DeleteListItemButton } from "@/components";
