@@ -6,6 +6,7 @@ import { faTrashAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { expenseAPI } from "@/api";
 import { defaultCurrencyFormat } from "@/helpers/currencyFormat";
 import EditExpenseModal from "@/pages/Expenses/EditExpenseModal";
+import { EditListItemButton, DeleteListItemButton } from "@/components";
 
 function ExpenseListItem({ id, amount, category, realisedDate }) {
   const queryClient = useQueryClient();
@@ -24,8 +25,7 @@ function ExpenseListItem({ id, amount, category, realisedDate }) {
       )}
       <S.Span>{realisedDate}</S.Span>
       <S.Actions>
-        <S.EditButton
-          icon={faEdit}
+        <EditListItemButton
           onClick={() => {
             editExpenseModal.show({
               id,
@@ -35,8 +35,7 @@ function ExpenseListItem({ id, amount, category, realisedDate }) {
             });
           }}
         />
-        <S.DeleteButton
-          icon={faTrashAlt}
+        <DeleteListItemButton
           onClick={() => deleteExpenseMutation.mutate({ id })}
         />
       </S.Actions>

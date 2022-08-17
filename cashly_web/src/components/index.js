@@ -18,3 +18,5 @@ export { default as Sidebar } from "./Sidebar/Sidebar";
 export { default as AuthRedirect } from "./AuthRedirect";
 export { default as AuthRequired } from "./AuthRequired";
 export { default as LoadingCurtain } from "./LoadingCurtain/LoadingCurtain";
+export { default as EditListItemButton } from "./EditListItemButton/EditListItemButton";
+export { default as DeleteListItemButton } from "./DeleteListItemButton/DeleteListItemButton";

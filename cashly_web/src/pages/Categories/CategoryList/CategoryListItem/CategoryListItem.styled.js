@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { IconButton, ListItem as BaseListItem } from "@/components";
+import { ListItem as BaseListItem } from "@/components";
 
 const ListItem = styled(BaseListItem)`
   display: flex;
+  column-gap: 16px;
   align-items: center;
   flex-direction: row;
 `;
@@ -23,31 +24,9 @@ const CategoryName = styled.span`
   font-weight: ${({ theme }) => theme.fontWeights.semiBold};
 `;
 
-const ActionButton = styled(IconButton)`
-  color: white;
-  margin-left: 16px;
+const Actions = styled.div`
+  display: flex;
+  column-gap: 16px;
 `;
 
-const EditButton = styled(ActionButton)`
-  background-color: ${({ theme }) => theme.colors.blue400};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.blue500};
-  }
-  &:active {
-    background-color: ${({ theme }) => theme.colors.blue300};
-  }
-`;
-
-const DeleteButton = styled(ActionButton)`
-  background-color: ${({ theme }) => theme.colors.red400};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.red500};
-  }
-  &:active {
-    background-color: ${({ theme }) => theme.colors.red300};
-  }
-`;
-
-export { ListItem, Category, CategoryName, EditButton, DeleteButton };
+export { ListItem, Category, CategoryName, Actions };

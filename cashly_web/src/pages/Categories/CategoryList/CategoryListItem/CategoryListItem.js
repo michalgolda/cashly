@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { faTrashAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { expenseCategoryAPI } from "@/api";
 import EditCategoryModal from "@/pages/Categories/EditCategoryModal";
+import { EditListItemButton, DeleteListItemButton } from "@/components";
 
 function CategoryListItem({ id, name, color }) {
   const queryClient = useQueryClient();
@@ -21,14 +22,14 @@ function CategoryListItem({ id, name, color }) {
       <S.Category color={color}>
         <S.CategoryName>{name}</S.CategoryName>
       </S.Category>
-      <S.EditButton
-        icon={faEdit}
-        onClick={() => editCategoryModal.show({ id, name, color })}
-      />
-      <S.DeleteButton
-        icon={faTrashAlt}
-        onClick={() => deleteCategoryMutation.mutate({ id })}
-      />
+      <S.Actions>
+        <EditListItemButton
+          onClick={() => editCategoryModal.show({ id, name, color })}
+        />
+        <DeleteListItemButton
+          onClick={() => deleteCategoryMutation.mutate({ id })}
+        />
+      </S.Actions>
     </S.ListItem>
   );
 }

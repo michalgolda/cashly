@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ListItem as BaseListItem, IconButton } from "@/components";
+import { ListItem as BaseListItem } from "@/components";
 
 const ListItem = styled(BaseListItem)`
   display: grid;
@@ -30,34 +30,8 @@ const Category = styled(Span)`
 
 const Actions = styled.div`
   display: flex;
+  column-gap: 16px;
   justify-content: right;
 `;
 
-const ActionButton = styled(IconButton)`
-  color: white;
-`;
-
-const EditButton = styled(ActionButton)`
-  background-color: ${({ theme }) => theme.colors.blue400};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.blue500};
-  }
-  &:active {
-    background-color: ${({ theme }) => theme.colors.blue300};
-  }
-`;
-
-const DeleteButton = styled(ActionButton)`
-  margin-left: 16px;
-  background-color: ${({ theme }) => theme.colors.red400};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.red500};
-  }
-  &:active {
-    background-color: ${({ theme }) => theme.colors.red300};
-  }
-`;
-
-export { ListItem, Span, Category, Actions, EditButton, DeleteButton };
+export { ListItem, Span, Category, Actions };
