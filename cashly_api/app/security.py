@@ -31,6 +31,12 @@ class SecurityManager(ABC):
   @abstractstaticmethod
   def verify_password_hash(password: str, hashed_password: str) -> bool: ...
 
+  @abstractmethod
+  def generate_reset_password_token(self, email: str) -> str: ...
+
+  @abstractmethod
+  def verify_reset_password_token(self, token: str) -> str: ...
+
 
 class DefaultSecurityManager(SecurityManager):
   @staticmethod
@@ -41,24 +47,26 @@ class DefaultSecurityManager(SecurityManager):
   def verify_password_hash(password: str, hashed_password: str) -> bool:
     return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
 
-  def generate_access_token(self, subject: UUID) -> str:
+  @staticmethod
+  def generate_jwt_token(payload) -> str:
     return jwt.encode(
       dict(
-        sub=str(subject), 
-        exp=datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=settings.ACCESS_TOKEN_EXPIRATION)
-    ), 
-    settings.SECRET_KEY,
-    algorithm=settings.ACCESS_TOKEN_ALGORITHM
-  )
+        type=payload.get('type'),
+        sub=payload.get('sub'),
+        exp=payload.get('exp')
+      ),
+      settings.SECRET_KEY,
+      algorithm=settings.ACCESS_TOKEN_ALGORITHM
+    )
 
-  def verify_access_token(self, access_token: str) -> AccessTokenPayload:
-    decoded_payload = jwt.decode(access_token.encode('utf-8'), settings.SECRET_KEY, settings.ACCESS_TOKEN_ALGORITHM)
+  @staticmethod
+  def verify_jwt_token(token: str, type: str):
+    decoded_payload = jwt.decode(token.encode('utf-8'), settings.SECRET_KEY, settings.ACCESS_TOKEN_ALGORITHM)
     return AccessTokenPayload(
       sub=UUID(decoded_payload['sub']),
       exp=datetime.datetime.fromtimestamp(decoded_payload['exp'])
-    )
-
-
+    ) 
+    
 class HTTPAccessToken(HTTPBearer):
   def __init__(self, security_manager: SecurityManager):
     self._security_manager = security_manager

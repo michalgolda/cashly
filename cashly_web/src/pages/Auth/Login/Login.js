@@ -1,6 +1,6 @@
 import AuthBottomText from "../AuthBottomText/AuthBottomText";
 import LoginForm from "./LoginForm/LoginForm";
-import { Page } from "../../../components";
+import { Page } from "@/components";
 import { AuthLayout } from "@/layouts";
 
 export default function Login() {
@@ -15,6 +15,9 @@ export default function Login() {
         <LoginForm />
         <AuthBottomText>
           Jeszcze nie posiadasz konta? <a href="/register">Zarejestruj się</a>
+        </AuthBottomText>
+        <AuthBottomText>
+          Zapomniałeś hasło? <a href="/forgot-password"> Zresetuj hasło</a>
         </AuthBottomText>
       </AuthLayout>
     </Page>

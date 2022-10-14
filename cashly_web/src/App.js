@@ -11,6 +11,7 @@ import {
   Login,
   NotFound,
   Register,
+  ForgotPassword,
 } from "@/pages";
 import { AuthRequired, AuthRedirect } from "@/components";
 import { SessionProvider } from "@/contexts/session";
@@ -65,6 +66,14 @@ function App() {
                     <AuthRequired>
                       <Categories />
                     </AuthRequired>
+                  }
+                />
+                <Route
+                  path="/forgot-password"
+                  element={
+                    <AuthRedirect>
+                      <ForgotPassword />
+                    </AuthRedirect>
                   }
                 />
                 <Route path="*" element={<NotFound />} />

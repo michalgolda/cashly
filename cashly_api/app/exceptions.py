@@ -43,7 +43,7 @@ class ExpenseCategoryNameAlreadyUsedError(DomainException):
 class UserNotFoundError(DomainException):
     def __init__(self) -> NoReturn:
         super().__init__(
-            'UserNotFoundError'
+            'UserNotFoundError',
             'Użytkownik o podanych właściwościach nie istnieje',
             404
         )

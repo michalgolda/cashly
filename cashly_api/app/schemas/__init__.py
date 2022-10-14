@@ -9,3 +9,4 @@ from .expense import (
     ExpenseUpdate
 )
 from .user import User, UserOut
+from .authentication import AuthenticationCredentials, ForgotPasswordPayload, ResetPasswordPayload

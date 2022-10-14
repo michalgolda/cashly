@@ -1,8 +1,16 @@
-from curses.ascii import EM
-from lib2to3.pytree import Base
 from pydantic import BaseModel, EmailStr
 
 
 class AuthenticationCredentials(BaseModel):
   email: EmailStr
   password: str
+
+
+class ForgotPasswordPayload(BaseModel):
+  email: EmailStr
+
+
+class ResetPasswordPayload(BaseModel):
+  password: str
+  token: str
+
