@@ -33,7 +33,7 @@ export default function Sidebar() {
   return (
     <S.Nav isExpanded={isExpanded}>
       <S.Header className="header">
-        <Logo className="appName" />
+        <Logo className="appName" width={120} />
         <IconButton
           onClick={() => toggleSidebarExpand()}
           className="leftExpandBtn"

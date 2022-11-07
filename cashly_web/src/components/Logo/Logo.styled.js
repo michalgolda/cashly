@@ -1,8 +1,7 @@
 import styled from "styled-components";
 
-const Text = styled.h2`
-  text-transform: uppercase;
-  font-weight: ${({ theme }) => theme.fontWeights.extraBold};
+const Wrapper = styled.h2`
+  text-align: center;
 `;
 
-export { Text };
+export { Wrapper };
