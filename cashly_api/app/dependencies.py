@@ -32,4 +32,4 @@ def get_current_user(
     user_repo: UserRepository = Depends(get_user_repo),
     access_token_payload: AccessTokenPayload = Depends(HTTPAccessToken(security_manager=get_security_manager()))
 ) -> User:
-    return user_repo.get_by_id(access_token_payload.sub)
+    return user_repo.get_by_id(access_token_payload.get('sub'))

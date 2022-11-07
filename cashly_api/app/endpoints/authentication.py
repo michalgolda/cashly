@@ -11,7 +11,7 @@ from app.usecases.authentication import (
   LoginUseCaseInput,
   ResetPasswordUseCase,
   ResetPasswordUseCaseInput,
-  SendResetPasswordLinkInput,
+  SendResetPasswordLinkUseCaseInput,
   SendResetPasswordLinkUseCase  
 )
 from app.dependencies import get_user_repo, get_security_manager
@@ -25,12 +25,12 @@ def register(
   user_repo: UserRepository = Depends(get_user_repo), 
   security_manager: SecurityManager = Depends(get_security_manager)
 ):
-  register_usecase_input = RegisterUseCaseInput(
+  usecase_input = RegisterUseCaseInput(
     email=credentials.email, 
     password=credentials.password
   )
-  register_usecase = RegisterUseCase(user_repo, security_manager)
-  register_usecase.execute(register_usecase_input)
+  usecase = RegisterUseCase(user_repo, security_manager)
+  usecase.execute(usecase_input)
 
 @authentication_router.post('/auth/login', status_code=200)
 def login(
@@ -39,16 +39,14 @@ def login(
   user_repo: UserRepository = Depends(get_user_repo),
   security_manager: SecurityManager = Depends(get_security_manager)
 ):
-  login_usecase_input = LoginUseCaseInput(
+  usecase_input = LoginUseCaseInput(
     email=credentials.email, 
     password=credentials.password
   )
-  login_usecase = LoginUseCase(user_repo, security_manager)
-  login_usecase_output = login_usecase.execute(login_usecase_input)
+  usecase = LoginUseCase(user_repo, security_manager)
+  usecase_output = usecase.execute(usecase_input)
 
-  response.set_cookie('access_token', login_usecase_output.access_token, httponly=True, samesite='Strict')
-
-  return dict(access_token=login_usecase_output.access_token)
+  return {"access_token": usecase_output.access_token}
 
 @authentication_router.post('/auth/forgotpassword', status_code=200)
 def forgot_password(
@@ -56,7 +54,7 @@ def forgot_password(
   user_repo: UserRepository = Depends(get_user_repo), 
   security_manager: SecurityManager = Depends(get_security_manager)
 ):
-  usecase_input = SendResetPasswordLinkInput(forgot_password_payload.email)
+  usecase_input = SendResetPasswordLinkUseCaseInput(forgot_password_payload.email)
 
   message = EmailMessage()
 

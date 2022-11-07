@@ -12,5 +12,5 @@ class ForgotPasswordPayload(BaseModel):
 
 class ResetPasswordPayload(BaseModel):
   password: str
-  token: str
+  password_reset_token: str
 

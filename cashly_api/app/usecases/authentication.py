@@ -1,4 +1,3 @@
-from re import L
 from typing import NoReturn
 from dataclasses import dataclass
 
@@ -52,7 +51,7 @@ class LoginUseCase(UseCase[LoginUseCaseInput, LoginUseCaseOutput]):
     if not existing_user:
       raise BadAuthenticationCredentialsError()
 
-    if not self._security_manager.verify_password_hash(input.password, existing_user.password):
+    if not self._security_manager.check_password_hash(input.password, existing_user.password):
       raise BadAuthenticationCredentialsError()
 
     access_token = self._security_manager.generate_access_token(existing_user.id)
@@ -60,43 +59,47 @@ class LoginUseCase(UseCase[LoginUseCaseInput, LoginUseCaseOutput]):
 
 
 @dataclass(frozen=True)
-class SendResetPasswordLinkInput:
+class SendResetPasswordLinkUseCaseInput:
   email: str
 
 
-class SendResetPasswordLinkUseCase(UseCase[SendResetPasswordLinkInput, None]):
+class SendResetPasswordLinkUseCase(UseCase[SendResetPasswordLinkUseCaseInput, NoReturn]):
   def __init__(self, user_repo: UserRepository, message: EmailMessage, security_manager: SecurityManager) -> None:
     self._user_repo = user_repo
     self._message = message
     self._security_manager = security_manager
 
-  def execute(self, input: SendResetPasswordLinkInput) -> None:
+  def execute(self, input: SendResetPasswordLinkUseCaseInput) -> NoReturn:
     existing_user = self._user_repo.get_by_email(input.email)
     if not existing_user:
-      raise UserNotFoundError
+      raise UserNotFoundError()
 
-    token = self._security_manager.generate_reset_password_token(existing_user.email)
+    password_reset_token = self._security_manager.generate_reset_password_token(existing_user.email)
 
     self._message.set_recipment(existing_user.email)
-    self._message.set_payload({ 'email': existing_user.email, 'token': token })
+    self._message.set_payload({ 
+      'email': existing_user.email, 
+      'password_reset_token': password_reset_token 
+    })
     self._message.send()
 
 
 @dataclass(frozen=True)
 class ResetPasswordUseCaseInput:
-  token: str
   password: str
+  password_reset_token: str
 
-class ResetPasswordUseCase(UseCase[ResetPasswordUseCaseInput, None]):
+class ResetPasswordUseCase(UseCase[ResetPasswordUseCaseInput, NoReturn]):
   def __init__(self, user_repo: UserRepository, security_manager: SecurityManager) -> None:
     self._user_repo = user_repo
     self._security_manager = security_manager
 
-  def execute(self, input: ResetPasswordUseCaseInput) -> None:
-    email = self._security_manager.verify_reset_password_token(input.token)
+  def execute(self, input: ResetPasswordUseCaseInput) -> NoReturn:
+    password_reset_token_payload = self._security_manager.check_password_reset_token(input.password_reset_token)
+    email = password_reset_token_payload.get('sub')
     existing_user = self._user_repo.get_by_email(email)
     if not existing_user:
-      raise UserNotFoundError
+      raise UserNotFoundError()
 
     existing_user.password = self._security_manager.generate_password_hash(input.password)
 
