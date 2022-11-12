@@ -3,7 +3,7 @@ import * as S from "./ExpenseListItem.styled";
 import { useModal } from "@ebay/nice-modal-react";
 import { useQueryClient, useMutation } from "react-query";
 import { expenseAPI } from "@/api";
-import { defaultCurrencyFormat } from "@/helpers/currencyFormat";
+import { defaultCurrencyFormat, defaultDateTimeFormat } from "@/helpers/formating";
 import EditExpenseModal from "@/pages/Expenses/EditExpenseModal";
 import { EditListItemButton, DeleteListItemButton } from "@/components";
 
@@ -22,7 +22,7 @@ function ExpenseListItem({ id, amount, category, realisedDate }) {
       ) : (
         <S.Category>Bez kategorii</S.Category>
       )}
-      <S.Span>{realisedDate}</S.Span>
+      <S.Span>{defaultDateTimeFormat.format(new Date(realisedDate))}</S.Span>
       <S.Actions>
         <EditListItemButton
           onClick={() => {

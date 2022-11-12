@@ -3,7 +3,7 @@ import * as S from "./TotalAmountOfExpensesWidget.styled";
 import Widget from "@/pages/Analytics/Widget/Widget";
 import { Skeleton } from "@/components";
 import { analyticsAPI } from "@/api";
-import { defaultCurrencyFormat } from "@/helpers/currencyFormat";
+import { defaultCurrencyFormat } from "@/helpers/formating";
 import { useDatePeriod } from "@/pages/Analytics/useDatePeriod";
 
 export default function TotalAmountOfExpensesWidget() {
