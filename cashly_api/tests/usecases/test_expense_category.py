@@ -59,8 +59,8 @@ def test_update_expense_category(mocker):
     mock_expense_category_repo.get_by_name_and_user_id.return_value = None
 
     mock_usecase_input = mocker.patch('app.usecases.expense_category.UpdateExpenseCategoryUseCaseInput')
-    update_expense_category_usecase = UpdateExpenseCategoryUseCase(mock_expense_category_repo)
-    usecase_output = update_expense_category_usecase.execute(mock_usecase_input)
+    usecase = UpdateExpenseCategoryUseCase(mock_expense_category_repo)
+    usecase_output = usecase.execute(mock_usecase_input)
 
     mock_expense_category_entity.name = mock_usecase_input.name
     mock_expense_category_entity.color = mock_usecase_input.color
