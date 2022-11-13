@@ -5,7 +5,7 @@ function Input({ className, fullWidth, labelText, error, ...props }) {
   return (
     <S.Wrapper fullWidth={fullWidth}>
       {labelText && <S.Label className="inputLabel">{labelText}</S.Label>}
-      <S.Input className={className} isError={Boolean(error)} {...props} />
+      <S.Input className={className} isError={Boolean(error)} labelText={Boolean(labelText)} {...props} />
       {error && <S.Error>{error}</S.Error>}
     </S.Wrapper>
   );
