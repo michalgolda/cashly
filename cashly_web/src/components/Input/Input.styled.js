@@ -31,10 +31,10 @@ const Input = styled.input`
   color: ${({ theme }) => theme.colors.primary400};
   font-weight: ${({ theme }) => theme.fontWeights.regular};
   border: 1px solid ${({ theme }) => theme.colors.primary400};
+  border-top-right-radius: 2px;
   border-bottom-left-radius: ${({ isError }) => (isError ? "0" : "2px")};
   border-bottom-right-radius: ${({ isError }) => (isError ? "0" : "2px")};
   border-top-left-radius: ${({ labelText }) => (labelText ? "0" : "2px")};
-  border-top-right-radius: ${({ labelText }) => (labelText ? "0" : "2px")};
 `;
 
 const Label = styled.label`
