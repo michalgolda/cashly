@@ -7,7 +7,7 @@ import {
   ReferenceLine,
   ResponsiveContainer,
 } from "recharts";
-import { defaultCurrencyFormat } from "@/helpers/formating";
+import { defaultCurrencyFormat} from "@/helpers/formating";
 import TooltipContent from "@/pages/Analytics/TooltipContent/TooltipContent";
 
 const StyledWrapper = styled.div`
@@ -27,7 +27,7 @@ const StyledTick = styled.p`
   color: ${({ theme }) => theme.colors.gray600};
 `;
 
-export default function Chart({ data }) {
+export default function Chart({ data, labelFormatter }) {
   const firstTick = data[0];
   const lastTick = data[data.length - 1];
 
@@ -47,6 +47,7 @@ export default function Chart({ data }) {
           <Tooltip
             content={
               <TooltipContent
+                labelFormatter={labelFormatter}
                 valueFormatter={(value) => defaultCurrencyFormat.format(value)}
               />
             }
@@ -56,8 +57,8 @@ export default function Chart({ data }) {
         </LineChart>
       </ResponsiveContainer>
       <StyledTicks>
-        <StyledTick>{firstTick.key}</StyledTick>
-        <StyledTick>{lastTick.key}</StyledTick>
+        <StyledTick>{labelFormatter(firstTick.key)}</StyledTick>
+        <StyledTick>{labelFormatter(lastTick.key)}</StyledTick>
       </StyledTicks>
     </StyledWrapper>
   );
