@@ -11,7 +11,7 @@ import {
   Login,
   NotFound,
   Register,
-  ForgotPassword,
+  PasswordRecovery,
 } from "@/pages";
 import { AuthRequired, AuthRedirect } from "@/components";
 import { SessionProvider } from "@/contexts/session";
@@ -69,10 +69,10 @@ function App() {
                   }
                 />
                 <Route
-                  path="/forgot-password"
+                  path="/passwordrecovery"
                   element={
                     <AuthRedirect>
-                      <ForgotPassword />
+                      <PasswordRecovery />
                     </AuthRedirect>
                   }
                 />

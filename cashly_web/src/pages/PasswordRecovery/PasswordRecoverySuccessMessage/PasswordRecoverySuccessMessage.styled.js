@@ -18,4 +18,8 @@ const MessageIcon = styled(FontAwesomeIcon)`
   font-size: 3.5rem;
 `;
 
-export { Container, MessageIconWrapper, MessageIcon };
+const ChildrenWrapper = styled.div`
+  margin-top: 8px;
+`;
+
+export { Container, MessageIconWrapper, MessageIcon, ChildrenWrapper };

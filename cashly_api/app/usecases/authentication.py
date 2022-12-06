@@ -64,7 +64,12 @@ class SendResetPasswordLinkUseCaseInput:
 
 
 class SendResetPasswordLinkUseCase(UseCase[SendResetPasswordLinkUseCaseInput, NoReturn]):
-  def __init__(self, user_repo: UserRepository, message: EmailMessage, security_manager: SecurityManager) -> None:
+  def __init__(
+    self, 
+    user_repo: UserRepository, 
+    message: EmailMessage, 
+    security_manager: SecurityManager
+  ) -> None:
     self._user_repo = user_repo
     self._message = message
     self._security_manager = security_manager
@@ -74,12 +79,12 @@ class SendResetPasswordLinkUseCase(UseCase[SendResetPasswordLinkUseCaseInput, No
     if not existing_user:
       raise UserNotFoundError()
 
-    password_reset_token = self._security_manager.generate_reset_password_token(existing_user.email)
+    reset_password_token = self._security_manager.generate_reset_password_token(existing_user.email)
 
     self._message.set_recipment(existing_user.email)
     self._message.set_payload({ 
       'email': existing_user.email, 
-      'password_reset_token': password_reset_token 
+      'reset_password_token': reset_password_token 
     })
     self._message.send()
 
@@ -87,7 +92,7 @@ class SendResetPasswordLinkUseCase(UseCase[SendResetPasswordLinkUseCaseInput, No
 @dataclass(frozen=True)
 class ResetPasswordUseCaseInput:
   password: str
-  password_reset_token: str
+  reset_password_token: str
 
 class ResetPasswordUseCase(UseCase[ResetPasswordUseCaseInput, NoReturn]):
   def __init__(self, user_repo: UserRepository, security_manager: SecurityManager) -> None:
@@ -95,8 +100,8 @@ class ResetPasswordUseCase(UseCase[ResetPasswordUseCaseInput, NoReturn]):
     self._security_manager = security_manager
 
   def execute(self, input: ResetPasswordUseCaseInput) -> NoReturn:
-    password_reset_token_payload = self._security_manager.check_password_reset_token(input.password_reset_token)
-    email = password_reset_token_payload.get('sub')
+    reset_password_token_payload = self._security_manager.check_reset_password_token(input.reset_password_token)
+    email = reset_password_token_payload.get('sub')
     existing_user = self._user_repo.get_by_email(email)
     if not existing_user:
       raise UserNotFoundError()

@@ -1,14 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as S from "./Button.styled";
 
-const BUTTON_VARIANTS = {
-  text: S.TextButton,
-  primary: S.PrimaryButton,
-  primaryOutlined: S.PrimaryOutlinedButton,
-};
-
 function Button({ children, variant, startIcon, endIcon, ...props }) {
-  const ButtonVariant = BUTTON_VARIANTS[variant];
+  const ButtonVariant = {
+    text: S.TextButton,
+    primary: S.PrimaryButton,
+    primaryOutlined: S.PrimaryOutlinedButton,
+  }[variant];
 
   return (
     <ButtonVariant {...props}>

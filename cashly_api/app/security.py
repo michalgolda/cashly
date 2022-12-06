@@ -17,7 +17,7 @@ class AccessTokenPayload(TypedDict):
   exp: datetime.datetime
 
 
-class PasswordResetTokenPayload(TypedDict):
+class ResetPasswordTokenPayload(TypedDict):
   sub: str
   aud: str
   exp: datetime.datetime
@@ -40,9 +40,9 @@ class SecurityManager(ABC):
 
   def check_access_token(access_token: str) -> AccessTokenPayload: ...
 
-  def generate_password_reset_token(user_email: str) -> str: ...
+  def generate_reset_password_token(user_email: str) -> str: ...
 
-  def check_password_reset_token(password_reset_token: str) -> PasswordResetTokenPayload: ...
+  def check_reset_password_token(reset_password_token: str) -> ResetPasswordTokenPayload: ...
 
 class DefaultSecurityManager(SecurityManager):
   @staticmethod
@@ -83,16 +83,16 @@ class DefaultSecurityManager(SecurityManager):
     payload['exp'] = datetime.datetime.fromtimestamp(payload['exp'])
     return payload
 
-  def generate_password_reset_token(self, user_email: str) -> str:
+  def generate_reset_password_token(self, user_email: str) -> str:
     payload = dict(
       sub=user_email,
-      aud="password_reset_token",
-      exp=datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=settings.PASSWORD_RESET_TOKEN_EXPIRATION)
+      aud='reset_password_token',
+      exp=datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=settings.RESET_PASSWORD_TOKEN_EXPIRATION)
     )
     return self.generate_jwt_token(payload)
 
-  def check_password_reset_token(self, password_reset_token: str) -> PasswordResetTokenPayload:
-    payload = self.check_jwt_token(password_reset_token, 'password_reset_token')
+  def check_reset_password_token(self, reset_password_token: str) -> ResetPasswordTokenPayload:
+    payload = self.check_jwt_token(reset_password_token, 'reset_password_token')
     payload['exp'] = datetime.datetime.fromtimestamp(payload['exp'])
     return payload
 
@@ -103,7 +103,6 @@ class HTTPAccessToken(HTTPBearer):
 
   async def __call__(self, request: Request) -> AccessTokenPayload:
     http_authorization_credentials = await super().__call__(request)
-    print(self._security_manager.check_access_token(http_authorization_credentials.credentials))
     try:
       return self._security_manager.check_access_token(http_authorization_credentials.credentials)
     except jwt.exceptions.InvalidTokenError:

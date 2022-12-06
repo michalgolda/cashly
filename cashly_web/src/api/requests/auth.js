@@ -8,8 +8,8 @@ export const login = ({ email, password }) =>
 export const register = ({ email, password }) =>
   apiClient.post("/auth/register", { email, password });
 
-export const forgotPassword = ({ email }) =>
-  apiClient.post("/auth/forgotpassword", { email });
+export const passwordRecoveryRequest = ({ email }) =>
+  apiClient.post("/auth/passwordrecovery", { email });
 
-export const resetPassword = ({ password, token }) =>
-  apiClient.post("/auth/resetpassword", { password, token });
+export const passwordRecoveryProceed = ({ password, passwordRecoveryToken }) =>
+  apiClient.put("/auth/passwordrecovery", { password, "password_recovery_token": passwordRecoveryToken });

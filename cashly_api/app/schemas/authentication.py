@@ -6,11 +6,11 @@ class AuthenticationCredentials(BaseModel):
   password: str
 
 
-class ForgotPasswordPayload(BaseModel):
+class PasswordRecoveryRequestPayload(BaseModel):
   email: EmailStr
 
 
-class ResetPasswordPayload(BaseModel):
+class PasswordRecoveryProceedPayload(BaseModel):
   password: str
-  password_reset_token: str
+  password_recovery_token: str
 

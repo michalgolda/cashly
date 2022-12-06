@@ -26,7 +26,7 @@ def test_get_user_by_id_when_user_not_found(mocker):
 
     usecase = GetUserByIdUseCase(user_repo=mock_user_repo)
     with pytest.raises(UserNotFoundError):
-        usecase.execute(mock_get_user_by_id_usecase_input)
+        usecase.execute(usecase_input)
 
-    mock_user_repo.get_by_id.assert_called_once_with(mock_get_user_by_id_usecase_input.user_id)
+    mock_user_repo.get_by_id.assert_called_once_with(usecase_input.user_id)
     

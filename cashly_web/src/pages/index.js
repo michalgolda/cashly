@@ -4,4 +4,4 @@ export { default as Analytics } from "./Analytics/Analytics";
 export { default as Login } from "./Auth/Login/Login";
 export { default as Register } from "./Auth/Register/Register";
 export { default as NotFound } from "./NotFound/NotFound";
-export { default as ForgotPassword } from "./ForgotPassword/ForgotPassword";
+export { default as PasswordRecovery } from "./PasswordRecovery/PasswordRecovery";

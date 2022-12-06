@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 
-from app.schemas import UserOut
+from app.schemas.user import UserOut
 from app.entities.user import User
 from app.dependencies import get_current_user
 

@@ -65,7 +65,7 @@ class SQLAlchemyUserRepository(UserRepository):
 
     def save(self, entity: User) -> User:
         self._session.commit()
-        self._session.refresh()
+        self._session.refresh(entity)
 
         return entity
 

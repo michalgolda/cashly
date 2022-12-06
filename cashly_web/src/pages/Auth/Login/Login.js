@@ -17,7 +17,7 @@ export default function Login() {
           Jeszcze nie posiadasz konta? <a href="/register">Zarejestruj się</a>
         </AuthBottomText>
         <AuthBottomText>
-          Zapomniałeś hasło? <a href="/forgot-password"> Zresetuj hasło</a>
+          Zapomniałeś hasło? <a href="/passwordrecovery"> Zresetuj hasło</a>
         </AuthBottomText>
       </AuthLayout>
     </Page>

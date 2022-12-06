@@ -3,7 +3,11 @@ from app.messages import EmailMessage
 
 from app.security import SecurityManager
 from app.repositories import UserRepository
-from app.schemas.authentication import AuthenticationCredentials, ForgotPasswordPayload, ResetPasswordPayload
+from app.schemas.authentication import (
+  AuthenticationCredentials, 
+  PasswordRecoveryRequestPayload, 
+  PasswordRecoveryProceedPayload
+)
 from app.usecases.authentication import (
   RegisterUseCase,
   RegisterUseCaseInput,
@@ -46,15 +50,15 @@ def login(
   usecase = LoginUseCase(user_repo, security_manager)
   usecase_output = usecase.execute(usecase_input)
 
-  return {"access_token": usecase_output.access_token}
+  return {'access_token': usecase_output.access_token}
 
-@authentication_router.post('/auth/forgotpassword', status_code=200)
-def forgot_password(
-  forgot_password_payload: ForgotPasswordPayload,
+@authentication_router.post('/auth/passwordrecovery', status_code=200)
+def password_recovery_request(
+  password_recovery_request_payload: PasswordRecoveryRequestPayload,
   user_repo: UserRepository = Depends(get_user_repo), 
   security_manager: SecurityManager = Depends(get_security_manager)
 ):
-  usecase_input = SendResetPasswordLinkUseCaseInput(forgot_password_payload.email)
+  usecase_input = SendResetPasswordLinkUseCaseInput(password_recovery_request_payload.email)
 
   message = EmailMessage()
 
@@ -65,11 +69,15 @@ def forgot_password(
   )
   usecase.execute(usecase_input)
 
-@authentication_router.post('/auth/resetpassword', status_code=200)
-def reset_password(reset_password_payload: ResetPasswordPayload, user_repo: UserRepository = Depends(get_user_repo), security_manager: SecurityManager = Depends(get_security_manager)):
+@authentication_router.put('/auth/passwordrecovery', status_code=200)
+def password_recovery_proceed(
+  password_recovery_proceed_payload: PasswordRecoveryProceedPayload, 
+  user_repo: UserRepository = Depends(get_user_repo), 
+  security_manager: SecurityManager = Depends(get_security_manager)
+):
   usecase_input = ResetPasswordUseCaseInput(
-    password=reset_password_payload.password,
-    token=reset_password_payload.token
+    password=password_recovery_proceed_payload.password,
+    reset_password_token=password_recovery_proceed_payload.password_recovery_token
   )
 
   usecase = ResetPasswordUseCase(

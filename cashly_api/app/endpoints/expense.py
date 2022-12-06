@@ -7,7 +7,7 @@ from fastapi.responses import StreamingResponse
 from app.entities import User
 from app.exporter import ExpensesExporter
 from app.importer import SUPPORTED_FILE_CONTENT_TYPES, ExpensesImporter
-from app.schemas import ExpenseOut
+from app.schemas.expense import ExpenseOut
 from app.repositories import ExpenseRepository, ExpenseCategoryRepository
 from app.dependencies import (
     get_current_user, 

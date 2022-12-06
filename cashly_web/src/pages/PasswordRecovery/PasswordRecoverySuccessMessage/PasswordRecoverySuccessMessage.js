@@ -1,7 +1,7 @@
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
-import * as S from "./SuccessMessage.styled";
+import * as S from "./PasswordRecoverySuccessMessage.styled";
 
-export default function SuccessMessage({ title, content, children }) {
+export default function PasswordRecoverySuccessMessage({ title, content, children }) {
   return (
     <S.Container>
       <S.MessageIconWrapper>
@@ -10,8 +10,10 @@ export default function SuccessMessage({ title, content, children }) {
       <div>
         <h2>{title}</h2>
         <p>{content}</p>
+        <S.ChildrenWrapper>
+          {children}
+        </S.ChildrenWrapper>
       </div>
-      {children}
     </S.Container>
   );
 }
