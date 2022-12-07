@@ -1,11 +1,17 @@
+import { toast } from "react-toastify";
 import { useMutation, useQueryClient } from "react-query";
 import NiceModal, { useModal, bootstrapDialog } from "@ebay/nice-modal-react";
 import { expenseCategoryAPI } from "@/api";
+import { notifyUnhandledError } from "@/helpers/notify";
 import CategoryModal from "@/pages/Categories/CategoryModal/CategoryModal";
 
 export default NiceModal.create(() => {
   const modal = useModal();
+
   const queryClient = useQueryClient();
+
+  const notifyAddCategorySuccess = () =>
+    toast.success("Kategoria została pomyślnie dodana");
 
   const initialValues = { name: "", color: "#29eaff" };
 
@@ -14,9 +20,13 @@ export default NiceModal.create(() => {
     {
       onSuccess: () => {
         modal.hide();
+        notifyAddCategorySuccess();
         queryClient.invalidateQueries("categories");
       },
-      onError: () => modal.hide(),
+      onError: () => {
+        modal.hide();
+        notifyUnhandledError();
+      },
     }
   );
 

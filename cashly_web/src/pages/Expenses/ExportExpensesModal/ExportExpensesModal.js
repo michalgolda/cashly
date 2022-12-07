@@ -1,21 +1,29 @@
 import { useFormik } from "formik";
+import { toast } from "react-toastify";
 import { useMutation } from "react-query";
 import NiceModal, { useModal, bootstrapDialog } from "@ebay/nice-modal-react";
-import * as S from "./ExportExpensesModal.styled";
 import { expenseAPI } from "@/api";
 import { Input, Button } from "@/components";
+import * as S from "./ExportExpensesModal.styled";
+import { notifyUnhandledError } from "@/helpers/notify";
 
 export default NiceModal.create(() => {
   const modal = useModal();
 
+  const notifyExportExpensesSuccess = () =>
+    toast.success("Wydatki zostały pomyślnie wyeksportowane");
+
   const exportExpensesMutation = useMutation(expenseAPI.exportExpenses, {
     onSuccess: ({ data }) => {
       modal.hide();
+      notifyExportExpensesSuccess();
 
       const blob = new Blob([data], { type: "text/csv" });
       const blobUrl = URL.createObjectURL(blob);
       window.open(blobUrl);
     },
+    onError: () =>
+      notifyUnhandledError()
   });
 
   const onSubmit = (values) => exportExpensesMutation.mutate(values);

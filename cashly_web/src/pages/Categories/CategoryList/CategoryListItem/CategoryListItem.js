@@ -1,18 +1,30 @@
 import PropTypes from "prop-types";
-import * as S from "./CategoryListItem.styled";
+import { toast } from "react-toastify";
 import { useModal } from "@ebay/nice-modal-react";
 import { useMutation, useQueryClient } from "react-query";
 import { expenseCategoryAPI } from "@/api";
+import * as S from "./CategoryListItem.styled";
+import { notifyUnhandledError } from "@/helpers/notify";
 import EditCategoryModal from "@/pages/Categories/EditCategoryModal";
 import { EditListItemButton, DeleteListItemButton } from "@/components";
 
 function CategoryListItem({ id, name, color }) {
   const queryClient = useQueryClient();
+  
   const editCategoryModal = useModal(EditCategoryModal);
+
+  const notifyDeleteCategorySuccess = () =>
+    toast.success("Kategoria została pomyślnie usunięta");
+
   const deleteCategoryMutation = useMutation(
     expenseCategoryAPI.deleteExpenseCategory,
     {
-      onSuccess: () => queryClient.invalidateQueries("categories"),
+      onSuccess: () => {
+        notifyDeleteCategorySuccess();
+        queryClient.invalidateQueries("categories");
+      },
+      onError: () =>
+        notifyUnhandledError()
     }
   );
 

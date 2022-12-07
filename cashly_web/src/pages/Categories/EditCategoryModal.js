@@ -1,20 +1,30 @@
+import { toast } from "react-toastify";
 import { useMutation, useQueryClient } from "react-query";
 import NiceModal, { useModal, bootstrapDialog } from "@ebay/nice-modal-react";
 import { expenseCategoryAPI } from "@/api";
+import { notifyUnhandledError } from "@/helpers/notify";
 import CategoryModal from "./CategoryModal/CategoryModal";
 
 export default NiceModal.create(({ id, name, color }) => {
   const modal = useModal();
+
   const queryClient = useQueryClient();
+
   const initialValues = { name, color };
+  
+  const notifyUpdateExpenseSuccess = () =>
+    toast.success("Kategoria została pomyślnie zaktualizowana");
+
   const updateExpenseCategoryMutation = useMutation(
     expenseCategoryAPI.updateExpenseCategory,
     {
       onSuccess: () => {
         modal.hide();
-
+        notifyUpdateExpenseSuccess();
         queryClient.invalidateQueries("categories");
       },
+      onError: () =>
+        notifyUnhandledError()
     }
   );
   const onSubmit = (values, { setSubmitting, setFieldError }) => {

@@ -1,19 +1,27 @@
+import { toast } from "react-toastify";
 import { useMutation, useQueryClient } from "react-query";
 import NiceModal, { useModal, bootstrapDialog } from "@ebay/nice-modal-react";
-import * as S from "./ImportExpensesModal.styled";
 import { expenseAPI } from "@/api";
 import { Input, Button } from "@/components";
+import * as S from "./ImportExpensesModal.styled";
+import { notifyUnhandledError } from "@/helpers/notify";
 
 export default NiceModal.create(() => {
   const modal = useModal();
 
   const queryClient = useQueryClient();
 
+  const notifyImportExpensesSuccess = () =>
+    toast.success("Wydatki zostały pomyślnie zaimportowane");
+
   const importExpensesMutation = useMutation(expenseAPI.importExpenses, {
     onSuccess: () => {
       modal.hide();
+      notifyImportExpensesSuccess();
       queryClient.invalidateQueries("expenses");
     },
+    onError: () =>
+      notifyUnhandledError()
   });
 
   const handleSubmit = (e) => {

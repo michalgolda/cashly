@@ -20,3 +20,4 @@ export { default as AuthRequired } from "./AuthRequired";
 export { default as LoadingCurtain } from "./LoadingCurtain/LoadingCurtain";
 export { default as EditListItemButton } from "./EditListItemButton/EditListItemButton";
 export { default as DeleteListItemButton } from "./DeleteListItemButton/DeleteListItemButton";
+export { default as AppToastContainer } from "./AppToastContainer/AppToastContainer";

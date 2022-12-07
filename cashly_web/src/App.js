@@ -13,7 +13,7 @@ import {
   Register,
   PasswordRecovery,
 } from "@/pages";
-import { AuthRequired, AuthRedirect } from "@/components";
+import { AuthRequired, AuthRedirect, AppToastContainer } from "@/components";
 import { SessionProvider } from "@/contexts/session";
 import { theme, GlobalStyle } from "@/styles";
 import { queryClient } from "@/helpers/queryClient";
@@ -22,10 +22,11 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <AppToastContainer />
         <NiceModalProvider>
           <BrowserRouter>
             <SessionProvider>
-              <GlobalStyle />
               <Routes>
                 <Route index element={<Navigate to="/expenses" replace />} />
                 <Route

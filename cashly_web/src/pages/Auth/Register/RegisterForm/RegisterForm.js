@@ -1,20 +1,24 @@
 import * as yup from "yup";
 import { useFormik } from "formik";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
-
 import { authAPI } from "@/api";
 import { Input, Button } from "@/components";
 import AuthForm from "../../AuthForm/AuthForm";
-import { useState } from "react";
+import { notifyUnhandledError } from "@/helpers/notify";
 
 export default function RegisterForm() {
-  const [nonFieldError, setNonFieldError] = useState(null);
-
   const navigate = useNavigate();
 
+  const notifyRegisterSuccess = () =>
+    toast.success("Konto zostało pomyślnie zarejestrowane");
+
   const registerMutation = useMutation(authAPI.register, {
-    onSuccess: () => navigate("/login", { replace: true }),
+    onSuccess: () => {
+      notifyRegisterSuccess();
+      navigate("/login", { replace: true });
+    },
   });
 
   const initialValues = {
@@ -50,7 +54,7 @@ export default function RegisterForm() {
               break;
           }
         } else {
-          setNonFieldError("Coś poszło nie tak. Spróbuj ponownie.");
+          notifyUnhandledError();
         }
       },
     });
@@ -65,8 +69,6 @@ export default function RegisterForm() {
   return (
     <AuthForm
       onSubmit={formik.handleSubmit}
-      onChange={() => setNonFieldError(null)}
-      nonFieldError={nonFieldError}
       noValidate
     >
       <Input

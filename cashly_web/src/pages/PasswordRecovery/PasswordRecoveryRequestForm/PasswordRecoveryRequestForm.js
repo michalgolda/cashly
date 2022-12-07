@@ -1,15 +1,18 @@
 import * as yup from "yup";
-import { useState } from "react";
 import { useFormik } from "formik";
+import { toast } from "react-toastify";
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 import { authAPI } from "@/api";
 import AuthForm from "@/pages/Auth/AuthForm/AuthForm";
+import { notifyUnhandledError } from "@/helpers/notify";
 import { Input, Button, LinkButton } from "@/components";
-import PasswordRecoverySuccessMessage from "../PasswordRecoverySuccessMessage/PasswordRecoverySuccessMessage";
 
 export default function PasswordRecoveryRequestForm() {
-  const [nonFieldError, setNonFieldError] = useState(null);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const navigate = useNavigate();
+
+  const notifyPasswordRecoveryRequestSuccess = () => 
+    toast.success("Link do resetowania hasła został pomyślnie wysłany");
 
   const initialValues = { email: "" };
   const validationSchema = yup.object({
@@ -19,7 +22,10 @@ export default function PasswordRecoveryRequestForm() {
       .required("To pole jest wymagane"),
   });
   const passwordRecoveryRequestMutation = useMutation(authAPI.passwordRecoveryRequest, {
-    onSuccess: () => setShowSuccessMessage(true),
+    onSuccess: () => {
+      navigate("/login");
+      notifyPasswordRecoveryRequestSuccess();
+    },
   });
   const formik = useFormik({
     initialValues,
@@ -37,7 +43,7 @@ export default function PasswordRecoveryRequestForm() {
                 break;
             }
           } else {
-            setNonFieldError("Coś poszło nie tak. Spróbuj ponownie.");
+            notifyUnhandledError();
           }
         }
        });
@@ -46,46 +52,29 @@ export default function PasswordRecoveryRequestForm() {
 
   return (
     <>
-        {!showSuccessMessage && (
-            <>
-                <h2>Resetowanie hasła</h2>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                    eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </p>
-                <AuthForm
-                    onSubmit={formik.handleSubmit}
-                    onChange={() => setNonFieldError(null)}
-                    nonFieldError={nonFieldError}
-                    noValidate
-                >
-                    <Input
-                        type="email"
-                        name="email"
-                        onChange={formik.handleChange}
-                        value={formik.values.email}
-                        error={formik.touched.email && formik.errors.email}
-                        labelText="E-mail"
-                        fullWidth
-                    />
-                    <Button type="submit">Wyślij link</Button>
-                    <LinkButton to="/login" variant="primaryOutlined" type="button" fullWidth>
-                    Powrót
-                    </LinkButton>
-                </AuthForm>
-            </>
-        )}
-        {showSuccessMessage && (
-            <PasswordRecoverySuccessMessage
-                title="Link został pomyślnie wysłany." 
-                content={
-                    `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                    eiusmod tempor incididunt ut labore et dolore magna aliqua.`
-                }
-            >
-              <LinkButton variant="primaryOutlined" to="/">OK</LinkButton>
-            </PasswordRecoverySuccessMessage>
-        )}
+        <h2>Resetowanie hasła</h2>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
+        <AuthForm
+            onSubmit={formik.handleSubmit}
+            noValidate
+        >
+            <Input
+                type="email"
+                name="email"
+                onChange={formik.handleChange}
+                value={formik.values.email}
+                error={formik.touched.email && formik.errors.email}
+                labelText="E-mail"
+                fullWidth
+            />
+            <Button type="submit">Wyślij link</Button>
+            <LinkButton to="/login" variant="primaryOutlined" type="button" fullWidth>
+            Powrót
+            </LinkButton>
+        </AuthForm>
     </>
   )
 }

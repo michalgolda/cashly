@@ -1,17 +1,21 @@
-import { useState } from "react";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import { toast } from "react-toastify";
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 import { authAPI } from "@/api";
 import AuthForm from "@/pages/Auth/AuthForm/AuthForm";
+import { notifyUnhandledError } from "@/helpers/notify";
 import { Input, Button, LinkButton } from "@/components";
-import PasswordRecoverySuccessMessage from "../PasswordRecoverySuccessMessage/PasswordRecoverySuccessMessage";
 import { usePasswordRecovery } from "../usePasswordRecovery";
 
 export default function ResetPasswordForm() {
+  const navigate = useNavigate();
+  
   const { passwordRecoveryToken } = usePasswordRecovery();
-  const [nonFieldError, setNonFieldError] = useState(null);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+  const notifyPasswordRecoveryProceedSuccess = () =>
+    toast.success("Hasło zostało pomyślnie zmienione");
 
   const initialValues = {
     password: "",
@@ -25,14 +29,15 @@ export default function ResetPasswordForm() {
       .required("To pole jest wymagane"),
   });
   const passwordRecoveryProceedMutation = useMutation(authAPI.passwordRecoveryProceed, {
-    onSuccess: () => setShowSuccessMessage(true)
+    onSuccess: () => {
+      navigate("/login");
+      notifyPasswordRecoveryProceedSuccess();
+    },
+    onError: () =>
+      notifyUnhandledError()
   });
-  const onSubmit = ({ password }) => {
-    passwordRecoveryProceedMutation.mutate({ password, passwordRecoveryToken }, {
-      onError: () =>
-          setNonFieldError("Coś poszło nie tak. Spróbuj ponownie.")
-    });
-  };
+  const onSubmit = ({ password }) =>
+    passwordRecoveryProceedMutation.mutate({ password, passwordRecoveryToken });
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -41,53 +46,36 @@ export default function ResetPasswordForm() {
 
   return (
     <>
-      {!showSuccessMessage && (
-        <>
-            <h2>Resetowanie hasła</h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-            <AuthForm
-                onSubmit={formik.handleSubmit}
-                onChange={() => setNonFieldError(null)} 
-                nonFieldError={nonFieldError}
-                noValidate
-            >
-                <Input
-                    name="password"
-                    labelText="Nowe hasło"
-                    type="password"
-                    onChange={formik.handleChange}
-                    value={formik.values.password}
-                    error={formik.touched.password && formik.errors.password}
-                    fullWidth
-                />
-                <Input
-                    name="confirmPassword"
-                    labelText="Powtórz hasło"
-                    type="password"
-                    onChange={formik.handleChange}
-                    value={formik.values.confirmPassword}
-                    error={formik.touched.confirmPassword && formik.errors.confirmPassword}
-                    fullWidth
-                />
-                <Button type="submit">Zresetuj hasło</Button>
-                <LinkButton variant="primaryOutlined" to="/login" fullWidth>Powrót</LinkButton>
-            </AuthForm>
-        </>
-      )}
-      {showSuccessMessage && (
-        <PasswordRecoverySuccessMessage
-          title="Hasło zostało pomyślnie zmienione."
-          content={
-            `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.`
-          }
-        >
-          <LinkButton variant="primaryOutlined" to="/login">OK</LinkButton>
-        </PasswordRecoverySuccessMessage>
-      )}
-    </>
+      <h2>Resetowanie hasła</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+        eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      </p>
+      <AuthForm
+          onSubmit={formik.handleSubmit}
+          noValidate
+      >
+        <Input
+            name="password"
+            labelText="Nowe hasło"
+            type="password"
+            onChange={formik.handleChange}
+            value={formik.values.password}
+            error={formik.touched.password && formik.errors.password}
+            fullWidth
+        />
+        <Input
+            name="confirmPassword"
+            labelText="Powtórz hasło"
+            type="password"
+            onChange={formik.handleChange}
+            value={formik.values.confirmPassword}
+            error={formik.touched.confirmPassword && formik.errors.confirmPassword}
+            fullWidth
+        />
+        <Button type="submit">Zresetuj hasło</Button>
+        <LinkButton variant="primaryOutlined" to="/login" fullWidth>Powrót</LinkButton>
+      </AuthForm>
+  </>
   );
 }

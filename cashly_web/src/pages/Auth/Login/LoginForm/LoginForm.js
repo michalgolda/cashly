@@ -1,14 +1,12 @@
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { useState } from "react";
-
+import { toast } from "react-toastify";
+import { Input, Button } from "@/components";
 import AuthForm from "../../AuthForm/AuthForm";
 import { useSession } from "@/hooks/useSession";
-import { Input, Button } from "@/components";
+import { notifyUnhandledError } from "@/helpers/notify";
 
 export default function LoginForm() {
-  const [nonFieldError, setNonFieldError] = useState(null);
-
   const initialValues = {
     email: "",
     password: "",
@@ -28,23 +26,12 @@ export default function LoginForm() {
     initialValues,
     validationSchema,
     onSubmit: (values) =>
-      login(values).catch((err) => {
-        console.log(err);
-
-        if (err.response && err.response.status === 400) {
-          const { message } = err.response.data;
-          setNonFieldError(message);
-        } else {
-          setNonFieldError("Coś poszło nie tak. Spróbuj ponownie.");
-        }
-      }),
+      login(values).catch(() => notifyUnhandledError()),
   });
 
   return (
     <AuthForm
       onSubmit={formik.handleSubmit}
-      onChange={() => setNonFieldError(null)}
-      nonFieldError={nonFieldError}
       noValidate
     >
       <Input
