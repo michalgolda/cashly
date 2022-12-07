@@ -28,7 +28,10 @@ export default function ResetPasswordForm() {
     onSuccess: () => setShowSuccessMessage(true)
   });
   const onSubmit = ({ password }) => {
-    passwordRecoveryProceedMutation.mutate({ password, passwordRecoveryToken });
+    passwordRecoveryProceedMutation.mutate({ password, passwordRecoveryToken }, {
+      onError: () =>
+          setNonFieldError("Coś poszło nie tak. Spróbuj ponownie.")
+    });
   };
   const formik = useFormik({
     initialValues,

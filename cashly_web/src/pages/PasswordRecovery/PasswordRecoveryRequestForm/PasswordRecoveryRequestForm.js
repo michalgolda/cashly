@@ -20,15 +20,27 @@ export default function PasswordRecoveryRequestForm() {
   });
   const passwordRecoveryRequestMutation = useMutation(authAPI.passwordRecoveryRequest, {
     onSuccess: () => setShowSuccessMessage(true),
-    onError: (error) => {
-      console.log(error);
-    },
   });
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: (values) => {
-      passwordRecoveryRequestMutation.mutate(values);
+    onSubmit: (values, { setFieldError }) => {
+      passwordRecoveryRequestMutation.mutate(values, { 
+        onError: (err) => {
+          if (err.response && err.response.status === 404) {
+            const { code } = err.response.data;
+            switch (code) {
+              case "UserNotFoundError":
+                setFieldError("email", "Użytkownik o podanym adresie email nie istnieje");
+                break;
+              default:
+                break;
+            }
+          } else {
+            setNonFieldError("Coś poszło nie tak. Spróbuj ponownie.");
+          }
+        }
+       });
     },
   });
 
