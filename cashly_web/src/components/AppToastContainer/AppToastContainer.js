@@ -6,10 +6,11 @@ export default function AppToastContainer() {
     return (
         <S.ToastContainerWrapper>
             <ToastContainer 
+                limit={3}
                 theme="light"
                 position="bottom-right"
                 rtl={false}
-                autoClose={3000}
+                autoClose={1500}
                 newestOnTop={false}
                 closeButton={false}
                 pauseOnHover
