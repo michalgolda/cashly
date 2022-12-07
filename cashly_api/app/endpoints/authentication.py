@@ -18,7 +18,12 @@ from app.usecases.authentication import (
   SendResetPasswordLinkUseCaseInput,
   SendResetPasswordLinkUseCase  
 )
-from app.dependencies import get_user_repo, get_security_manager
+from app.messages import MessageClient
+from app.dependencies import (
+  get_user_repo, 
+  get_message_client,
+  get_security_manager
+)
 
 
 authentication_router = APIRouter()
@@ -56,15 +61,14 @@ def login(
 def password_recovery_request(
   password_recovery_request_payload: PasswordRecoveryRequestPayload,
   user_repo: UserRepository = Depends(get_user_repo), 
-  security_manager: SecurityManager = Depends(get_security_manager)
+  security_manager: SecurityManager = Depends(get_security_manager),
+  message_client: MessageClient = Depends(get_message_client)
 ):
   usecase_input = SendResetPasswordLinkUseCaseInput(password_recovery_request_payload.email)
 
-  message = EmailMessage()
-
   usecase = SendResetPasswordLinkUseCase(
     user_repo,
-    message,
+    message_client,
     security_manager
   )
   usecase.execute(usecase_input)
@@ -72,7 +76,8 @@ def password_recovery_request(
 @authentication_router.put('/auth/passwordrecovery', status_code=200)
 def password_recovery_proceed(
   password_recovery_proceed_payload: PasswordRecoveryProceedPayload, 
-  user_repo: UserRepository = Depends(get_user_repo), 
+  user_repo: UserRepository = Depends(get_user_repo),
+  message_client: MessageClient = Depends(get_message_client),
   security_manager: SecurityManager = Depends(get_security_manager)
 ):
   usecase_input = ResetPasswordUseCaseInput(
@@ -82,6 +87,7 @@ def password_recovery_proceed(
 
   usecase = ResetPasswordUseCase(
     user_repo,
+    message_client,
     security_manager
   )
   usecase.execute(usecase_input)

@@ -3,9 +3,9 @@ from dataclasses import dataclass
 
 from app.entities import User
 from app.usecases import UseCase
-from app.messages import EmailMessage
 from app.security import SecurityManager
 from app.repositories import UserRepository
+from app.messages import MessageClient, EmailMessage
 from app.exceptions import UserEmailAlreadyUsedError, BadAuthenticationCredentialsError, UserNotFoundError
 
 
@@ -67,11 +67,11 @@ class SendResetPasswordLinkUseCase(UseCase[SendResetPasswordLinkUseCaseInput, No
   def __init__(
     self, 
     user_repo: UserRepository, 
-    message: EmailMessage, 
+    message_client: MessageClient, 
     security_manager: SecurityManager
   ) -> None:
     self._user_repo = user_repo
-    self._message = message
+    self._message_client = message_client
     self._security_manager = security_manager
 
   def execute(self, input: SendResetPasswordLinkUseCaseInput) -> NoReturn:
@@ -81,12 +81,14 @@ class SendResetPasswordLinkUseCase(UseCase[SendResetPasswordLinkUseCaseInput, No
 
     reset_password_token = self._security_manager.generate_reset_password_token(existing_user.email)
 
-    self._message.set_recipment(existing_user.email)
-    self._message.set_payload({ 
-      'email': existing_user.email, 
-      'reset_password_token': reset_password_token 
-    })
-    self._message.send()
+    self._message_client.send(
+      EmailMessage(
+        title='Cashly - Resetowanie hasła',
+        recipients=[existing_user.email],
+        template_name='password-recovery-request.html', 
+        payload={'password_recovery_token': reset_password_token}
+      )
+    )
 
 
 @dataclass(frozen=True)
@@ -95,8 +97,14 @@ class ResetPasswordUseCaseInput:
   reset_password_token: str
 
 class ResetPasswordUseCase(UseCase[ResetPasswordUseCaseInput, NoReturn]):
-  def __init__(self, user_repo: UserRepository, security_manager: SecurityManager) -> None:
+  def __init__(
+    self, 
+    user_repo: UserRepository, 
+    message_client: MessageClient,
+    security_manager: SecurityManager
+  ) -> None:
     self._user_repo = user_repo
+    self._message_client = message_client
     self._security_manager = security_manager
 
   def execute(self, input: ResetPasswordUseCaseInput) -> NoReturn:
@@ -110,3 +118,10 @@ class ResetPasswordUseCase(UseCase[ResetPasswordUseCaseInput, NoReturn]):
 
     self._user_repo.save(existing_user)
     
+    self._message_client.send(
+      EmailMessage(
+        title='Cashly - Hasło zostało pomyślnie zmienione!',
+        recipients=[existing_user.email],
+        template_name='password-recovery-success.html'
+      )
+    )

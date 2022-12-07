@@ -1,11 +1,17 @@
 import pytest
 
 from app.entities import User
+from app.messages import MemoryMessageClient
 from app.repositories import MemoryUserRepository
-from app.dependencies import get_user_repo, get_security_manager
+from app.dependencies import (
+  get_user_repo,
+  get_message_client, 
+  get_security_manager
+)
 
 
 security_manager = get_security_manager()
+message_client = MemoryMessageClient()
 
 def test_register(client):
   response = client.post('/auth/register', json=dict(email='test@test.pl', password='test'))
@@ -89,7 +95,8 @@ def test_login_when_password_is_wrong(client):
           'test@test.pl', 
           password=security_manager.generate_password_hash('test')
         )
-      ])
+      ]),
+      get_message_client: lambda : message_client
     }
   }],
   indirect=True
@@ -97,6 +104,8 @@ def test_login_when_password_is_wrong(client):
 def test_password_recovery_request(client):
   response = client.post('/auth/passwordrecovery', json={'email': 'test@test.pl'})
   assert response.status_code == 200
+  assert len(message_client.output) == 1
+  message_client.output = []
 
 def test_password_recovery_request_when_user_email_is_wrong(client):
   response = client.post('/auth/passwordrecovery', json={'email': 'test@test.pl'})
@@ -115,7 +124,8 @@ def test_password_recovery_request_when_user_email_is_wrong(client):
           'test@test.pl', 
           password=security_manager.generate_password_hash('test')
         )
-      ])
+      ]),
+      get_message_client: lambda : message_client
     }
   }],
   indirect=True
@@ -126,7 +136,9 @@ def test_password_recovery_proceed(client):
     '/auth/passwordrecovery', 
     json={
       'password': 'new_password', 
-      'reset_password_token': reset_password_token
+      'password_recovery_token': reset_password_token
     }
   )
   assert response.status_code == 200
+  assert len(message_client.output) == 1
+  message_client.output = []
