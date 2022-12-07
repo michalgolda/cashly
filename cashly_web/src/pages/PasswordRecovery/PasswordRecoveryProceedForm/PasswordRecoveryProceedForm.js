@@ -73,6 +73,7 @@ export default function ResetPasswordForm() {
                     fullWidth
                 />
                 <Button type="submit">Zresetuj hasło</Button>
+                <LinkButton variant="primaryOutlined" to="/login" fullWidth>Powrót</LinkButton>
             </AuthForm>
         </>
       )}
