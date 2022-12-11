@@ -10,6 +10,7 @@ specifiers:
   '@testing-library/react': ^11.1.0
   '@testing-library/user-event': ^12.8.3
   axios: ^0.27.2
+  file-saver: ^2.0.5
   formik: ^2.2.9
   moment: ^2.29.1
   prop-types: ^15.7.2
@@ -35,6 +36,7 @@ dependencies:
   '@testing-library/react': 11.2.7_biqbaboplfbrettd7655fr4n2y
   '@testing-library/user-event': 12.8.3_wl4iynrlixafokvgqnhzlvigei
   axios: 0.27.2
+  file-saver: 2.0.5
   formik: 2.2.9_react@18.2.0
   moment: 2.29.4
   prop-types: 15.8.1
@@ -4672,6 +4674,10 @@ packages:
       loader-utils: 2.0.2
       schema-utils: 3.1.1
       webpack: 5.74.0
+
+  /file-saver/2.0.5:
+    resolution: {integrity: sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==}
+    dev: false
 
   /filelist/1.0.4:
     resolution: {integrity: sha512-w1cEuf3S+DrLCQL7ET6kz+gmlJdbq9J7yXCSjK/OZCPA+qEN1WyF4ZAf0YYJa4/shHJra2t/d/r8SV4Ji+x+8Q==}

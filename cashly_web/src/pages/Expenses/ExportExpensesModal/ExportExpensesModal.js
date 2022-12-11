@@ -1,4 +1,5 @@
 import { useFormik } from "formik";
+import { saveAs } from "file-saver";
 import { toast } from "react-toastify";
 import { useMutation } from "react-query";
 import NiceModal, { useModal, bootstrapDialog } from "@ebay/nice-modal-react";
@@ -6,6 +7,7 @@ import { expenseAPI } from "@/api";
 import { Input, Button } from "@/components";
 import * as S from "./ExportExpensesModal.styled";
 import { notifyUnhandledError } from "@/helpers/notify";
+import { defaultDateTimeFormat } from "@/helpers/formating";
 
 export default NiceModal.create(() => {
   const modal = useModal();
@@ -19,8 +21,7 @@ export default NiceModal.create(() => {
       notifyExportExpensesSuccess();
 
       const blob = new Blob([data], { type: "text/csv" });
-      const blobUrl = URL.createObjectURL(blob);
-      window.open(blobUrl);
+      saveAs(blob, `Wydatki - ${defaultDateTimeFormat.format(new Date())}`);
     },
     onError: () =>
       notifyUnhandledError()
