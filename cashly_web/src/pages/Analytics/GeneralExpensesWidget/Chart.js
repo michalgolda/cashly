@@ -1,14 +1,15 @@
-import styled from "styled-components";
 import {
   Line,
-  XAxis,
-  Tooltip,
   LineChart,
   ReferenceLine,
   ResponsiveContainer,
-} from "recharts";
-import { defaultCurrencyFormat} from "@/helpers/formating";
-import TooltipContent from "@/pages/Analytics/TooltipContent/TooltipContent";
+  Tooltip,
+  XAxis,
+} from 'recharts';
+import styled from 'styled-components';
+
+import { defaultCurrencyFormat } from '@/helpers/formating';
+import TooltipContent from '@/pages/Analytics/TooltipContent/TooltipContent';
 
 const StyledWrapper = styled.div`
   width: 100%;

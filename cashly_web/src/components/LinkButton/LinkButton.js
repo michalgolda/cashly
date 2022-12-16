@@ -1,6 +1,8 @@
-import PropTypes from "prop-types";
-import * as S from "./LinkButton.styled";
-import { Button } from "@/components";
+import PropTypes from 'prop-types';
+
+import { Button } from '@/components';
+
+import * as S from './LinkButton.styled';
 
 function LinkButton({ to, children, ...props }) {
   return (

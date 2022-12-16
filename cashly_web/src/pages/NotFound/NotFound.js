@@ -1,6 +1,7 @@
-import * as S from "./NotFound.styled";
-import { Page, LinkButton, Informer } from "@/components";
-import NotFoundIllustration from "@/assets/notFound.svg";
+import NotFoundIllustration from '@/assets/notFound.svg';
+import { Informer, LinkButton, Page } from '@/components';
+
+import * as S from './NotFound.styled';
 
 export default function NotFound() {
   return (

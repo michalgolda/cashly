@@ -1,54 +1,57 @@
-import * as yup from "yup";
-import { useFormik } from "formik";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import { useMutation } from "react-query";
-import { authAPI } from "@/api";
-import { Input, Button } from "@/components";
-import AuthForm from "../../AuthForm/AuthForm";
-import { notifyUnhandledError } from "@/helpers/notify";
+import { useMutation } from 'react-query';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+
+import { authAPI } from '@/api';
+import { Button, Input } from '@/components';
+import { notifyUnhandledError } from '@/helpers/notify';
+
+import AuthForm from '../../AuthForm/AuthForm';
 
 export default function RegisterForm() {
   const navigate = useNavigate();
 
   const notifyRegisterSuccess = () =>
-    toast.success("Konto zostało pomyślnie zarejestrowane");
+    toast.success('Konto zostało pomyślnie zarejestrowane');
 
   const registerMutation = useMutation(authAPI.register, {
     onSuccess: () => {
       notifyRegisterSuccess();
-      navigate("/login", { replace: true });
+      navigate('/login', { replace: true });
     },
   });
 
   const initialValues = {
-    email: "",
-    password: "",
-    confirmPassword: "",
+    email: '',
+    password: '',
+    confirmPassword: '',
   };
 
   const validationSchema = yup.object({
     email: yup
       .string()
-      .email("Podaj prawidłowy email")
-      .required("To pole jest wymagane"),
-    password: yup.string().required("To pole jest wymagane"),
+      .email('Podaj prawidłowy email')
+      .required('To pole jest wymagane'),
+    password: yup.string().required('To pole jest wymagane'),
     confirmPassword: yup
       .string()
-      .oneOf([yup.ref("password"), null], "Hasła nie są zgodne")
-      .required("To pole jest wymagane"),
+      .oneOf([yup.ref('password'), null], 'Hasła nie są zgodne')
+      .required('To pole jest wymagane'),
   });
 
   const onSubmit = (values, { setFieldError }) => {
-    delete values["confirmPassword"];
+    delete values['confirmPassword'];
 
     registerMutation.mutate(values, {
       onError: (err) => {
         if (err.response && err.response.status === 400) {
           const { code, message } = err.response.data;
           switch (code) {
-            case "UserEmailAlreadyUsedError":
-              setFieldError("email", message);
+            case 'UserEmailAlreadyUsedError':
+              setFieldError('email', message);
               break;
             default:
               break;
@@ -67,10 +70,7 @@ export default function RegisterForm() {
   });
 
   return (
-    <AuthForm
-      onSubmit={formik.handleSubmit}
-      noValidate
-    >
+    <AuthForm onSubmit={formik.handleSubmit} noValidate>
       <Input
         name="email"
         type="email"

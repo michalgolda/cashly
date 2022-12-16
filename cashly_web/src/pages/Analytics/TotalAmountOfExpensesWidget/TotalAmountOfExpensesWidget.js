@@ -1,20 +1,22 @@
-import { useQuery } from "react-query";
-import * as S from "./TotalAmountOfExpensesWidget.styled";
-import Widget from "@/pages/Analytics/Widget/Widget";
-import { Skeleton } from "@/components";
-import { analyticsAPI } from "@/api";
-import { defaultCurrencyFormat } from "@/helpers/formating";
-import { useDatePeriod } from "@/pages/Analytics/useDatePeriod";
+import { useQuery } from 'react-query';
+
+import { analyticsAPI } from '@/api';
+import { Skeleton } from '@/components';
+import { defaultCurrencyFormat } from '@/helpers/formating';
+import Widget from '@/pages/Analytics/Widget/Widget';
+import { useDatePeriod } from '@/pages/Analytics/useDatePeriod';
+
+import * as S from './TotalAmountOfExpensesWidget.styled';
 
 export default function TotalAmountOfExpensesWidget() {
   const { currentPeriod } = useDatePeriod();
   const { data, isLoading, isError } = useQuery(
-    ["totalAmountOfExpenses", { currentPeriod }],
+    ['totalAmountOfExpenses', { currentPeriod }],
     () =>
       analyticsAPI.getTotalAmountOfExpenses({
         startDate: currentPeriod.start_date,
         endDate: currentPeriod.end_date,
-      })
+      }),
   );
 
   return (

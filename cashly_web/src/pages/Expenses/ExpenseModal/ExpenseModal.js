@@ -1,10 +1,13 @@
-import * as yup from "yup";
-import PropTypes from "prop-types";
-import { useFormik } from "formik";
-import { useQuery } from "react-query";
-import * as S from "./ExpenseModal.styled";
-import { expenseCategoryAPI } from "@/api";
-import { Button, Input } from "@/components";
+import { useQuery } from 'react-query';
+
+import { useFormik } from 'formik';
+import PropTypes from 'prop-types';
+import * as yup from 'yup';
+
+import { expenseCategoryAPI } from '@/api';
+import { Button, Input } from '@/components';
+
+import * as S from './ExpenseModal.styled';
 
 function ExpenseModal({
   title,
@@ -19,13 +22,13 @@ function ExpenseModal({
   const validationSchema = yup.object().shape({
     amount: yup
       .number()
-      .required("Kwota jest wymagana.")
-      .positive("Podaj prawidłową wartość.")
-      .min(0.01, "Minimalna wartość to 0.01")
-      .max(99999.0, "Maksymalna wartość to 99999.00"),
+      .required('Kwota jest wymagana.')
+      .positive('Podaj prawidłową wartość.')
+      .min(0.01, 'Minimalna wartość to 0.01')
+      .max(99999.0, 'Maksymalna wartość to 99999.00'),
     realisedDate: yup
       .date()
-      .required("Data zrealizowania wydatku jest wymagana."),
+      .required('Data zrealizowania wydatku jest wymagana.'),
   });
   const { values, errors, touched, handleChange, handleSubmit } = useFormik({
     onSubmit,
@@ -34,8 +37,8 @@ function ExpenseModal({
     enableReinitialize: true,
   });
   const { data } = useQuery(
-    "categories",
-    expenseCategoryAPI.getAllExpenseCategories
+    'categories',
+    expenseCategoryAPI.getAllExpenseCategories,
   );
 
   return (

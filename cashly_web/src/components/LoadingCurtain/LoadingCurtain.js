@@ -1,5 +1,6 @@
-import { Logo } from "@/components";
-import * as S from "./LoadingCurtain.styled";
+import { Logo } from '@/components';
+
+import * as S from './LoadingCurtain.styled';
 
 export default function LoadingCurtain() {
   return (

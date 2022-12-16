@@ -1,5 +1,6 @@
-import styled from "styled-components";
-import { Modal as BaseModal } from "@/components";
+import styled from 'styled-components';
+
+import { Modal as BaseModal } from '@/components';
 
 const Modal = styled(BaseModal)`
   text-align: center;

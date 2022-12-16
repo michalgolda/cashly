@@ -1,5 +1,6 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import * as S from "./Button.styled";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import * as S from './Button.styled';
 
 function Button({ children, variant, startIcon, endIcon, ...props }) {
   const ButtonVariant = {
@@ -27,7 +28,7 @@ function Button({ children, variant, startIcon, endIcon, ...props }) {
 
 Button.defaultProps = {
   fullWidth: false,
-  variant: "primary",
+  variant: 'primary',
 };
 
 export default Button;

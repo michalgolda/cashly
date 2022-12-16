@@ -1,8 +1,8 @@
-import * as S from "./WidgetList.styled";
-import GeneralExpensesWidget from "../GeneralExpensesWidget/GeneralExpensesWidget";
-import ExpensesByCategoryWidget from "../ExpensesByCategoryWidget/ExpensesByCategoryWidget";
-import CountExpensesByCategoryWidget from "../CountExpensesByCategoryWidget/CountExpensesByCategoryWidget";
-import TotalAmountOfExpensesWidget from "../TotalAmountOfExpensesWidget/TotalAmountOfExpensesWidget";
+import CountExpensesByCategoryWidget from '../CountExpensesByCategoryWidget/CountExpensesByCategoryWidget';
+import ExpensesByCategoryWidget from '../ExpensesByCategoryWidget/ExpensesByCategoryWidget';
+import GeneralExpensesWidget from '../GeneralExpensesWidget/GeneralExpensesWidget';
+import TotalAmountOfExpensesWidget from '../TotalAmountOfExpensesWidget/TotalAmountOfExpensesWidget';
+import * as S from './WidgetList.styled';
 
 export default function WidgetList() {
   return (

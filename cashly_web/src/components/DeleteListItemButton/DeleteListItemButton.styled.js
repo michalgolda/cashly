@@ -1,5 +1,6 @@
-import styled from "styled-components";
-import { IconButton } from "@/components";
+import styled from 'styled-components';
+
+import { IconButton } from '@/components';
 
 const ActionButton = styled(IconButton)`
   color: white;

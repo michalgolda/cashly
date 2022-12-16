@@ -1,22 +1,24 @@
-import { ThemeProvider } from "styled-components";
-import { ReactQueryDevtools } from "react-query/devtools";
-import { QueryClientProvider } from "react-query";
-import { Provider as NiceModalProvider } from "@ebay/nice-modal-react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import config from "@/config";
+import { QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+
+import { Provider as NiceModalProvider } from '@ebay/nice-modal-react';
+import { ThemeProvider } from 'styled-components';
+
+import { AppToastContainer, AuthRedirect, AuthRequired } from '@/components';
+import config from '@/config';
+import { SessionProvider } from '@/contexts/session';
+import { queryClient } from '@/helpers/queryClient';
 import {
   Analytics,
   Categories,
   Expenses,
   Login,
   NotFound,
-  Register,
   PasswordRecovery,
-} from "@/pages";
-import { AuthRequired, AuthRedirect, AppToastContainer } from "@/components";
-import { SessionProvider } from "@/contexts/session";
-import { theme, GlobalStyle } from "@/styles";
-import { queryClient } from "@/helpers/queryClient";
+  Register,
+} from '@/pages';
+import { GlobalStyle, theme } from '@/styles';
 
 function App() {
   return (

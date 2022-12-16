@@ -1,5 +1,6 @@
-import PropTypes from "prop-types";
-import * as S from "./Skeleton.styled";
+import PropTypes from 'prop-types';
+
+import * as S from './Skeleton.styled';
 
 const SKELETON_TYPES = {
   circle: S.CircleSkeleton,
@@ -15,9 +16,9 @@ function Skeleton({ type, width, height, ...props }) {
 Skeleton.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
-  type: PropTypes.oneOf(["rectangle", "circle"]),
+  type: PropTypes.oneOf(['rectangle', 'circle']),
 };
 
-Skeleton.defaultProps = { type: "rectangle" };
+Skeleton.defaultProps = { type: 'rectangle' };
 
 export default Skeleton;

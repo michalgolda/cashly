@@ -1,5 +1,6 @@
-import { createContext } from "react";
-import { useSessionProvider } from "@/hooks/useSessionProvider";
+import { createContext } from 'react';
+
+import { useSessionProvider } from '@/hooks/useSessionProvider';
 
 export const SessionContext = createContext();
 

@@ -1,4 +1,4 @@
-import * as S from "./Auth.styled";
+import * as S from './Auth.styled';
 
 export default function AuthLayout({ children, ...props }) {
   return (

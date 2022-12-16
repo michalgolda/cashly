@@ -1,5 +1,6 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import * as S from "./IconButton.styled";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import * as S from './IconButton.styled';
 
 export default function IconButton({ icon, ...props }) {
   return (

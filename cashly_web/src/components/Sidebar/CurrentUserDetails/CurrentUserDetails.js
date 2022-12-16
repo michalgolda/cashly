@@ -1,7 +1,9 @@
-import { IconButton, Skeleton } from "@/components";
-import { getLetterFromEmail } from "@/helpers/emailString";
-import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import * as S from "./CurrentUserDetails.styled";
+import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+
+import { IconButton, Skeleton } from '@/components';
+import { getLetterFromEmail } from '@/helpers/emailString';
+
+import * as S from './CurrentUserDetails.styled';
 
 export default function CurrentUserDetails({ user, logoutHandler, ...props }) {
   return user ? (
@@ -18,7 +20,7 @@ export default function CurrentUserDetails({ user, logoutHandler, ...props }) {
     <S.Container className="currentUserDetails">
       <Skeleton
         type="circle"
-        style={{ minWidth: "45px" }}
+        style={{ minWidth: '45px' }}
         width={45}
         height={45}
       />

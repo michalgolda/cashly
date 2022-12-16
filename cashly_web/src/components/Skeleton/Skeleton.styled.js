@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes } from 'styled-components';
 
 const pulseAnimation = keyframes`
     0% { opacity: 1; }
@@ -8,8 +8,8 @@ const pulseAnimation = keyframes`
 
 const BaseSkeleton = styled.span`
   display: block;
-  width: ${({ width }) => (width ? `${width}px` : "100%")};
-  height: ${({ height }) => (height ? `${height}px` : "auto")};
+  width: ${({ width }) => (width ? `${width}px` : '100%')};
+  height: ${({ height }) => (height ? `${height}px` : 'auto')};
   animation: ${pulseAnimation} 1.2s ease-in-out infinite;
   background-color: ${({ theme }) => theme.colors.gray400};
 `;

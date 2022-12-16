@@ -1,9 +1,12 @@
-import { toast } from "react-toastify";
-import { useMutation, useQueryClient } from "react-query";
-import NiceModal, { useModal, bootstrapDialog } from "@ebay/nice-modal-react";
-import { expenseCategoryAPI } from "@/api";
-import { notifyUnhandledError } from "@/helpers/notify";
-import CategoryModal from "./CategoryModal/CategoryModal";
+import { useMutation, useQueryClient } from 'react-query';
+import { toast } from 'react-toastify';
+
+import NiceModal, { bootstrapDialog, useModal } from '@ebay/nice-modal-react';
+
+import { expenseCategoryAPI } from '@/api';
+import { notifyUnhandledError } from '@/helpers/notify';
+
+import CategoryModal from './CategoryModal/CategoryModal';
 
 export default NiceModal.create(({ id, name, color }) => {
   const modal = useModal();
@@ -11,9 +14,9 @@ export default NiceModal.create(({ id, name, color }) => {
   const queryClient = useQueryClient();
 
   const initialValues = { name, color };
-  
+
   const notifyUpdateExpenseSuccess = () =>
-    toast.success("Kategoria została pomyślnie zaktualizowana");
+    toast.success('Kategoria została pomyślnie zaktualizowana');
 
   const updateExpenseCategoryMutation = useMutation(
     expenseCategoryAPI.updateExpenseCategory,
@@ -21,23 +24,22 @@ export default NiceModal.create(({ id, name, color }) => {
       onSuccess: () => {
         modal.hide();
         notifyUpdateExpenseSuccess();
-        queryClient.invalidateQueries("categories");
+        queryClient.invalidateQueries('categories');
       },
-      onError: () =>
-        notifyUnhandledError()
-    }
+      onError: () => notifyUnhandledError(),
+    },
   );
   const onSubmit = (values, { setSubmitting, setFieldError }) => {
-    const categories = queryClient.getQueryData("categories");
+    const categories = queryClient.getQueryData('categories');
     const categoryNameIsAlreadyUsed = categories.find(
       ({ name: categoryName }) => {
         return categoryName === values.name && categoryName !== name;
-      }
+      },
     );
 
     if (categoryNameIsAlreadyUsed) {
       setSubmitting(false);
-      setFieldError("name", "Podana nazwa jest już w użyciu.");
+      setFieldError('name', 'Podana nazwa jest już w użyciu.');
     } else {
       updateExpenseCategoryMutation.mutate({
         id,

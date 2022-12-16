@@ -1,5 +1,6 @@
-import { Header } from "@/components";
-import DatePeriodSelectInput from "./DatePeriodSelectInput";
+import { Header } from '@/components';
+
+import DatePeriodSelectInput from './DatePeriodSelectInput';
 
 export default function AnalyticsPageHeader() {
   return (

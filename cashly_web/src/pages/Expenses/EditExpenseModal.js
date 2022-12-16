@@ -1,9 +1,12 @@
-import { toast } from "react-toastify";
-import { useMutation, useQueryClient } from "react-query";
-import NiceModal, { useModal, bootstrapDialog } from "@ebay/nice-modal-react";
-import { expenseAPI } from "@/api";
-import ExpenseModal from "./ExpenseModal/ExpenseModal";
-import { notifyUnhandledError } from "@/helpers/notify";
+import { useMutation, useQueryClient } from 'react-query';
+import { toast } from 'react-toastify';
+
+import NiceModal, { bootstrapDialog, useModal } from '@ebay/nice-modal-react';
+
+import { expenseAPI } from '@/api';
+import { notifyUnhandledError } from '@/helpers/notify';
+
+import ExpenseModal from './ExpenseModal/ExpenseModal';
 
 export default NiceModal.create(
   ({ id, amount, realisedDate, expenseCategoryId }) => {
@@ -12,16 +15,15 @@ export default NiceModal.create(
     const queryClient = useQueryClient();
 
     const notifyEditExpenseSuccess = () =>
-      toast.success("Wydatek został pomyślnie zaktualizowany");
+      toast.success('Wydatek został pomyślnie zaktualizowany');
 
     const updateExpenseMutation = useMutation(expenseAPI.updateExpense, {
       onSuccess: () => {
         modal.hide();
         notifyEditExpenseSuccess();
-        queryClient.invalidateQueries("expenses");
+        queryClient.invalidateQueries('expenses');
       },
-      onError: () => 
-        notifyUnhandledError()
+      onError: () => notifyUnhandledError(),
     });
     const initialValues = {
       amount,
@@ -49,5 +51,5 @@ export default NiceModal.create(
 			`}
       />
     );
-  }
+  },
 );

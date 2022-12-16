@@ -1,6 +1,6 @@
-const config = { 
-    apiURL: "http://localhost:8081",
-    reactQueryDevtools: false
+const config = {
+  apiURL: 'http://localhost:8081',
+  reactQueryDevtools: false,
 };
 
 export default config;

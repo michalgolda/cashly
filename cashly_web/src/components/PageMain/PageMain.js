@@ -1,5 +1,6 @@
-import PropTypes from "prop-types";
-import * as S from "./PageMain.styled";
+import PropTypes from 'prop-types';
+
+import * as S from './PageMain.styled';
 
 function PageMain({ children, ...props }) {
   return (

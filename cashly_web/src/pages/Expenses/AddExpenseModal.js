@@ -1,20 +1,23 @@
-import moment from "moment";
-import { toast } from "react-toastify";
-import { useMutation, useQueryClient } from "react-query";
-import NiceModal, { useModal, bootstrapDialog } from "@ebay/nice-modal-react";
-import { expenseAPI } from "@/api";
-import ExpenseModal from "./ExpenseModal/ExpenseModal";
-import { notifyUnhandledError } from "@/helpers/notify";
+import { useMutation, useQueryClient } from 'react-query';
+import { toast } from 'react-toastify';
+
+import NiceModal, { bootstrapDialog, useModal } from '@ebay/nice-modal-react';
+import moment from 'moment';
+
+import { expenseAPI } from '@/api';
+import { notifyUnhandledError } from '@/helpers/notify';
+
+import ExpenseModal from './ExpenseModal/ExpenseModal';
 
 export default NiceModal.create(() => {
   const modal = useModal();
 
   const queryClient = useQueryClient();
-  
-  const defaultRealisedDate = moment().format("YYYY-MM-DD");
-  
+
+  const defaultRealisedDate = moment().format('YYYY-MM-DD');
+
   const notifyAddExpenseSuccess = () =>
-    toast.success("Wydatek został pomyślnie dodany");
+    toast.success('Wydatek został pomyślnie dodany');
 
   const initialValues = {
     amount: 0,
@@ -25,10 +28,9 @@ export default NiceModal.create(() => {
     onSuccess: () => {
       modal.hide();
       notifyAddExpenseSuccess();
-      queryClient.invalidateQueries("expenses");
+      queryClient.invalidateQueries('expenses');
     },
-    onError: () =>
-      notifyUnhandledError()
+    onError: () => notifyUnhandledError(),
   });
   const onSubmit = (values, { resetForm }) => {
     resetForm();

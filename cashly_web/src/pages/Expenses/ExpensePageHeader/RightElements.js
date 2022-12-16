@@ -1,6 +1,6 @@
-import AddCategoryButton from "@/pages/Expenses/AddExpenseButton";
-import ImportExpenseButton from "@/pages/Expenses/ImportExpensesButton";
-import ExportExpensesButton from "@/pages/Expenses/ExportExpensesButton";
+import AddCategoryButton from '@/pages/Expenses/AddExpenseButton';
+import ExportExpensesButton from '@/pages/Expenses/ExportExpensesButton';
+import ImportExpenseButton from '@/pages/Expenses/ImportExpensesButton';
 
 function RightElements() {
   return (

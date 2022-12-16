@@ -1,8 +1,9 @@
-import * as S from "./ExpenseListEmptyInformer.styled";
-import { Informer } from "@/components";
-import VoidIllustration from "@/assets/void.svg";
-import AddExpenseButton from "@/pages/Expenses/AddExpenseButton";
-import ImportExpenseButton from "@/pages/Expenses/ImportExpensesButton";
+import VoidIllustration from '@/assets/void.svg';
+import { Informer } from '@/components';
+import AddExpenseButton from '@/pages/Expenses/AddExpenseButton';
+import ImportExpenseButton from '@/pages/Expenses/ImportExpensesButton';
+
+import * as S from './ExpenseListEmptyInformer.styled';
 
 export default function ExpenseListEmptyInformer() {
   return (
@@ -14,8 +15,8 @@ export default function ExpenseListEmptyInformer() {
         </S.ButtonContainer>
       }
       illustrationSource={VoidIllustration}
-      illustrationStyles={{ maxWidth: "128px" }}
-      text={"Aktualnie lista wydatków jest pusta"}
+      illustrationStyles={{ maxWidth: '128px' }}
+      text={'Aktualnie lista wydatków jest pusta'}
     />
   );
 }

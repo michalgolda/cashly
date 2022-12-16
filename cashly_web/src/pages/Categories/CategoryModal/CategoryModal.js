@@ -1,8 +1,10 @@
-import * as yup from "yup";
-import PropTypes from "prop-types";
-import { useFormik } from "formik";
-import { Input, Button } from "@/components";
-import * as S from "./CategoryModal.styled";
+import { useFormik } from 'formik';
+import PropTypes from 'prop-types';
+import * as yup from 'yup';
+
+import { Button, Input } from '@/components';
+
+import * as S from './CategoryModal.styled';
 
 function CategoryModal({
   title,
@@ -15,8 +17,8 @@ function CategoryModal({
   const validationSchema = yup.object().shape({
     name: yup
       .string()
-      .required("Nazwa kategorii jest wymagana.")
-      .max(25, "Nazwa kategorii może mieć maksymalnie 25 znaków."),
+      .required('Nazwa kategorii jest wymagana.')
+      .max(25, 'Nazwa kategorii może mieć maksymalnie 25 znaków.'),
   });
 
   const formik = useFormik({

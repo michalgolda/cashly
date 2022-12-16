@@ -1,26 +1,29 @@
-import { useState } from "react";
-import * as S from "./Sidebar.styled";
+import { useState } from 'react';
+
 import {
-  faReceipt,
-  faChartPie,
   faAngleLeft,
   faAngleRight,
+  faChartPie,
   faGripVertical,
-} from "@fortawesome/free-solid-svg-icons";
-import { useSession } from "@/hooks/useSession";
-import { IconButton, Logo } from "@/components";
-import NavLinkButton from "./NavLinkButton/NavLinkButton";
-import NavLinkIconButton from "./NavLinkIconButton/NavLinkIconButton";
-import CurrentUserDetails from "./CurrentUserDetails/CurrentUserDetails";
+  faReceipt,
+} from '@fortawesome/free-solid-svg-icons';
+
+import { IconButton, Logo } from '@/components';
+import { useSession } from '@/hooks/useSession';
+
+import CurrentUserDetails from './CurrentUserDetails/CurrentUserDetails';
+import NavLinkButton from './NavLinkButton/NavLinkButton';
+import NavLinkIconButton from './NavLinkIconButton/NavLinkIconButton';
+import * as S from './Sidebar.styled';
 
 const useSidebar = () => {
   const [isExpanded, setIsExpanded] = useState(
-    JSON.parse(localStorage.getItem("sidebarIsExpanded"))
+    JSON.parse(localStorage.getItem('sidebarIsExpanded')),
   );
 
   const toggleSidebarExpand = () => {
     setIsExpanded(!isExpanded);
-    localStorage.setItem("sidebarIsExpanded", !isExpanded);
+    localStorage.setItem('sidebarIsExpanded', !isExpanded);
   };
 
   return [isExpanded, toggleSidebarExpand];

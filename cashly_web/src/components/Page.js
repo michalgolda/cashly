@@ -1,5 +1,6 @@
-import PropTypes from "prop-types";
-import { Helmet } from "react-helmet";
+import { Helmet } from 'react-helmet';
+
+import PropTypes from 'prop-types';
 
 function Page({ children, title }) {
   return (

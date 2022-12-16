@@ -1,5 +1,6 @@
-import * as S from "./Main.styled";
-import { Sidebar, Footer } from "@/components";
+import { Footer, Sidebar } from '@/components';
+
+import * as S from './Main.styled';
 
 export default function Layout({ children, ...props }) {
   return (

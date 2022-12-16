@@ -1,7 +1,7 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-import { Header } from "@/components";
-import AddCategoryButton from "@/pages/Categories/AddCategoryButton";
+import { Header } from '@/components';
+import AddCategoryButton from '@/pages/Categories/AddCategoryButton';
 
 function CategoryPageHeader({ showRightElement }) {
   const rightElement = showRightElement ? <AddCategoryButton /> : null;

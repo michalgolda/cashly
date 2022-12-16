@@ -1,7 +1,8 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-import { Header } from "@/components";
-import RightElements from "./RightElements";
+import { Header } from '@/components';
+
+import RightElements from './RightElements';
 
 function ExpensePageHeader({ showRightElement }) {
   const rightElement = showRightElement ? <RightElements /> : null;

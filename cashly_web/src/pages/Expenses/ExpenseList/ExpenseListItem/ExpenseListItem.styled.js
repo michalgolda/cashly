@@ -1,5 +1,6 @@
-import styled from "styled-components";
-import { ListItem as BaseListItem } from "@/components";
+import styled from 'styled-components';
+
+import { ListItem as BaseListItem } from '@/components';
 
 const ListItem = styled(BaseListItem)`
   display: grid;

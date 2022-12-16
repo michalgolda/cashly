@@ -1,20 +1,22 @@
-import { useQuery } from "react-query";
-import Chart from "./Chart";
-import Widget from "@/pages/Analytics/Widget/Widget";
-import { Skeleton } from "@/components";
-import { analyticsAPI } from "@/api";
-import { useDatePeriod } from "@/pages/Analytics/useDatePeriod";
+import { useQuery } from 'react-query';
+
+import { analyticsAPI } from '@/api';
+import { Skeleton } from '@/components';
+import Widget from '@/pages/Analytics/Widget/Widget';
+import { useDatePeriod } from '@/pages/Analytics/useDatePeriod';
+
+import Chart from './Chart';
 
 export default function ExpensesByCategoryWidget() {
   const { currentPeriod } = useDatePeriod();
   const { data, isLoading, isError } = useQuery(
-    ["expensesByCategory", { currentPeriod }],
+    ['expensesByCategory', { currentPeriod }],
     () =>
       analyticsAPI.getExpensesByCategory({
         unit: currentPeriod.unit,
         startDate: currentPeriod.start_date,
         endDate: currentPeriod.end_date,
-      })
+      }),
   );
   const dataIsAvailable = Boolean(data && data.length);
 

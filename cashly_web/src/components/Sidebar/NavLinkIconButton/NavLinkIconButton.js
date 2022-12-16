@@ -1,6 +1,8 @@
-import PropTypes from "prop-types";
-import * as S from "./NavLinkIconButton.styled";
-import { useMatch } from "react-router-dom";
+import { useMatch } from 'react-router-dom';
+
+import PropTypes from 'prop-types';
+
+import * as S from './NavLinkIconButton.styled';
 
 function NavLinkIconButton({ to, ...props }) {
   const isActive = useMatch({ path: to });

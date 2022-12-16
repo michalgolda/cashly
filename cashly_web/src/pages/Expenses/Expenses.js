@@ -1,14 +1,16 @@
-import { useQuery } from "react-query";
-import { MainLayout } from "@/layouts";
-import { expenseAPI } from "@/api";
-import { Page, PageMain } from "@/components";
-import ExpenseList from "./ExpenseList/ExpenseList";
-import ExpensePageHeader from "./ExpensePageHeader/ExpensePageHeader";
+import { useQuery } from 'react-query';
+
+import { expenseAPI } from '@/api';
+import { Page, PageMain } from '@/components';
+import { MainLayout } from '@/layouts';
+
+import ExpenseList from './ExpenseList/ExpenseList';
+import ExpensePageHeader from './ExpensePageHeader/ExpensePageHeader';
 
 export default function Expenses() {
   const { data, isLoading, isError } = useQuery(
-    "expenses",
-    expenseAPI.getAllExpenses
+    'expenses',
+    expenseAPI.getAllExpenses,
   );
 
   const isEmpty = !Boolean(data && data.length);

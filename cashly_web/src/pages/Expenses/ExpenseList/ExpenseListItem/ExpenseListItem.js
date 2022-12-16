@@ -1,29 +1,34 @@
-import PropTypes from "prop-types";
-import { toast } from "react-toastify";
-import { useModal } from "@ebay/nice-modal-react";
-import { useQueryClient, useMutation } from "react-query";
-import { expenseAPI } from "@/api";
-import * as S from "./ExpenseListItem.styled";
-import { notifyUnhandledError } from "@/helpers/notify";
-import EditExpenseModal from "@/pages/Expenses/EditExpenseModal";
-import { EditListItemButton, DeleteListItemButton } from "@/components";
-import { defaultCurrencyFormat, defaultDateTimeFormat } from "@/helpers/formating";
+import { useMutation, useQueryClient } from 'react-query';
+import { toast } from 'react-toastify';
+
+import { useModal } from '@ebay/nice-modal-react';
+import PropTypes from 'prop-types';
+
+import { expenseAPI } from '@/api';
+import { DeleteListItemButton, EditListItemButton } from '@/components';
+import {
+  defaultCurrencyFormat,
+  defaultDateTimeFormat,
+} from '@/helpers/formating';
+import { notifyUnhandledError } from '@/helpers/notify';
+import EditExpenseModal from '@/pages/Expenses/EditExpenseModal';
+
+import * as S from './ExpenseListItem.styled';
 
 function ExpenseListItem({ id, amount, category, realisedDate }) {
   const queryClient = useQueryClient();
 
   const editExpenseModal = useModal(EditExpenseModal);
 
-  const notifyDeleteExpenseSuccess = () => 
-    toast.success("Wydatek został pomyślnie usunięty");
+  const notifyDeleteExpenseSuccess = () =>
+    toast.success('Wydatek został pomyślnie usunięty');
 
   const deleteExpenseMutation = useMutation(expenseAPI.deleteExpense, {
     onSuccess: () => {
       notifyDeleteExpenseSuccess();
-      queryClient.invalidateQueries("expenses");
+      queryClient.invalidateQueries('expenses');
     },
-    onError: () =>
-      notifyUnhandledError()
+    onError: () => notifyUnhandledError(),
   });
 
   return (

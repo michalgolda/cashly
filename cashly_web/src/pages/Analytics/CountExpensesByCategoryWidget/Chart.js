@@ -1,9 +1,10 @@
-import { Bar, XAxis, BarChart, Tooltip, ResponsiveContainer } from "recharts";
-import TooltipContent from "@/pages/Analytics/TooltipContent/TooltipContent";
+import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
+
+import TooltipContent from '@/pages/Analytics/TooltipContent/TooltipContent';
 
 export default function Chart({ data }) {
   const tickFormatter = (tick) => {
-    return tick ? tick : "Bez kategorii";
+    return tick ? tick : 'Bez kategorii';
   };
 
   return (
@@ -24,14 +25,14 @@ export default function Chart({ data }) {
           fill="#a5a5a5"
           stroke="#a5a5a5"
           tickLine={false}
-          tick={{ fill: "#a5a5a5" }}
+          tick={{ fill: '#a5a5a5' }}
           tickFormatter={tickFormatter}
         />
         <Tooltip
           cursor={false}
           content={
             <TooltipContent
-              labelFormatter={(label) => (label ? label : "Brak kategorii")}
+              labelFormatter={(label) => (label ? label : 'Brak kategorii')}
             />
           }
         />

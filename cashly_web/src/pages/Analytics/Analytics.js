@@ -1,8 +1,9 @@
-import WidgetList from "./WidgetList/WidgetList";
-import { MainLayout } from "@/layouts";
-import { Page, PageMain } from "@/components";
-import AnalyticsPageHeader from "./AnalyticsPageHeader";
-import { DatePeriodProvider } from "./DatePeriodContext";
+import { Page, PageMain } from '@/components';
+import { MainLayout } from '@/layouts';
+
+import AnalyticsPageHeader from './AnalyticsPageHeader';
+import { DatePeriodProvider } from './DatePeriodContext';
+import WidgetList from './WidgetList/WidgetList';
 
 export default function Analytics() {
   return (

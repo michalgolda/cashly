@@ -1,6 +1,7 @@
-import axios from "axios";
-import config from "@/config";
-import { accessTokenStorage, logoutEvent } from "@/helpers/session";
+import axios from 'axios';
+
+import config from '@/config';
+import { accessTokenStorage, logoutEvent } from '@/helpers/session';
 
 const apiClient = axios.create({
   baseURL: config.apiURL,
@@ -8,7 +9,7 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use((config) => {
   const accessToken = accessTokenStorage.get();
-  if (accessToken) config.headers["Authorization"] = `Bearer ${accessToken}`;
+  if (accessToken) config.headers['Authorization'] = `Bearer ${accessToken}`;
   return config;
 });
 

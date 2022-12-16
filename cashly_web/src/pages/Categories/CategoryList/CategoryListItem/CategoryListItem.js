@@ -1,31 +1,33 @@
-import PropTypes from "prop-types";
-import { toast } from "react-toastify";
-import { useModal } from "@ebay/nice-modal-react";
-import { useMutation, useQueryClient } from "react-query";
-import { expenseCategoryAPI } from "@/api";
-import * as S from "./CategoryListItem.styled";
-import { notifyUnhandledError } from "@/helpers/notify";
-import EditCategoryModal from "@/pages/Categories/EditCategoryModal";
-import { EditListItemButton, DeleteListItemButton } from "@/components";
+import { useMutation, useQueryClient } from 'react-query';
+import { toast } from 'react-toastify';
+
+import { useModal } from '@ebay/nice-modal-react';
+import PropTypes from 'prop-types';
+
+import { expenseCategoryAPI } from '@/api';
+import { DeleteListItemButton, EditListItemButton } from '@/components';
+import { notifyUnhandledError } from '@/helpers/notify';
+import EditCategoryModal from '@/pages/Categories/EditCategoryModal';
+
+import * as S from './CategoryListItem.styled';
 
 function CategoryListItem({ id, name, color }) {
   const queryClient = useQueryClient();
-  
+
   const editCategoryModal = useModal(EditCategoryModal);
 
   const notifyDeleteCategorySuccess = () =>
-    toast.success("Kategoria została pomyślnie usunięta");
+    toast.success('Kategoria została pomyślnie usunięta');
 
   const deleteCategoryMutation = useMutation(
     expenseCategoryAPI.deleteExpenseCategory,
     {
       onSuccess: () => {
         notifyDeleteCategorySuccess();
-        queryClient.invalidateQueries("categories");
+        queryClient.invalidateQueries('categories');
       },
-      onError: () =>
-        notifyUnhandledError()
-    }
+      onError: () => notifyUnhandledError(),
+    },
   );
 
   return (

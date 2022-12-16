@@ -1,5 +1,6 @@
-import styled from "styled-components";
-import { Button } from "@/components";
+import styled from 'styled-components';
+
+import { Button } from '@/components';
 
 const IconButton = styled(Button)`
   padding: 10.42px;

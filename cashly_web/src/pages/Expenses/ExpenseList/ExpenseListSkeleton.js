@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components";
+import { Skeleton } from '@/components';
 
 export default function CategoryListSkeleton() {
   return (

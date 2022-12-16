@@ -1,6 +1,7 @@
-import { Input } from "@/components";
-import { periods } from "@/helpers/datePeriods";
-import { useDatePeriod } from "./useDatePeriod";
+import { Input } from '@/components';
+import { periods } from '@/helpers/datePeriods';
+
+import { useDatePeriod } from './useDatePeriod';
 
 export default function DatePeriodSelectInput() {
   const { setCurrentPeriod } = useDatePeriod();

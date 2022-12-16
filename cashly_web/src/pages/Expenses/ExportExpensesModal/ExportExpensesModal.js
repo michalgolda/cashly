@@ -1,34 +1,36 @@
-import { useFormik } from "formik";
-import { saveAs } from "file-saver";
-import { toast } from "react-toastify";
-import { useMutation } from "react-query";
-import NiceModal, { useModal, bootstrapDialog } from "@ebay/nice-modal-react";
-import { expenseAPI } from "@/api";
-import { Input, Button } from "@/components";
-import * as S from "./ExportExpensesModal.styled";
-import { notifyUnhandledError } from "@/helpers/notify";
-import { defaultDateTimeFormat } from "@/helpers/formating";
+import { useMutation } from 'react-query';
+import { toast } from 'react-toastify';
+
+import NiceModal, { bootstrapDialog, useModal } from '@ebay/nice-modal-react';
+import { saveAs } from 'file-saver';
+import { useFormik } from 'formik';
+
+import { expenseAPI } from '@/api';
+import { Button, Input } from '@/components';
+import { defaultDateTimeFormat } from '@/helpers/formating';
+import { notifyUnhandledError } from '@/helpers/notify';
+
+import * as S from './ExportExpensesModal.styled';
 
 export default NiceModal.create(() => {
   const modal = useModal();
 
   const notifyExportExpensesSuccess = () =>
-    toast.success("Wydatki zostały pomyślnie wyeksportowane");
+    toast.success('Wydatki zostały pomyślnie wyeksportowane');
 
   const exportExpensesMutation = useMutation(expenseAPI.exportExpenses, {
     onSuccess: ({ data }) => {
       modal.hide();
       notifyExportExpensesSuccess();
 
-      const blob = new Blob([data], { type: "text/csv" });
+      const blob = new Blob([data], { type: 'text/csv' });
       saveAs(blob, `Wydatki - ${defaultDateTimeFormat.format(new Date())}`);
     },
-    onError: () =>
-      notifyUnhandledError()
+    onError: () => notifyUnhandledError(),
   });
 
   const onSubmit = (values) => exportExpensesMutation.mutate(values);
-  const initialValues = { fileFormat: "CSV" };
+  const initialValues = { fileFormat: 'CSV' };
   const { values, handleChange, handleSubmit } = useFormik({
     onSubmit,
     initialValues,

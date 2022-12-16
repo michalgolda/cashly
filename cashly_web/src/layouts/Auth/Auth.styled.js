@@ -1,5 +1,6 @@
-import styled from "styled-components";
-import { Logo as BaseLogo } from "@/components";
+import styled from 'styled-components';
+
+import { Logo as BaseLogo } from '@/components';
 
 const Container = styled.div`
   width: 100%;

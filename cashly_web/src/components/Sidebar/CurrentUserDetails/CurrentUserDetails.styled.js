@@ -1,5 +1,6 @@
-import styled from "styled-components";
-import { Avatar } from "@/components";
+import styled from 'styled-components';
+
+import { Avatar } from '@/components';
 
 const Container = styled.div`
   padding: 16px;

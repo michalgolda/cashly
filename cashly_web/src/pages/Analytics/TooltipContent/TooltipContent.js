@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import * as S from "./TooltipContent.styled";
+import { useEffect, useState } from 'react';
+
+import * as S from './TooltipContent.styled';
 
 export default function TooltipContent({
   active,

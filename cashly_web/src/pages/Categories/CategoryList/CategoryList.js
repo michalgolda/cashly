@@ -1,8 +1,10 @@
-import PropTypes from "prop-types";
-import { List } from "@/components";
-import CategoryListItem from "./CategoryListItem/CategoryListItem";
-import CategoryListSkeleton from "./CategoryListSkeleton";
-import CategoryListEmptyInformer from "./CategoryListEmptyInformer";
+import PropTypes from 'prop-types';
+
+import { List } from '@/components';
+
+import CategoryListEmptyInformer from './CategoryListEmptyInformer';
+import CategoryListItem from './CategoryListItem/CategoryListItem';
+import CategoryListSkeleton from './CategoryListSkeleton';
 
 function CategoryList({ data, isEmpty, isLoading }) {
   return !isLoading && isEmpty ? (

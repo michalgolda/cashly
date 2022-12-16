@@ -1,23 +1,26 @@
-import * as yup from "yup";
-import { useFormik } from "formik";
-import { toast } from "react-toastify";
-import { Input, Button } from "@/components";
-import AuthForm from "../../AuthForm/AuthForm";
-import { useSession } from "@/hooks/useSession";
-import { notifyUnhandledError } from "@/helpers/notify";
+import { toast } from 'react-toastify';
+
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+
+import { Button, Input } from '@/components';
+import { notifyUnhandledError } from '@/helpers/notify';
+import { useSession } from '@/hooks/useSession';
+
+import AuthForm from '../../AuthForm/AuthForm';
 
 export default function LoginForm() {
   const initialValues = {
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   };
 
   const validationSchema = yup.object({
     email: yup
       .string()
-      .email("Podaj prawidłowy email")
-      .required("To pole jest wymagane"),
-    password: yup.string().required("To pole jest wymagane"),
+      .email('Podaj prawidłowy email')
+      .required('To pole jest wymagane'),
+    password: yup.string().required('To pole jest wymagane'),
   });
 
   const { login } = useSession();
@@ -25,15 +28,11 @@ export default function LoginForm() {
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: (values) =>
-      login(values).catch(() => notifyUnhandledError()),
+    onSubmit: (values) => login(values).catch(() => notifyUnhandledError()),
   });
 
   return (
-    <AuthForm
-      onSubmit={formik.handleSubmit}
-      noValidate
-    >
+    <AuthForm onSubmit={formik.handleSubmit} noValidate>
       <Input
         name="email"
         type="email"

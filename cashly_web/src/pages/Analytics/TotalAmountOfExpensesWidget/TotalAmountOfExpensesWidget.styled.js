@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const TotalAmountText = styled.p`
   color: ${({ theme }) => theme.colors.blue400};
