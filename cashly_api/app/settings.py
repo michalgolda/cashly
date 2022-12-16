@@ -4,7 +4,7 @@ from pydantic import BaseSettings
 
 class Settings(BaseSettings):
     SECRET_KEY: str = ''
-    DATABASE_URL: str = 'sqlite:///' + str(Path(__file__).parent / 'database.sqlite')
+    DATABASE_URL: str = 'sqlite:///' + str(Path(__file__).parents[1] / 'database.sqlite')
 
     JWT_TOKEN_ALGORITHM: str = 'HS256'
     ACCESS_TOKEN_EXPIRATION: int = 8600
