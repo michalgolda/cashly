@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from datetime import date
 
+from fastapi import APIRouter, Depends, Query
+
 from app.aggregator import (
     AggregationUnits,
     CountExpensesByCategoryAggregator,
@@ -13,7 +15,6 @@ from app.dependencies import get_current_user, get_expense_repo
 from app.entities import User
 from app.repositories import ExpenseRepository
 from app.repositories.expense import ExpenseRepository
-from fastapi import APIRouter, Depends, Query
 
 analytics_router = APIRouter()
 

@@ -3,6 +3,7 @@ from io import BytesIO
 from typing import Generic, List, TypeVar
 
 import pandas as pd
+
 from app.entities import Expense
 
 TExportEntity = TypeVar("TExportEntity")

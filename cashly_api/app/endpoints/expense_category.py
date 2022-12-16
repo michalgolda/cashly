@@ -1,6 +1,8 @@
 from typing import List
 from uuid import UUID
 
+from fastapi import APIRouter, Depends
+
 from app.dependencies import get_current_user, get_expense_category_repo
 from app.entities import User
 from app.repositories import ExpenseCategoryRepository
@@ -19,7 +21,6 @@ from app.usecases.expense_category import (
     UpdateExpenseCategoryUseCase,
     UpdateExpenseCategoryUseCaseInput,
 )
-from fastapi import APIRouter, Depends
 
 expense_category_router = APIRouter()
 

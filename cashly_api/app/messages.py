@@ -4,6 +4,7 @@ from typing import List, NoReturn
 
 import fastapi_mail
 import jinja2
+
 from app.settings import settings
 
 

@@ -1,6 +1,9 @@
 from typing import List
 from uuid import UUID
 
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+from fastapi.responses import StreamingResponse
+
 from app.dependencies import (
     get_current_user,
     get_expense_category_repo,
@@ -25,8 +28,6 @@ from app.usecases.expense import (
     UpdateExpenseUseCase,
     UpdateExpenseUseCaseInput,
 )
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
-from fastapi.responses import StreamingResponse
 
 expense_router = APIRouter()
 

@@ -1,3 +1,7 @@
+from fastapi import Depends
+from fastapi_mail import ConnectionConfig as FMConnectionConfig
+from fastapi_mail import FastMail
+
 from app.database import session
 from app.entities import User
 from app.messages import EmailMessageClient, MessageClient
@@ -15,9 +19,6 @@ from app.security import (
     SecurityManager,
 )
 from app.settings import settings
-from fastapi import Depends
-from fastapi_mail import ConnectionConfig as FMConnectionConfig
-from fastapi_mail import FastMail
 
 
 def get_expense_repo() -> ExpenseRepository:

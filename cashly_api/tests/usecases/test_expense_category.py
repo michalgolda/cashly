@@ -1,11 +1,14 @@
 import pytest
 
 from app.entities.expense_category import ExpenseCategory
-from app.exceptions import ExpenseCategoryNameAlreadyUsedError, ExpenseCategoryNotFoundError
+from app.exceptions import (
+    ExpenseCategoryNameAlreadyUsedError,
+    ExpenseCategoryNotFoundError,
+)
 from app.usecases.expense_category import (
     CreateExpenseCategoryUseCase,
-    GetAllExpenseCategoriesUseCase, 
-    UpdateExpenseCategoryUseCase
+    GetAllExpenseCategoriesUseCase,
+    UpdateExpenseCategoryUseCase,
 )
 
 

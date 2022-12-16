@@ -1,14 +1,9 @@
 import pytest
 
+from app.dependencies import get_message_client, get_security_manager, get_user_repo
 from app.entities import User
 from app.messages import MemoryMessageClient
 from app.repositories import MemoryUserRepository
-from app.dependencies import (
-  get_user_repo,
-  get_message_client, 
-  get_security_manager
-)
-
 
 security_manager = get_security_manager()
 message_client = MemoryMessageClient()

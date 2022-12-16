@@ -2,16 +2,16 @@ import pytest
 
 from app.entities import User
 from app.exceptions import (
-  UserNotFoundError,
-  UserEmailAlreadyUsedError, 
-  BadAuthenticationCredentialsError
+    BadAuthenticationCredentialsError,
+    UserEmailAlreadyUsedError,
+    UserNotFoundError,
 )
 from app.messages import EmailMessage
 from app.usecases.authentication import (
-  LoginUseCase, 
-  RegisterUseCase, 
-  ResetPasswordUseCase, 
-  SendResetPasswordLinkUseCase
+    LoginUseCase,
+    RegisterUseCase,
+    ResetPasswordUseCase,
+    SendResetPasswordLinkUseCase,
 )
 
 

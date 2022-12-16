@@ -1,3 +1,6 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from app.database import metadata, run_mappers
 from app.endpoints import (
     analytics_router,
@@ -7,8 +10,6 @@ from app.endpoints import (
     user_router,
 )
 from app.exceptions import DomainException, domain_exception_handler
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 
 
 def create_app() -> FastAPI:

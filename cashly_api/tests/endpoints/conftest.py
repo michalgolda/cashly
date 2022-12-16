@@ -5,6 +5,7 @@ from app import create_app
 from app.dependencies import get_user_repo
 from app.repositories import MemoryUserRepository
 
+
 @pytest.fixture(scope='module')
 def app(request):
   app = create_app()

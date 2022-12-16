@@ -1,9 +1,10 @@
-import pytest
 from uuid import uuid4
 
+import pytest
+
+from app.dependencies import get_security_manager, get_user_repo
 from app.entities.user import User
 from app.repositories.user import MemoryUserRepository
-from app.dependencies import get_user_repo, get_security_manager
 
 security_manager = get_security_manager()
 

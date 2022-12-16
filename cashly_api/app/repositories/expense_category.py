@@ -2,9 +2,10 @@ from abc import abstractmethod
 from typing import List, NoReturn, Optional, Union
 from uuid import UUID
 
+from sqlalchemy.orm.session import Session
+
 from app.entities import ExpenseCategory, User
 from app.repositories import Repository
-from sqlalchemy.orm.session import Session
 
 
 class ExpenseCategoryRepository(Repository[ExpenseCategory]):

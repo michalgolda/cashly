@@ -1,3 +1,5 @@
+from fastapi import APIRouter, Depends, Response
+
 from app.dependencies import get_message_client, get_security_manager, get_user_repo
 from app.messages import EmailMessage, MessageClient
 from app.repositories import UserRepository
@@ -17,7 +19,6 @@ from app.usecases.authentication import (
     SendResetPasswordLinkUseCase,
     SendResetPasswordLinkUseCaseInput,
 )
-from fastapi import APIRouter, Depends, Response
 
 authentication_router = APIRouter()
 

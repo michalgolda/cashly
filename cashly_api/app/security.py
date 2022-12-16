@@ -5,9 +5,10 @@ from uuid import UUID
 
 import bcrypt
 import jwt
-from app.settings import settings
 from fastapi import HTTPException, Request
 from fastapi.security import HTTPBearer
+
+from app.settings import settings
 
 
 class AccessTokenPayload(TypedDict):

@@ -1,10 +1,15 @@
-import pytest
+from datetime import date, datetime
 from uuid import uuid4
-from datetime import datetime, date
 
-from app.entities import User, ExpenseCategory, Expense
+import pytest
+
+from app.dependencies import (
+    get_current_user,
+    get_expense_category_repo,
+    get_expense_repo,
+)
+from app.entities import Expense, ExpenseCategory, User
 from app.repositories.expense import MemoryExpenseRepository
-from app.dependencies import get_current_user, get_expense_category_repo, get_expense_repo
 from app.repositories.expense_category import MemoryExpenseCategoryRepository
 
 user = User(id=uuid4(), email='test@test.pl', password='test')

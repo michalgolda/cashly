@@ -5,6 +5,7 @@ from itertools import groupby
 from typing import Callable, List, TypedDict, Union
 
 import pandas as pd
+
 from app.entities import Expense
 
 

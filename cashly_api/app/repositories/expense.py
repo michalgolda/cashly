@@ -3,9 +3,10 @@ from datetime import date
 from typing import List, NoReturn, Optional, Union
 from uuid import UUID
 
+from sqlalchemy.orm.session import Session
+
 from app.entities import Expense, User
 from app.repositories import Repository
-from sqlalchemy.orm.session import Session
 
 
 class ExpenseRepository(Repository[Expense]):

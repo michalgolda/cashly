@@ -1,8 +1,7 @@
 import pytest
-from app.usecases.user import (
-    GetUserByIdUseCase,
-    UserNotFoundError
-)
+
+from app.usecases.user import GetUserByIdUseCase, UserNotFoundError
+
 
 def test_get_user_by_id(mocker):
     mock_user_entity = mocker.patch('app.entities.User')

@@ -1,7 +1,5 @@
 from uuid import UUID, uuid4
 
-from app.entities import Expense, ExpenseCategory, User
-from app.settings import settings
 from sqlalchemy import (
     Column,
     Date,
@@ -17,6 +15,9 @@ from sqlalchemy.dialects.postgresql import UUID as PostgresUUID
 from sqlalchemy.orm import mapper, relationship, scoped_session, sessionmaker
 from sqlalchemy.sql import func as sql_func
 from sqlalchemy.types import CHAR, TypeDecorator
+
+from app.entities import Expense, ExpenseCategory, User
+from app.settings import settings
 
 engine = create_engine(settings.DATABASE_URL, connect_args={"check_same_thread": False})
 session_factory = scoped_session(
