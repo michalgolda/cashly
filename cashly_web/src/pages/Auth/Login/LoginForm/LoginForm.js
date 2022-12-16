@@ -28,7 +28,21 @@ export default function LoginForm() {
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: (values) => login(values).catch(() => notifyUnhandledError()),
+    onSubmit: (values) =>
+      login(values).catch(({ response }) => {
+        if (response) {
+          const { code, message } = response.data;
+          switch (code) {
+            case 'BadAuthenticationCredentialsError':
+              toast.warning(message);
+              break;
+            default:
+              notifyUnhandledError();
+          }
+        } else {
+          notifyUnhandledError();
+        }
+      }),
   });
 
   return (
