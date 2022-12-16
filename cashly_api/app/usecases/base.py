@@ -1,9 +1,11 @@
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar, Union, NoReturn
+from typing import Generic, NoReturn, TypeVar, Union
 
-TUseCaseInput = TypeVar('TUseCaseInput')
-TUseCaseOutput = TypeVar('TUseCaseOutput')
+TUseCaseInput = TypeVar("TUseCaseInput")
+TUseCaseOutput = TypeVar("TUseCaseOutput")
+
 
 class UseCase(Generic[TUseCaseInput, TUseCaseOutput], ABC):
-  @abstractmethod
-  def execute(self, input: TUseCaseInput) -> TUseCaseOutput: ...
+    @abstractmethod
+    def execute(self, input: TUseCaseInput) -> TUseCaseOutput:
+        ...

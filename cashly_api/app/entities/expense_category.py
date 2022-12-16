@@ -1,7 +1,7 @@
-from uuid import UUID
+from dataclasses import dataclass
 from datetime import date
 from typing import Optional
-from dataclasses import dataclass
+from uuid import UUID
 
 from .user import User
 

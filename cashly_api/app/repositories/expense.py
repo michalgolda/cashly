@@ -1,23 +1,27 @@
-from uuid import UUID
-from datetime import date
 from abc import abstractmethod
-from typing import List, Optional, Union, NoReturn
+from datetime import date
+from typing import List, NoReturn, Optional, Union
+from uuid import UUID
 
-from sqlalchemy.orm.session import Session
-
+from app.entities import Expense, User
 from app.repositories import Repository
-from app.entities import User, Expense
+from sqlalchemy.orm.session import Session
 
 
 class ExpenseRepository(Repository[Expense]):
     @abstractmethod
-    def get_all_by_user_id(self, user_id: UUID) -> List[Expense]: ...
+    def get_all_by_user_id(self, user_id: UUID) -> List[Expense]:
+        ...
 
     @abstractmethod
-    def get_by_id_and_user_id(self, id: UUID, user_id: UUID) -> Union[Expense, None]: ...
+    def get_by_id_and_user_id(self, id: UUID, user_id: UUID) -> Union[Expense, None]:
+        ...
 
     @abstractmethod
-    def get_by_date_range_and_user_id(self, start_date: date, end_date: date, user_id: UUID) -> List[Expense]: ...
+    def get_by_date_range_and_user_id(
+        self, start_date: date, end_date: date, user_id: UUID
+    ) -> List[Expense]:
+        ...
 
 
 class MemoryExpenseRepository(ExpenseRepository):
@@ -39,9 +43,12 @@ class MemoryExpenseRepository(ExpenseRepository):
     def get_all_by_user_id(self, user_id: UUID) -> List[Expense]:
         return [expense for expense in self._expenses if expense.user.id == user_id]
 
-    def get_by_date_range_and_user_id(self, start_date: date, end_date: date, user_id: UUID) -> List[Expense]:
+    def get_by_date_range_and_user_id(
+        self, start_date: date, end_date: date, user_id: UUID
+    ) -> List[Expense]:
         return [
-            expense for expense in self._expenses 
+            expense
+            for expense in self._expenses
             if expense.realised_date >= start_date and expense.realised_date <= end_date
         ]
 
@@ -58,7 +65,9 @@ class MemoryExpenseRepository(ExpenseRepository):
         return entity
 
     def delete(self, entity: Expense) -> NoReturn:
-        self._expenses = [expense for expense in self._expenses if expense.id != entity.id]
+        self._expenses = [
+            expense for expense in self._expenses if expense.id != entity.id
+        ]
 
 
 class SQLAlchemyExpenseRepository(ExpenseRepository):
@@ -70,24 +79,33 @@ class SQLAlchemyExpenseRepository(ExpenseRepository):
 
     def get_all_by_user_id(self, user_id: UUID) -> List[Expense]:
         return self._session.query(Expense).join(User).filter(User.id == user_id).all()
-        
-    def get_by_id_and_user_id(self, id: UUID, user_id: UUID) -> Union[Expense, None]:
-        return self._session.query(Expense).join(User).filter(
-            Expense.id == id,
-            User.id == user_id 
-        ).first()
 
-    def get_by_date_range_and_user_id(self, start_date: date, end_date: date, user_id: UUID) -> List[Expense]:
-        return self._session.query(Expense).join(User).filter(
-            Expense.realised_date >= start_date, 
-            Expense.realised_date <= end_date,
-            User.id == user_id
-        ).all()
+    def get_by_id_and_user_id(self, id: UUID, user_id: UUID) -> Union[Expense, None]:
+        return (
+            self._session.query(Expense)
+            .join(User)
+            .filter(Expense.id == id, User.id == user_id)
+            .first()
+        )
+
+    def get_by_date_range_and_user_id(
+        self, start_date: date, end_date: date, user_id: UUID
+    ) -> List[Expense]:
+        return (
+            self._session.query(Expense)
+            .join(User)
+            .filter(
+                Expense.realised_date >= start_date,
+                Expense.realised_date <= end_date,
+                User.id == user_id,
+            )
+            .all()
+        )
 
     def add(self, entity: Expense) -> Expense:
         self._session.add(entity)
         self._session.commit()
-        
+
         return entity
 
     def save(self, entity: Expense) -> Expense:

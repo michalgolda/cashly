@@ -1,10 +1,10 @@
-from uuid import UUID
-from typing import Optional
 from dataclasses import dataclass
 from datetime import date, datetime
+from typing import Optional
+from uuid import UUID
 
-from .user import User
 from .expense_category import ExpenseCategory
+from .user import User
 
 
 @dataclass

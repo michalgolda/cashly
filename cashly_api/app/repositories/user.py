@@ -1,16 +1,16 @@
-from uuid import UUID
 from abc import abstractmethod
-from typing import NoReturn, Union, List, Optional
-
-from sqlalchemy.orm.session import Session
+from typing import List, NoReturn, Optional, Union
+from uuid import UUID
 
 from app.entities import User
 from app.repositories import Repository
+from sqlalchemy.orm.session import Session
 
 
 class UserRepository(Repository[User]):
     @abstractmethod
-    def get_by_email(self, email: str) -> Union[User, None]: ...
+    def get_by_email(self, email: str) -> Union[User, None]:
+        ...
 
 
 class MemoryUserRepository(UserRepository):

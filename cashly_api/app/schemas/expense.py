@@ -1,10 +1,9 @@
-from uuid import UUID
-from datetime import  date
+from datetime import date
 from typing import Optional
-
-from pydantic import BaseModel
+from uuid import UUID
 
 from app.schemas.expense_category import ExpenseCategoryOut
+from pydantic import BaseModel
 
 
 class Expense(BaseModel):

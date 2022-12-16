@@ -1,11 +1,10 @@
-from uuid import UUID
 from datetime import datetime
 from typing import Optional
+from uuid import UUID
 
 from pydantic import BaseModel
 
 from .user import User
-
 
 
 class ExpenseCategory(BaseModel):

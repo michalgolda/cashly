@@ -1,42 +1,49 @@
-from fastapi import Depends
-from fastapi_mail import FastMail, ConnectionConfig as FMConnectionConfig
-
-from app.settings import settings
-from app.entities import User
 from app.database import session
-from app.security import (
-    AccessTokenPayload, 
-    HTTPAccessToken, 
-    SecurityManager, 
-    DefaultSecurityManager
-)
+from app.entities import User
+from app.messages import EmailMessageClient, MessageClient
 from app.repositories import (
     ExpenseRepository,
-    SQLAlchemyExpenseRepository, 
-    SQLAlchemyExpenseCategoryRepository, 
+    SQLAlchemyExpenseCategoryRepository,
+    SQLAlchemyExpenseRepository,
+    SQLAlchemyUserRepository,
     UserRepository,
-    SQLAlchemyUserRepository
 )
-from app.messages import MessageClient, EmailMessageClient
+from app.security import (
+    AccessTokenPayload,
+    DefaultSecurityManager,
+    HTTPAccessToken,
+    SecurityManager,
+)
+from app.settings import settings
+from fastapi import Depends
+from fastapi_mail import ConnectionConfig as FMConnectionConfig
+from fastapi_mail import FastMail
 
 
 def get_expense_repo() -> ExpenseRepository:
     return SQLAlchemyExpenseRepository(session)
 
+
 def get_expense_category_repo():
     return SQLAlchemyExpenseCategoryRepository(session)
+
 
 def get_user_repo() -> UserRepository:
     return SQLAlchemyUserRepository(session)
 
+
 def get_security_manager() -> SecurityManager:
     return DefaultSecurityManager()
 
+
 def get_current_user(
     user_repo: UserRepository = Depends(get_user_repo),
-    access_token_payload: AccessTokenPayload = Depends(HTTPAccessToken(security_manager=get_security_manager()))
+    access_token_payload: AccessTokenPayload = Depends(
+        HTTPAccessToken(security_manager=get_security_manager())
+    ),
 ) -> User:
-    return user_repo.get_by_id(access_token_payload.get('sub'))
+    return user_repo.get_by_id(access_token_payload.get("sub"))
+
 
 def get_email_message_client() -> EmailMessageClient:
     conf = FMConnectionConfig(
@@ -48,11 +55,12 @@ def get_email_message_client() -> EmailMessageClient:
         MAIL_STARTTLS=settings.MAIL_STARTTLS,
         MAIL_SSL_TLS=settings.MAIL_SSL_TLS,
         USE_CREDENTIALS=settings.MAIL_USE_CREDENTIALS,
-        VALIDATE_CERTS=settings.MAIL_VALIDATE_CERTS
+        VALIDATE_CERTS=settings.MAIL_VALIDATE_CERTS,
     )
     fm = FastMail(conf)
 
     return EmailMessageClient(fm)
+
 
 def get_message_client() -> MessageClient:
     return get_email_message_client()

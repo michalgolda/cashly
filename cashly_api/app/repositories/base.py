@@ -1,18 +1,23 @@
-from uuid import UUID
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar, Union, NoReturn
+from typing import Generic, NoReturn, TypeVar, Union
+from uuid import UUID
 
-TEntity = TypeVar('TEntity')
+TEntity = TypeVar("TEntity")
+
 
 class Repository(Generic[TEntity], ABC):
     @abstractmethod
-    def get_by_id(self, id: UUID) -> Union[TEntity, None]: ...
+    def get_by_id(self, id: UUID) -> Union[TEntity, None]:
+        ...
 
     @abstractmethod
-    def add(self, entity: TEntity) -> TEntity: ...
+    def add(self, entity: TEntity) -> TEntity:
+        ...
 
     @abstractmethod
-    def save(self, entity: TEntity) -> TEntity: ...
+    def save(self, entity: TEntity) -> TEntity:
+        ...
 
     @abstractmethod
-    def delete(self, entity: TEntity) -> NoReturn: ...
+    def delete(self, entity: TEntity) -> NoReturn:
+        ...
