@@ -1,0 +1,16 @@
+name: cashly-production
+services:
+  api:
+    build:
+      dockerfile: Dockerfile.production
+    restart: always
+    env_file:
+      - ./cashly_api/.env.production
+    depends_on:
+      - mail
+  web:
+    build:
+      dockerfile: Dockerfile.production
+    restart: always
+    env_file:
+      - ./cashly_web/.env.production

@@ -1,0 +1,32 @@
+name: cashly-development
+services:
+  api:
+    build: 
+      context: ./cashly_api
+      dockerfile: Dockerfile.development
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./cashly_api/:/cashly_api/
+    env_file:
+      - ./cashly_api/.env.development
+    depends_on:
+      - mail
+  web:
+    build: 
+      context: ./cashly_web
+      dockerfile: Dockerfile.development
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./cashly_web/:/cashly_web/
+      - /cashly_web/node_modules
+    environment:
+      - WATCHPACK_POLLING=true
+    env_file:
+      - ./cashly_web/.env.development
+  mail:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"

@@ -10,7 +10,10 @@ class Settings(BaseSettings):
     )
 
     JWT_TOKEN_ALGORITHM: str = "HS256"
+
     ACCESS_TOKEN_EXPIRATION: int = 8600
+
+    RESET_PASSWORD_TOKEN_EXPIRATION: int = 7200
 
     MAIL_USERNAME: str = ""
     MAIL_PASSWORD: str = ""
@@ -18,7 +21,7 @@ class Settings(BaseSettings):
     MAIL_PORT: int = 587
     MAIL_SERVER: str = ""
     MAIL_STARTTLS: bool = True
-    MAIL_SSL_TTLS: bool = False
+    MAIL_SSL_TLS: bool = True
     MAIL_USE_CREDENTIALS: bool = True
     MAIL_VALIDATE_CERTS: bool = True
     MAIL_TEMPLATES_PATH: str = str(Path(__file__).parent / "templates")

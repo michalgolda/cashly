@@ -1,0 +1,20 @@
+FROM python:3.10.9-alpine
+
+WORKDIR /cashly_api
+
+RUN apk add gcc
+
+COPY requirements.txt /cashly_api/
+
+ENV PIP_EXTRA_INDEX_URL=https://alpine-wheels.github.io/index
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY ./app /cashly_api/app/
+
+EXPOSE 80
+
+CMD ["gunicorn", "app.main:create_app()", \
+    "--bind", "0.0.0.0:8000", \
+    "--workers", "4", \ 
+    "--worker-class", "uvicorn.workers.UvicornWorker"]

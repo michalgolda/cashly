@@ -1,0 +1,17 @@
+FROM python:3.10.9-alpine
+
+WORKDIR /cashly_api
+
+RUN apk add gcc
+
+COPY requirements.txt /cashly_api/
+
+ENV PIP_EXTRA_INDEX_URL=https://alpine-wheels.github.io/index
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY ./app /cashly_api/app/
+
+EXPOSE 80
+
+CMD ["uvicorn", "--factory", "app.main:create_app", "--reload", "--host", "0.0.0.0", "--port", "8000"]

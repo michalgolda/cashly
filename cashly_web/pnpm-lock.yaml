@@ -11,6 +11,7 @@ specifiers:
   '@testing-library/user-event': ^12.8.3
   '@trivago/prettier-plugin-sort-imports': ^4.0.0
   axios: ^0.27.2
+  cashly_web: 'link:'
   file-saver: ^2.0.5
   formik: ^2.2.9
   moment: ^2.29.1
@@ -38,6 +39,7 @@ dependencies:
   '@testing-library/react': 11.2.7_biqbaboplfbrettd7655fr4n2y
   '@testing-library/user-event': 12.8.3_wl4iynrlixafokvgqnhzlvigei
   axios: 0.27.2
+  cashly_web: 'link:'
   file-saver: 2.0.5
   formik: 2.2.9_react@18.2.0
   moment: 2.29.4

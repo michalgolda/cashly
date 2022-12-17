@@ -1,0 +1,27 @@
+FROM node:16.18.0-alpine
+
+WORKDIR /cashly_web
+
+RUN apk add curl
+RUN curl -fsSL "https://github.com/pnpm/pnpm/releases/latest/download/pnpm-linuxstatic-x64" -o /bin/pnpm; chmod +x /bin/pnpm;
+
+COPY .npmrc package.json pnpm-lock.yaml /cashly_web/
+
+RUN pnpm install --frozen-lockfile --prod
+
+RUN pnpm add serve --prod
+RUN pnpm add @craco/craco 
+
+COPY jsconfig.json craco.config.js /cashly_web/
+
+COPY ./public /cashly_web/public/
+COPY ./src /cashly_web/src/
+
+EXPOSE 3000
+
+ENV NODE_ENV production
+
+RUN pnpm build
+
+CMD ["pnpm", "serve", "-s", "build"]
+
