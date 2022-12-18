@@ -40,8 +40,11 @@ const HideButton = styled.span`
   transition: ${({ theme }) => theme.defaultTransition};
 
   &:hover {
+    transform: rotate(180deg);
+    transition: transform 300ms;
     color: ${({ theme }) => theme.colors.primary500};
   }
+
   &:active {
     color: ${({ theme }) => theme.colors.primary300};
   }
