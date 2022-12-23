@@ -1,18 +1,11 @@
 import { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 import { authAPI, userAPI } from '@/api';
 import { accessTokenStorage } from '@/helpers/session';
 
 export const useSessionProvider = () => {
-  const notifyLoginSuccess = () =>
-    toast.success('Zostałeś pomyślnie zalogowany');
-
-  const notifyLogoutSuccess = () =>
-    toast.success('Zostałeś pomyślnie wylogowany');
-
   const currentUserQuery = useQuery('currentUser', userAPI.getCurrentUser, {
     refetchOnReconnect: true,
     refetchOnWindowFocus: true,
@@ -22,10 +15,7 @@ export const useSessionProvider = () => {
     onSuccess: (accessToken) => {
       accessTokenStorage.set(accessToken);
       currentUserQuery.refetch().then(({ isSuccess }) => {
-        if (isSuccess) {
-          notifyLoginSuccess();
-          navigate('/', { replace: true });
-        }
+        if (isSuccess) navigate('/', { replace: true });
       });
     },
   });
@@ -37,7 +27,6 @@ export const useSessionProvider = () => {
   const logout = () => {
     queryClient.clear();
     accessTokenStorage.clear();
-    notifyLogoutSuccess();
     navigate('/login', { replace: true });
   };
 
