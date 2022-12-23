@@ -19,6 +19,11 @@ const Wrapper = styled.div`
       background-color: ${({ theme }) => theme.colors.primary400};
     }
   }
+
+  select,
+  input[type='date'] {
+    height: 40.8px;
+  }
 `;
 
 const Input = styled.input`
