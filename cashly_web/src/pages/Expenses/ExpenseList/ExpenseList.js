@@ -4,16 +4,17 @@ import { List } from '@/components';
 
 import ExpenseListEmptyInformer from './ExpenseListEmptyInformer/ExpenseListEmptyInformer';
 import ExpenseListItem from './ExpenseListItem/ExpenseListItem';
+import ExpenseListOptions from './ExpenseListOptions/ExpenseListOptions';
 import ExpenseListSkeleton from './ExpenseListSkeleton';
 
 function ExpenseList({ data, isEmpty, isLoading }) {
-  return !isLoading && isEmpty ? (
-    <ExpenseListEmptyInformer />
-  ) : (
+  if (!isLoading && isEmpty) return <ExpenseListEmptyInformer />;
+
+  return (
     <List>
-      {isLoading ? (
-        <ExpenseListSkeleton />
-      ) : (
+      <ExpenseListOptions />
+      {isLoading && <ExpenseListSkeleton />}
+      {!isLoading && (
         <>
           {data.map((item, index) => {
             return (
