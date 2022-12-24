@@ -8,17 +8,12 @@ const Container = styled.div`
   column-gap: 16px;
   flex-direction: row;
   align-items: center;
+  row-gap: 16px;
+  flex-direction: column;
 `;
 
 const UserAvatar = styled(Avatar)`
   flex: 0;
 `;
 
-const UserEmail = styled.p`
-  flex: auto;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`;
-
-export { Container, UserAvatar, UserEmail };
+export { Container, UserAvatar };

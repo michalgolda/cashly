@@ -7,9 +7,8 @@ import * as S from './CurrentUserDetails.styled';
 
 export default function CurrentUserDetails({ user, logoutHandler, ...props }) {
   return user ? (
-    <S.Container className="currentUserDetails" {...props}>
+    <S.Container {...props}>
       <S.UserAvatar letter={getLetterFromEmail(user.email)} />
-      <S.UserEmail className="currentUserEmail">{user.email}</S.UserEmail>
       <IconButton
         onClick={logoutHandler}
         variant="text"
@@ -17,7 +16,7 @@ export default function CurrentUserDetails({ user, logoutHandler, ...props }) {
       />
     </S.Container>
   ) : (
-    <S.Container className="currentUserDetails">
+    <S.Container>
       <Skeleton
         type="circle"
         style={{ minWidth: '45px' }}

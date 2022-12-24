@@ -1,98 +1,34 @@
-import { useState } from 'react';
-
 import {
-  faAngleLeft,
-  faAngleRight,
   faChartPie,
   faGripVertical,
   faReceipt,
 } from '@fortawesome/free-solid-svg-icons';
 
-import { IconButton, Logo } from '@/components';
+import AppIconSVG from '@/assets/appIcon.svg';
 import { useSession } from '@/hooks/useSession';
 
 import CurrentUserDetails from './CurrentUserDetails/CurrentUserDetails';
-import NavLinkButton from './NavLinkButton/NavLinkButton';
 import NavLinkIconButton from './NavLinkIconButton/NavLinkIconButton';
 import * as S from './Sidebar.styled';
 
-const useSidebar = () => {
-  const [isExpanded, setIsExpanded] = useState(
-    JSON.parse(localStorage.getItem('sidebarIsExpanded')),
-  );
-
-  const toggleSidebarExpand = () => {
-    setIsExpanded(!isExpanded);
-    localStorage.setItem('sidebarIsExpanded', !isExpanded);
-  };
-
-  return [isExpanded, toggleSidebarExpand];
-};
-
 export default function Sidebar() {
   const { user, logout } = useSession();
-  const [isExpanded, toggleSidebarExpand] = useSidebar();
 
   return (
-    <S.Nav isExpanded={isExpanded}>
-      <S.Header className="header">
-        <Logo className="appName" width={120} />
-        <IconButton
-          onClick={() => toggleSidebarExpand()}
-          className="leftExpandBtn"
-          variant="text"
-          icon={faAngleLeft}
-        />
-        <IconButton
-          onClick={() => toggleSidebarExpand()}
-          className="rightExpandBtn"
-          variant="text"
-          icon={faAngleRight}
-        />
+    <S.Nav>
+      <S.Header>
+        <img src={AppIconSVG} width={40.03} height={40.3} />
       </S.Header>
       <S.Separator />
-      <S.Menu className="menu">
+      <S.Menu>
         <S.MenuItem>
-          <NavLinkButton
-            to="/expenses"
-            className="navLinkBtn"
-            startIcon={faReceipt}
-          >
-            Wydatki
-          </NavLinkButton>
-          <NavLinkIconButton
-            to="/expenses"
-            className="navLinkIconBtn"
-            icon={faReceipt}
-          />
+          <NavLinkIconButton to="/expenses" icon={faReceipt} />
         </S.MenuItem>
         <S.MenuItem>
-          <NavLinkButton
-            to="/categories"
-            className="navLinkBtn"
-            startIcon={faGripVertical}
-          >
-            Kategorie
-          </NavLinkButton>
-          <NavLinkIconButton
-            to="/categories"
-            className="navLinkIconBtn"
-            icon={faGripVertical}
-          />
+          <NavLinkIconButton to="/categories" icon={faGripVertical} />
         </S.MenuItem>
         <S.MenuItem>
-          <NavLinkButton
-            to="/analytics"
-            className="navLinkBtn"
-            startIcon={faChartPie}
-          >
-            Analityka
-          </NavLinkButton>
-          <NavLinkIconButton
-            to="/analytics"
-            className="navLinkIconBtn"
-            icon={faChartPie}
-          />
+          <NavLinkIconButton to="/analytics" icon={faChartPie} />
         </S.MenuItem>
       </S.Menu>
       <S.Separator />
