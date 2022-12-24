@@ -3,17 +3,22 @@ import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { IconButton, Skeleton } from '@/components';
 import { getLetterFromEmail } from '@/helpers/emailString';
 
+import Tooltip from '../Tooltip/Tooltip';
 import * as S from './CurrentUserDetails.styled';
 
 export default function CurrentUserDetails({ user, logoutHandler, ...props }) {
   return user ? (
     <S.Container {...props}>
-      <S.UserAvatar letter={getLetterFromEmail(user.email)} />
-      <IconButton
-        onClick={logoutHandler}
-        variant="text"
-        icon={faArrowRightFromBracket}
-      />
+      <Tooltip text={user.email}>
+        <S.UserAvatar letter={getLetterFromEmail(user.email)} />
+      </Tooltip>
+      <Tooltip text="Wyloguj się">
+        <IconButton
+          onClick={logoutHandler}
+          variant="text"
+          icon={faArrowRightFromBracket}
+        />
+      </Tooltip>
     </S.Container>
   ) : (
     <S.Container>

@@ -10,6 +10,7 @@ import { useSession } from '@/hooks/useSession';
 import CurrentUserDetails from './CurrentUserDetails/CurrentUserDetails';
 import NavLinkIconButton from './NavLinkIconButton/NavLinkIconButton';
 import * as S from './Sidebar.styled';
+import Tooltip from './Tooltip/Tooltip';
 
 export default function Sidebar() {
   const { user, logout } = useSession();
@@ -22,13 +23,23 @@ export default function Sidebar() {
       <S.Separator />
       <S.Menu>
         <S.MenuItem>
-          <NavLinkIconButton to="/expenses" icon={faReceipt} />
+          <Tooltip text="Wydatki">
+            <NavLinkIconButton text="Wydatki" to="/expenses" icon={faReceipt} />
+          </Tooltip>
         </S.MenuItem>
         <S.MenuItem>
-          <NavLinkIconButton to="/categories" icon={faGripVertical} />
+          <Tooltip text="Kategorie">
+            <NavLinkIconButton to="/categories" icon={faGripVertical} />
+          </Tooltip>
         </S.MenuItem>
         <S.MenuItem>
-          <NavLinkIconButton to="/analytics" icon={faChartPie} />
+          <Tooltip text="Analityka">
+            <NavLinkIconButton
+              text="Analityka"
+              to="/analytics"
+              icon={faChartPie}
+            />
+          </Tooltip>
         </S.MenuItem>
       </S.Menu>
       <S.Separator />
