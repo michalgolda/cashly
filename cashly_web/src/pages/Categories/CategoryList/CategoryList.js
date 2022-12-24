@@ -7,13 +7,12 @@ import CategoryListItem from './CategoryListItem/CategoryListItem';
 import CategoryListSkeleton from './CategoryListSkeleton';
 
 function CategoryList({ data, isEmpty, isLoading }) {
-  return !isLoading && isEmpty ? (
-    <CategoryListEmptyInformer />
-  ) : (
+  if (!isLoading && isEmpty) return <CategoryListEmptyInformer />;
+
+  return (
     <List>
-      {isLoading ? (
-        <CategoryListSkeleton />
-      ) : (
+      {isLoading && <CategoryListSkeleton />}
+      {!isLoading && (
         <>
           {data.map((item, index) => {
             return <CategoryListItem key={index} {...item} />;

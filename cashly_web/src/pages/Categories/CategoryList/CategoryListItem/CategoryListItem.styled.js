@@ -4,9 +4,14 @@ import { ListItem as BaseListItem } from '@/components';
 
 const ListItem = styled(BaseListItem)`
   display: flex;
+  row-gap: 16px;
   column-gap: 16px;
   align-items: center;
-  flex-direction: row;
+  flex-direction: column;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
 `;
 
 const Category = styled.div`
@@ -14,6 +19,7 @@ const Category = styled.div`
   height: 100%;
   color: white;
   display: flex;
+  height: 40.03px;
   border-radius: 2px;
   align-items: center;
   justify-content: center;

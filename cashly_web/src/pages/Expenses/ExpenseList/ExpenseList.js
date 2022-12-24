@@ -1,17 +1,15 @@
 import PropTypes from 'prop-types';
 
-import { List } from '@/components';
-
+import * as S from './ExpenseList.styled';
 import ExpenseListEmptyInformer from './ExpenseListEmptyInformer/ExpenseListEmptyInformer';
 import ExpenseListItem from './ExpenseListItem/ExpenseListItem';
-import ExpenseListOptions from './ExpenseListOptions/ExpenseListOptions';
 import ExpenseListSkeleton from './ExpenseListSkeleton';
 
 function ExpenseList({ data, isEmpty, isLoading }) {
   if (!isLoading && isEmpty) return <ExpenseListEmptyInformer />;
 
   return (
-    <List>
+    <S.List>
       {isLoading && <ExpenseListSkeleton />}
       {!isLoading && (
         <>
@@ -28,7 +26,7 @@ function ExpenseList({ data, isEmpty, isLoading }) {
           })}
         </>
       )}
-    </List>
+    </S.List>
   );
 }
 
