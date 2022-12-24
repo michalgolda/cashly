@@ -5,6 +5,8 @@ from fastapi import APIRouter, Depends, Query
 
 from app.aggregator import (
     AggregationUnits,
+    CountAllExpenseCategoriesAggregator,
+    CountAllExpensesAggregator,
     CountExpensesByCategoryAggregator,
     DefaultAggregatorParams,
     ExpensesByCategoryAggregator,
@@ -99,3 +101,35 @@ def get_count_expenses_by_category(
     aggregated_data = aggregator.aggregate(expenses)
 
     return aggregated_data
+
+
+@analytics_router.get("/analytics/count_all_expenses")
+def get_count_all_expenses(
+    current_user: User = Depends(get_current_user),
+    date_params: AnalyticsDateParams = Depends(),
+    expense_repo: ExpenseRepository = Depends(get_expense_repo),
+):
+    expenses = expense_repo.get_by_date_range_and_user_id(
+        start_date=date_params.start_date,
+        end_date=date_params.end_date,
+        user_id=current_user.id,
+    )
+
+    aggregator = CountAllExpensesAggregator()
+    return aggregator.aggregate(expenses)
+
+
+@analytics_router.get("/analytics/count_all_expense_categories")
+def get_count_all_expense_categories(
+    current_user: User = Depends(get_current_user),
+    date_params: AnalyticsDateParams = Depends(),
+    expense_repo: ExpenseRepository = Depends(get_expense_repo),
+):
+    expenses = expense_repo.get_by_date_range_and_user_id(
+        start_date=date_params.start_date,
+        end_date=date_params.end_date,
+        user_id=current_user.id,
+    )
+
+    aggregator = CountAllExpenseCategoriesAggregator()
+    return aggregator.aggregate(expenses)

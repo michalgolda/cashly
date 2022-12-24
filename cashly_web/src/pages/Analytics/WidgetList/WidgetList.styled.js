@@ -8,8 +8,17 @@ const List = styled.div`
 
 const Group = styled.div`
   display: grid;
+  row-gap: 32px;
   grid-column-gap: 32px;
-  grid-template-columns: ${({ columns }) => `repeat(${columns}, 1fr)`};
+  grid-template-columns: 1fr 1fr;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @media (max-width: 375px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export { List, Group };

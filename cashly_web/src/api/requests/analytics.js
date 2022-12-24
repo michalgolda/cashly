@@ -41,3 +41,23 @@ export const getCountExpensesByCategory = ({ startDate, endDate }) =>
       },
     })
     .then((res) => res.data);
+
+export const getCountAllExpenses = ({ startDate, endDate }) =>
+  apiClient
+    .get('/analytics/count_all_expenses', {
+      params: {
+        start_date: startDate,
+        end_date: endDate,
+      },
+    })
+    .then((res) => res.data);
+
+export const getCountAllExpenseCategories = ({ startDate, endDate }) =>
+  apiClient
+    .get('/analytics/count_all_expense_categories', {
+      params: {
+        start_date: startDate,
+        end_date: endDate,
+      },
+    })
+    .then((res) => res.data);

@@ -149,3 +149,14 @@ class CountExpensesByCategoryAggregator(CategoryAggregatorMixin):
                 data_frames.append(new_data_frame)
 
         return data_frames
+
+
+class CountAllExpensesAggregator:
+    def aggregate(self, data: List[Expense]) -> AggregationDataFrame:
+        return {"key": "count_all_expenses", "value": len(data)}
+
+
+class CountAllExpenseCategoriesAggregator(CategoryAggregatorMixin):
+    def aggregate(self, data: List[Expense]) -> AggregationDataFrame:
+        group = groupby(data, self.grouper_key)
+        return {"key": "count_all_expense_categories", "value": len(list(group))}
