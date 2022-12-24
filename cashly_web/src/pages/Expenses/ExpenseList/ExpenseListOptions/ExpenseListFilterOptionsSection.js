@@ -6,6 +6,7 @@ export default function ExpenseListFilterOptionsSection({
   filterParams,
   handleClearParams,
   handleChangeParam,
+  categories,
 }) {
   return (
     <ExpenseListOptionsSection onClearParams={handleClearParams}>
@@ -19,7 +20,14 @@ export default function ExpenseListFilterOptionsSection({
       >
         <option value="">Bez kategorii</option>
         <option value="all">Wszystkie</option>
-        <option value="Jedzenie">Jedzenie</option>
+        {categories &&
+          categories.map((category) => {
+            return (
+              <option id={category.id} value={category.name}>
+                {category.name}
+              </option>
+            );
+          })}
       </Input>
       <Input
         labelText="Data realizacji"

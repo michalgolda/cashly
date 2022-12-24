@@ -1,3 +1,7 @@
+import { useQuery } from 'react-query';
+
+import { expenseCategoryAPI } from '@/api';
+
 import ExpenseListFilterOptionsSection from './ExpenseListFilterOptionsSection';
 import * as S from './ExpenseListOptions.styled';
 import ExpenseListOptionsSectionSwitch from './ExpenseListOptionsSectionSwitch/ExpenseListOptionsSectionSwitch';
@@ -17,6 +21,11 @@ export default function ExpenseListOptions() {
     clearFilterParams,
     clearSortParams,
   } = useExpenseListOptions();
+
+  const getAllExpenseCategories = useQuery(
+    'categories',
+    expenseCategoryAPI.getAllExpenseCategories,
+  );
 
   const handleChangeParam = (e, setter) => {
     const paramName = e.target.name;
@@ -40,6 +49,7 @@ export default function ExpenseListOptions() {
           filterParams={filterParams}
           handleClearParams={() => clearFilterParams()}
           handleChangeParam={(e) => handleChangeParam(e, setFilterParams)}
+          categories={getAllExpenseCategories.data}
         />
       )}
       {showSortOptionsSection && (
