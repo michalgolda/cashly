@@ -1,7 +1,7 @@
 import { Page, PageMain } from '@/components';
 import { MainLayout } from '@/layouts';
 
-import AnalyticsPageHeader from './AnalyticsPageHeader';
+import AnalyticsPageHeader from './AnalyticsPageHeader/AnalyticsPageHeader';
 import { DatePeriodProvider } from './DatePeriodContext';
 import WidgetList from './WidgetList/WidgetList';
 

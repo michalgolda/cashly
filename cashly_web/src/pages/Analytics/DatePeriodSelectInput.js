@@ -16,6 +16,7 @@ export default function DatePeriodSelectInput() {
       as="select"
       defaultValue="lastTwentyMonths"
       onChange={handleChangePeriod}
+      fullWidth
     >
       <option value="lastSevenDays">Ostatnie 7 dni</option>
       <option value="lastFourWeeks">Ostatnie 4 tygodnie</option>

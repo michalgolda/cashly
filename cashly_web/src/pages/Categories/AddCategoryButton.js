@@ -8,7 +8,11 @@ export default function AddCategoryButton() {
   const addCategoryModal = useModal(AddCategoryModal);
 
   return (
-    <Button onClick={() => addCategoryModal.show()} startIcon={faPlus}>
+    <Button
+      variant="primaryOutlined"
+      onClick={() => addCategoryModal.show()}
+      startIcon={faPlus}
+    >
       Dodaj kategorię
     </Button>
   );

@@ -12,7 +12,6 @@ function ExpenseList({ data, isEmpty, isLoading }) {
 
   return (
     <List>
-      <ExpenseListOptions />
       {isLoading && <ExpenseListSkeleton />}
       {!isLoading && (
         <>

@@ -39,7 +39,9 @@ function ExpenseListItem({ id, amount, category, realisedDate }) {
       ) : (
         <S.Category>Bez kategorii</S.Category>
       )}
-      <S.Span>{defaultDateTimeFormat.format(new Date(realisedDate))}</S.Span>
+      <S.RealisedDate>
+        {defaultDateTimeFormat.format(new Date(realisedDate))}
+      </S.RealisedDate>
       <S.Actions>
         <EditListItemButton
           onClick={() => {

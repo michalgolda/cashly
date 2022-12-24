@@ -2,11 +2,9 @@ import PropTypes from 'prop-types';
 
 import { Header } from '@/components';
 
-import RightElements from './RightElements';
+import ExpensePageHeaderActions from './ExpensePageHeaderActions';
 
-function ExpensePageHeader({ showRightElement }) {
-  const rightElement = showRightElement ? <RightElements /> : null;
-
+function ExpensePageHeader({ showActions }) {
   return (
     <Header
       title="Wydatki"
@@ -16,13 +14,13 @@ function ExpensePageHeader({ showRightElement }) {
                 Praesent rutrum viverra iaculis. 
                 Phasellus commodo orci vitae venenatis consequat.
             `}
-      rightElement={rightElement}
-    />
+    >
+      {showActions && <ExpensePageHeaderActions />}
+    </Header>
   );
 }
 
-ExpensePageHeader.propTypes = { showRightElement: PropTypes.bool };
-
-ExpensePageHeader.defaultProps = { showRightElement: true };
+ExpensePageHeader.propTypes = { showActions: PropTypes.bool };
+ExpensePageHeader.defaultProps = { showActions: true };
 
 export default ExpensePageHeader;

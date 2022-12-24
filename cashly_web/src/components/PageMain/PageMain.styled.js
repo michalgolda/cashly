@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  padding: 64px;
+  padding: 32px;
+
+  @media (min-width: 768px) {
+    padding: 64px;
+  }
 `;
 
 const Main = styled.main`

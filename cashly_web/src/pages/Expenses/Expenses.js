@@ -7,6 +7,7 @@ import { Page, PageMain } from '@/components';
 import { MainLayout } from '@/layouts';
 
 import ExpenseList from './ExpenseList/ExpenseList';
+import ExpenseListOptions from './ExpenseList/ExpenseListOptions/ExpenseListOptions';
 import { ExpenseListOptionsProvider } from './ExpenseList/ExpenseListOptions/ExpenseListOptionsContext';
 import { useExpenseListOptionsProvider } from './ExpenseList/ExpenseListOptions/useExpenseListOptionsProvider';
 import ExpensePageHeader from './ExpensePageHeader/ExpensePageHeader';
@@ -71,14 +72,15 @@ export default function Expenses() {
   const isEmpty = !Boolean(
     getAllExpensesQuery.data && getAllExpensesQuery.data.length,
   );
-  const showRightElementOfHeader = !isEmpty;
+  const showHeaderActions = !isEmpty;
 
   return (
     <Page title="Cashly - Wydatki">
       <MainLayout>
-        <ExpensePageHeader showRightElement={showRightElementOfHeader} />
+        <ExpensePageHeader showActions={showHeaderActions} />
         <PageMain>
           <ExpenseListOptionsProvider provider={expenseListOptionsProvider}>
+            <ExpenseListOptions />
             <ExpenseList
               data={getAllExpensesQuery.data}
               isEmpty={isEmpty}

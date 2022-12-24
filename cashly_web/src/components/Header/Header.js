@@ -2,26 +2,24 @@ import PropTypes from 'prop-types';
 
 import * as S from './Header.styled';
 
-function Header({ title, description, rightElement, ...props }) {
+function Header({ children, title, description, ...props }) {
   return (
     <S.Header {...props}>
-      <S.Wrapper>
-        <S.LeftContentWrapper>
-          {title && <h1>{title}</h1>}
-          {description && <S.Description>{description}</S.Description>}
-        </S.LeftContentWrapper>
-        {rightElement && (
-          <S.RightContentWrapper>{rightElement}</S.RightContentWrapper>
-        )}
-      </S.Wrapper>
+      <S.Container>
+        <S.TextContainer>
+          <h1>{title}</h1>
+          <S.Description>{description}</S.Description>
+        </S.TextContainer>
+        {children}
+      </S.Container>
     </S.Header>
   );
 }
 
 Header.propTypes = {
-  description: PropTypes.string,
   rightElement: PropTypes.element,
   title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
 };
 
 export default Header;

@@ -5,11 +5,15 @@ import { Button } from '@/components';
 
 import AddExpenseModal from './AddExpenseModal';
 
-export default function AddCategoryButton() {
-  const addCategoryModal = useModal(AddExpenseModal);
+export default function AddExpenseButton() {
+  const addExpenseModal = useModal(AddExpenseModal);
 
   return (
-    <Button onClick={() => addCategoryModal.show()} startIcon={faPlus}>
+    <Button
+      variant="primaryOutlined"
+      onClick={() => addExpenseModal.show()}
+      startIcon={faPlus}
+    >
       Dodaj wydatek
     </Button>
   );

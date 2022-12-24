@@ -5,7 +5,7 @@ import { Page, PageMain } from '@/components';
 import { MainLayout } from '@/layouts';
 
 import CategoryList from './CategoryList/CategoryList';
-import CategoryPageHeader from './CategoryPageHeader';
+import CategoryPageHeader from './CategoryPageHeader/CategoryPageHeader';
 
 export default function Categories() {
   const { data, isLoading, isError } = useQuery(
@@ -14,12 +14,12 @@ export default function Categories() {
   );
 
   const isEmpty = !Boolean(data && data.length);
-  const showRightElementOfHeader = !isEmpty;
+  const showHeaderActions = !isEmpty;
 
   return (
     <Page title="Cashly - Kategorie">
       <MainLayout>
-        <CategoryPageHeader showRightElement={showRightElementOfHeader} />
+        <CategoryPageHeader showActions={showHeaderActions} />
         <PageMain>
           <CategoryList
             data={data}

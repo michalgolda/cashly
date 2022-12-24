@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
 
 import { Header } from '@/components';
-import AddCategoryButton from '@/pages/Categories/AddCategoryButton';
 
-function CategoryPageHeader({ showRightElement }) {
-  const rightElement = showRightElement ? <AddCategoryButton /> : null;
+import CategoryPageHeaderActions from './CategoryPageHeaderActions';
 
+function CategoryPageHeader({ showActions }) {
   return (
     <Header
       title="Kategorie"
@@ -15,13 +14,13 @@ function CategoryPageHeader({ showRightElement }) {
                 Praesent rutrum viverra iaculis. 
                 Phasellus commodo orci vitae venenatis consequat.
             `}
-      rightElement={rightElement}
-    />
+    >
+      {showActions && <CategoryPageHeaderActions />}
+    </Header>
   );
 }
 
-CategoryPageHeader.propTypes = { showRightElement: PropTypes.bool };
-
-CategoryPageHeader.defaultProps = { showRightElement: true };
+CategoryPageHeader.propTypes = { showActions: PropTypes.bool };
+CategoryPageHeader.defaultProps = { showActions: true };
 
 export default CategoryPageHeader;

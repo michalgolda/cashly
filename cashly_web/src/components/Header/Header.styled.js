@@ -2,42 +2,46 @@ import styled from 'styled-components';
 
 const Header = styled.header`
   height: auto;
-  padding: 64px;
+  padding: 32px;
   background-color: white;
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray400};
+
+  @media (min-width: 768px) {
+    padding: 64px;
+  }
 `;
 
-const Wrapper = styled.div`
+const Container = styled.div`
   display: flex;
   margin: 0 auto;
+  row-gap: 1rem;
+  column-gap: 2rem;
   max-width: 1024px;
   align-items: center;
+  flex-direction: column;
   justify-content: space-between;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+`;
+
+const TextContainer = styled.div`
+  display: flex;
+  row-gap: 1rem;
+  flex-direction: column;
 `;
 
 const Description = styled.p`
-  margin-top: 4px;
   color: ${({ theme }) => theme.colors.gray600};
   font-size: ${({ theme }) => theme.fontSizes.h5};
 `;
 
-const LeftContentWrapper = styled.div`
+const ActionsContainer = styled.div`
+  width: 100%;
   display: flex;
-  margin-right: 32px;
+  row-gap: 1rem;
   flex-direction: column;
 `;
 
-const RightContentWrapper = styled.div`
-  display: flex;
-  row-gap: 16px;
-  margin-left: 8px;
-  flex-direction: column;
-`;
-
-export {
-  Header,
-  Wrapper,
-  Description,
-  LeftContentWrapper,
-  RightContentWrapper,
-};
+export { Header, Container, Description, TextContainer, ActionsContainer };

@@ -15,6 +15,7 @@ export default function ExpenseListFilterOptionsSection({
         name="category"
         onChange={handleChangeParam}
         value={filterParams['category']}
+        fullWidth
       >
         <option value="">Bez kategorii</option>
         <option value="all">Wszystkie</option>
@@ -26,6 +27,7 @@ export default function ExpenseListFilterOptionsSection({
         type="date"
         onChange={handleChangeParam}
         value={filterParams['realised_date']}
+        fullWidth
       />
     </ExpenseListOptionsSection>
   );

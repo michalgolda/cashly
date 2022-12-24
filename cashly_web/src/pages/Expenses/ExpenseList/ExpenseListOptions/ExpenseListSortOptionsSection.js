@@ -15,6 +15,7 @@ export default function ExpenseListFilterOptionsSection({
         name="amount"
         onChange={handleChangeParam}
         value={sortParams['amount']}
+        fullWidth
       >
         <option value="">Brak</option>
         <option value="ascending">Rosnąco</option>
@@ -26,6 +27,7 @@ export default function ExpenseListFilterOptionsSection({
         name="realised_date"
         onChange={handleChangeParam}
         value={sortParams['realised_date']}
+        fullWidth
       >
         <option value="">Brak</option>
         <option value="ascending">Rosnąco</option>
