@@ -15,7 +15,9 @@ export default function RegisterForm() {
   const navigate = useNavigate();
 
   const notifyRegisterSuccess = () =>
-    toast.success('Konto zostało pomyślnie utworzone');
+    toast.success(
+      'Konto zostało pomyślnie utworzone. Na podany adres email został wysłany link aktywacyjny',
+    );
 
   const registerMutation = useMutation(authAPI.register, {
     onSuccess: () => {

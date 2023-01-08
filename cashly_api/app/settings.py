@@ -15,6 +15,8 @@ class Settings(BaseSettings):
 
     RESET_PASSWORD_TOKEN_EXPIRATION: int = 7200
 
+    EMAIL_VERIFICATION_TOKEN_EXPIRATION: int = 7200
+
     MAIL_USERNAME: str = ""
     MAIL_PASSWORD: str = ""
     MAIL_FROM: str = ""

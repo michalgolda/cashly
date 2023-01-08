@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { authAPI, userAPI } from '@/api';
-import { accessTokenStorage } from '@/helpers/session';
+import { accessTokenStorage, logoutEvent } from '@/helpers/session';
 
 export const useSessionProvider = () => {
   const currentUserQuery = useQuery('currentUser', userAPI.getCurrentUser, {
@@ -24,14 +24,14 @@ export const useSessionProvider = () => {
 
   const login = (loginBody) => loginMutation.mutateAsync(loginBody);
 
-  const logout = () => {
-    queryClient.clear();
-    accessTokenStorage.clear();
-    navigate('/login', { replace: true });
-  };
+  const logout = () => window.dispatchEvent(logoutEvent);
 
   useEffect(() => {
-    window.addEventListener('logout', () => logout());
+    window.addEventListener('logout', () => {
+      queryClient.clear();
+      accessTokenStorage.clear();
+      navigate('/login', { replace: true });
+    });
     window.addEventListener('storage', () => {
       const accessToken = accessTokenStorage.get();
       accessToken && currentUserQuery.refetch();

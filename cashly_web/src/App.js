@@ -17,6 +17,7 @@ import {
   NotFound,
   PasswordRecovery,
   Register,
+  VerifyEmail,
 } from '@/pages';
 import { GlobalStyle, theme } from '@/styles';
 
@@ -55,6 +56,7 @@ function App() {
                     </AuthRedirect>
                   }
                 />
+                <Route path="/verify/email" element={<VerifyEmail />} />
                 <Route
                   path="/analytics"
                   element={

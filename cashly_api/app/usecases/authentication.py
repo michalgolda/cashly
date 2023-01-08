@@ -21,19 +21,45 @@ class RegisterUseCaseInput:
 
 class RegisterUseCase(UseCase[RegisterUseCaseInput, NoReturn]):
     def __init__(
-        self, user_repo: UserRepository, security_manager: SecurityManager
+        self,
+        user_repo: UserRepository,
+        security_manager: SecurityManager,
+        message_client: MessageClient,
     ) -> NoReturn:
         self._user_repo = user_repo
         self._security_manager = security_manager
+        self._message_client = message_client
 
-    def execute(self, input: RegisterUseCaseInput) -> NoReturn:
-        existing_user = self._user_repo.get_by_email(input.email)
+    def _check_email(self, email: str) -> NoReturn:
+        existing_user = self._user_repo.get_by_email(email)
         if existing_user:
             raise UserEmailAlreadyUsedError()
 
-        hashed_password = self._security_manager.generate_password_hash(input.password)
-        user = User(email=input.email, password=hashed_password)
+    def _create_user(self, email: str, password: str) -> NoReturn:
+        hashed_password = self._security_manager.generate_password_hash(password)
+        user = User(email=email, password=hashed_password)
         self._user_repo.add(user)
+
+    def _send_email_verification_token(self, email: str) -> NoReturn:
+        email_verification_token = (
+            self._security_manager.generate_email_verification_token(email)
+        )
+        self._message_client.send(
+            EmailMessage(
+                title="Cashly - Konto zostało pomyślnie utworzone",
+                recipients=[email],
+                template_name="welcome-new-user.html",
+                payload={"email_verification_token": email_verification_token},
+            )
+        )
+
+    def execute(self, input: RegisterUseCaseInput) -> NoReturn:
+        email = input.email
+        password = input.password
+
+        self._check_email(email)
+        self._create_user(email, password)
+        self._send_email_verification_token(email)
 
 
 @dataclass(frozen=True)
@@ -54,15 +80,24 @@ class LoginUseCase(UseCase[LoginUseCaseInput, LoginUseCaseOutput]):
         self._user_repo = user_repo
         self._security_manager = security_manager
 
-    def execute(self, input: LoginUseCaseInput) -> LoginUseCaseOutput:
-        existing_user = self._user_repo.get_by_email(input.email)
+    def _get_existing_user(self, email: str) -> User:
+        existing_user = self._user_repo.get_by_email(email)
         if not existing_user:
             raise BadAuthenticationCredentialsError()
+        return existing_user
 
+    def _check_password(self, plain_password: str, password_hash: str) -> NoReturn:
         if not self._security_manager.check_password_hash(
-            input.password, existing_user.password
+            plain_password, password_hash
         ):
             raise BadAuthenticationCredentialsError()
+
+    def execute(self, input: LoginUseCaseInput) -> LoginUseCaseOutput:
+        existing_user = self._get_existing_user(email=input.email)
+
+        self._check_password(
+            plain_password=input.password, password_hash=existing_user.password
+        )
 
         access_token = self._security_manager.generate_access_token(existing_user.id)
         return LoginUseCaseOutput(access_token)

@@ -8,6 +8,7 @@ from uuid import UUID
 class User:
     email: str
     password: str
+    email_is_verified: bool = False
     id: Optional[UUID] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None

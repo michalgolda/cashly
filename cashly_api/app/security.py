@@ -11,16 +11,22 @@ from fastapi.security import HTTPBearer
 from app.settings import settings
 
 
-class AccessTokenPayload(TypedDict):
+class TokenPayload(TypedDict):
     sub: UUID
     aud: str
     exp: datetime.datetime
 
 
-class ResetPasswordTokenPayload(TypedDict):
+class AccessTokenPayload(TokenPayload):
+    ...
+
+
+class ResetPasswordTokenPayload(TokenPayload):
     sub: str
-    aud: str
-    exp: datetime.datetime
+
+
+class EmailVerificationTokenPayload(TokenPayload):
+    sub: str
 
 
 class SecurityManager(ABC):
@@ -40,18 +46,33 @@ class SecurityManager(ABC):
     def check_jwt_token(token: str, audience: str) -> dict:
         ...
 
-    def generate_access_token(user_id: UUID) -> str:
+    @abstractmethod
+    def generate_access_token(self, user_id: UUID) -> str:
         ...
 
-    def check_access_token(access_token: str) -> AccessTokenPayload:
+    @abstractmethod
+    def check_access_token(self, access_token: str) -> AccessTokenPayload:
         ...
 
-    def generate_reset_password_token(user_email: str) -> str:
+    @abstractmethod
+    def generate_reset_password_token(self, user_email: str) -> str:
         ...
 
+    @abstractmethod
     def check_reset_password_token(
+        self,
         reset_password_token: str,
     ) -> ResetPasswordTokenPayload:
+        ...
+
+    @abstractmethod
+    def generate_email_verification_token(self, user_email: str) -> str:
+        ...
+
+    @abstractmethod
+    def check_email_verification_token(
+        self, email_verification_token: str
+    ) -> EmailVerificationTokenPayload:
         ...
 
 
@@ -90,6 +111,7 @@ class DefaultSecurityManager(SecurityManager):
 
     def check_access_token(self, access_token: str) -> AccessTokenPayload:
         payload = self.check_jwt_token(access_token, "access_token")
+        payload["sub"] = UUID(payload["sub"])
         payload["exp"] = datetime.datetime.fromtimestamp(payload["exp"])
         return payload
 
@@ -106,6 +128,24 @@ class DefaultSecurityManager(SecurityManager):
         self, reset_password_token: str
     ) -> ResetPasswordTokenPayload:
         payload = self.check_jwt_token(reset_password_token, "reset_password_token")
+        payload["exp"] = datetime.datetime.fromtimestamp(payload["exp"])
+        return payload
+
+    def generate_email_verification_token(self, user_email: str) -> str:
+        payload = {
+            "sub": user_email,
+            "aud": "email_verification_token",
+            "exp": datetime.datetime.now(tz=datetime.timezone.utc)
+            + datetime.timedelta(seconds=settings.EMAIL_VERIFICATION_TOKEN_EXPIRATION),
+        }
+        return self.generate_jwt_token(payload)
+
+    def check_email_verification_token(
+        self, email_verification_token: str
+    ) -> EmailVerificationTokenPayload:
+        payload = self.check_jwt_token(
+            email_verification_token, "email_verification_token"
+        )
         payload["exp"] = datetime.datetime.fromtimestamp(payload["exp"])
         return payload
 

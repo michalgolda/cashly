@@ -1,9 +1,9 @@
 import { useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
+
+import { CloseButton } from '@/components';
 
 import './Modal.css';
 import * as S from './Modal.styled';
@@ -22,9 +22,7 @@ function Modal({ children, show, onHide, ...props }) {
       <S.Wrapper ref={nodeRef}>
         <S.Modal {...props}>
           <S.Header>
-            <S.HideButton onClick={onHide}>
-              <FontAwesomeIcon icon={faTimes} />
-            </S.HideButton>
+            <CloseButton onClick={onHide} />
           </S.Header>
           <S.Body>{children}</S.Body>
         </S.Modal>

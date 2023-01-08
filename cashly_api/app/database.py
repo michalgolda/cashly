@@ -1,6 +1,7 @@
 from uuid import UUID, uuid4
 
 from sqlalchemy import (
+    Boolean,
     Column,
     Date,
     DateTime,
@@ -107,6 +108,7 @@ user = Table(
         default=lambda: str(uuid4()),
     ),
     Column("email", String(255), index=True),
+    Column("email_is_verified", Boolean(), default=False),
     Column("password", String(255)),
     Column("created_at", DateTime(timezone=True), server_default=sql_func.now()),
     Column("updated_at", DateTime(timezone=True), onupdate=sql_func.now()),

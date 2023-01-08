@@ -29,6 +29,15 @@ class BadAuthenticationCredentialsError(DomainException):
         )
 
 
+class BadAuthenticationCredentialsError(DomainException):
+    def __init__(self) -> NoReturn:
+        super().__init__(
+            "BadAuthenticationCredentialsError",
+            "Podany adres email lub hasło są nieprawidłowe",
+            400,
+        )
+
+
 class ExpenseCategoryNameAlreadyUsedError(DomainException):
     def __init__(self) -> NoReturn:
         super().__init__(
