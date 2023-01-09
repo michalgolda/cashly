@@ -31,7 +31,7 @@ export default function CountAllExpenseCategories() {
   return (
     <Widget title="Liczba kategorii">
       <S.TotalAmountText>
-        {countAllExpenseCategoriesQuery.data.value - 1}
+        {countAllExpenseCategoriesQuery.data.value}
       </S.TotalAmountText>
     </Widget>
   );

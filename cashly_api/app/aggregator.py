@@ -159,4 +159,7 @@ class CountAllExpensesAggregator:
 class CountAllExpenseCategoriesAggregator(CategoryAggregatorMixin):
     def aggregate(self, data: List[Expense]) -> AggregationDataFrame:
         group = groupby(data, self.grouper_key)
-        return {"key": "count_all_expense_categories", "value": len(list(group))}
+        return {
+            "key": "count_all_expense_categories",
+            "value": len(list(filter(lambda g: g[0] != None, list(group)))),
+        }
