@@ -1,6 +1,5 @@
+import { useReducer } from 'react';
 import { useQuery } from 'react-query';
-
-import moment from 'moment';
 
 import { expenseAPI } from '@/api';
 import { Page, PageMain } from '@/components';
@@ -8,64 +7,44 @@ import { MainLayout } from '@/layouts';
 
 import ExpenseList from './ExpenseList/ExpenseList';
 import ExpenseListOptions from './ExpenseList/ExpenseListOptions/ExpenseListOptions';
+import * as expenseListOptionsActions from './ExpenseList/ExpenseListOptions/ExpenseListOptionsActions';
 import { ExpenseListOptionsProvider } from './ExpenseList/ExpenseListOptions/ExpenseListOptionsContext';
-import { useExpenseListOptionsProvider } from './ExpenseList/ExpenseListOptions/useExpenseListOptionsProvider';
+import {
+  expenseListOptionsReducer,
+  initialState,
+} from './ExpenseList/ExpenseListOptions/ExpenseListOptionsReducer';
+import { usePersistedExpenseListOptionsState } from './ExpenseList/ExpenseListOptions/usePersistedExpenseListOptionsState';
 import ExpensePageHeader from './ExpensePageHeader/ExpensePageHeader';
 
 export default function Expenses() {
-  const expenseListOptionsProvider = useExpenseListOptionsProvider();
+  const {
+    showFilterOptionsSection,
+    showSortOptionsSection,
+    sortParams,
+    filterParams,
+  } = usePersistedExpenseListOptionsState();
+
+  const [state, dispatch] = useReducer(expenseListOptionsReducer, {
+    ...initialState,
+    showFilterOptionsSection,
+    showSortOptionsSection,
+    sortParams,
+    filterParams,
+  });
+
   const getAllExpensesQuery = useQuery('expenses', expenseAPI.getAllExpenses, {
-    select: (expenses) => {
-      const { filterParams, sortParams } = expenseListOptionsProvider;
-
-      expenses = expenses.filter((expense) => {
-        if (filterParams.category === 'all') return true;
-        if (filterParams.category === '') return !expense.category;
-        return expense.category
-          ? expense.category.name === filterParams.category
-          : false;
+    refetchOnWindowFocus: false,
+    onSuccess: (data) => {
+      dispatch({
+        type: expenseListOptionsActions.FETCH_EXPENSES_SUCCESS,
+        payload: data,
       });
-
-      expenses = expenses.filter((expense) => {
-        if (filterParams.realised_date === '') return true;
-        return expense.realised_date === filterParams.realised_date;
+      dispatch({
+        type: expenseListOptionsActions.APPLY_FILTER_OPTIONS,
       });
-
-      sortParams.amount === 'ascending' &&
-        expenses.sort((firstExpense, secondExpense) => {
-          if (firstExpense.amount > secondExpense.amount) return 1;
-          if (firstExpense.amount < secondExpense.amount) return -1;
-          return 0;
-        });
-
-      sortParams.amount === 'descending' &&
-        expenses.sort((firstExpense, secondExpense) => {
-          if (firstExpense.amount > secondExpense.amount) return -1;
-          if (firstExpense.amount < secondExpense.amount) return 1;
-          return 0;
-        });
-
-      sortParams.realised_date === 'ascending' &&
-        expenses.sort((firstExpense, secondExpense) => {
-          const firstExpenseRealisedDate = moment(firstExpense.realised_date);
-          const secondExpenseRealisedDate = moment(secondExpense.realised_date);
-
-          if (firstExpenseRealisedDate > secondExpenseRealisedDate) return 1;
-          if (firstExpenseRealisedDate < secondExpenseRealisedDate) return -1;
-          return 0;
-        });
-
-      sortParams.realised_date === 'descending' &&
-        expenses.sort((firstExpense, secondExpense) => {
-          const firstExpenseRealisedDate = moment(firstExpense.realised_date);
-          const secondExpenseRealisedDate = moment(secondExpense.realised_date);
-
-          if (firstExpenseRealisedDate > secondExpenseRealisedDate) return -1;
-          if (firstExpenseRealisedDate < secondExpenseRealisedDate) return 1;
-          return 0;
-        });
-
-      return expenses;
+      dispatch({
+        type: expenseListOptionsActions.APPLY_SORT_OPTIONS,
+      });
     },
   });
 
@@ -79,10 +58,10 @@ export default function Expenses() {
       <MainLayout>
         <ExpensePageHeader showActions={showHeaderActions} />
         <PageMain>
-          <ExpenseListOptionsProvider provider={expenseListOptionsProvider}>
-            <ExpenseListOptions />
+          <ExpenseListOptionsProvider reducer={[state, dispatch]}>
+            {!isEmpty && <ExpenseListOptions />}
             <ExpenseList
-              data={getAllExpensesQuery.data}
+              data={state.expenses}
               isEmpty={isEmpty}
               isLoading={
                 getAllExpensesQuery.isLoading || getAllExpensesQuery.isError

@@ -13,17 +13,23 @@ function ExpenseList({ data, isEmpty, isLoading }) {
       {isLoading && <ExpenseListSkeleton />}
       {!isLoading && (
         <>
-          {data.map((item, index) => {
-            return (
-              <ExpenseListItem
-                key={index}
-                id={item.id}
-                amount={item.amount}
-                category={item.category}
-                realisedDate={item.realised_date}
-              />
-            );
-          })}
+          {data.length === 0 ? (
+            <S.Text>Brak wydatków spełniających wybrane kryteria</S.Text>
+          ) : (
+            <>
+              {data.map((item, index) => {
+                return (
+                  <ExpenseListItem
+                    key={index}
+                    id={item.id}
+                    amount={item.amount}
+                    category={item.category}
+                    realisedDate={item.realised_date}
+                  />
+                );
+              })}
+            </>
+          )}
         </>
       )}
     </S.List>

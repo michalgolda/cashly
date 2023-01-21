@@ -23,7 +23,7 @@ export default function ExpenseListFilterOptionsSection({
         {categories &&
           categories.map((category) => {
             return (
-              <option id={category.id} value={category.name}>
+              <option key={category.id} id={category.id} value={category.name}>
                 {category.name}
               </option>
             );

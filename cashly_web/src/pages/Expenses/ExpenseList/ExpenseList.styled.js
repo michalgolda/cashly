@@ -12,4 +12,8 @@ const List = styled(BaseList)`
   }
 `;
 
-export { List };
+const Text = styled.p`
+  text-align: center;
+`;
+
+export { List, Text };

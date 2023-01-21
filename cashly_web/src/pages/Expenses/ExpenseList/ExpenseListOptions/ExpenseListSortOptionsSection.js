@@ -2,7 +2,7 @@ import { Input } from '@/components';
 
 import ExpenseListOptionsSection from './ExpenseListOptionsSection/ExpenseListOptionsSection';
 
-export default function ExpenseListFilterOptionsSection({
+export default function ExpenseListSortOptionsSection({
   sortParams,
   handleClearParams,
   handleChangeParam,

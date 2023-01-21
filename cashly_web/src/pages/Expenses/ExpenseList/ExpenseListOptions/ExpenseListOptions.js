@@ -4,59 +4,80 @@ import { expenseCategoryAPI } from '@/api';
 
 import ExpenseListFilterOptionsSection from './ExpenseListFilterOptionsSection';
 import * as S from './ExpenseListOptions.styled';
+import * as expenseListOptionsActions from './ExpenseListOptionsActions';
 import ExpenseListOptionsSectionSwitch from './ExpenseListOptionsSectionSwitch/ExpenseListOptionsSectionSwitch';
 import ExpenseListSortOptionsSection from './ExpenseListSortOptionsSection';
 import { useExpenseListOptions } from './useExpenseListOptions';
 
 export default function ExpenseListOptions() {
-  const {
-    showFilterOptionsSection,
-    showSortOptionsSection,
-    toggleFilterOptionsSection,
-    toggleSortOptionsSection,
-    filterParams,
-    setFilterParams,
-    sortParams,
-    setSortParams,
-    clearFilterParams,
-    clearSortParams,
-  } = useExpenseListOptions();
+  const [state, dispatch] = useExpenseListOptions();
 
   const getAllExpenseCategories = useQuery(
     'categories',
     expenseCategoryAPI.getAllExpenseCategories,
   );
 
-  const handleChangeParam = (e, setter) => {
+  const handleChangeParam = (e, action, callback) => {
     const paramName = e.target.name;
     const paramValue = e.target.value;
 
-    setter((prevParams) => {
-      return { ...prevParams, [paramName]: paramValue };
-    });
+    dispatch({ type: action, payload: { paramName, paramValue } });
+    callback();
   };
 
   return (
     <S.Container>
       <ExpenseListOptionsSectionSwitch
-        showFilterOptionsSection={showFilterOptionsSection}
-        showSortOptionsSection={showSortOptionsSection}
-        toggleFilterOptionsSection={toggleFilterOptionsSection}
-        toggleSortOptionsSection={toggleSortOptionsSection}
+        showFilterOptionsSection={state.showFilterOptionsSection}
+        showSortOptionsSection={state.showSortOptionsSection}
+        toggleFilterOptionsSection={() =>
+          dispatch({
+            type: expenseListOptionsActions.TOGGLE_FILTER_OPTIONS_SECTION,
+          })
+        }
+        toggleSortOptionsSection={() =>
+          dispatch({
+            type: expenseListOptionsActions.TOGGLE_SORT_OPTIONS_SECTION,
+          })
+        }
       />
-      {showFilterOptionsSection && (
+      {state.showFilterOptionsSection && (
         <ExpenseListFilterOptionsSection
-          filterParams={filterParams}
-          handleClearParams={() => clearFilterParams()}
-          handleChangeParam={(e) => handleChangeParam(e, setFilterParams)}
+          filterParams={state.filterParams}
+          handleClearParams={() => {
+            dispatch({ type: expenseListOptionsActions.CLEAR_FILTER_PARAMS });
+            dispatch({ type: expenseListOptionsActions.APPLY_FILTER_OPTIONS });
+          }}
+          handleChangeParam={(e) =>
+            handleChangeParam(
+              e,
+              expenseListOptionsActions.SET_FILTER_PARAMS,
+              () =>
+                dispatch({
+                  type: expenseListOptionsActions.APPLY_FILTER_OPTIONS,
+                }),
+            )
+          }
           categories={getAllExpenseCategories.data}
         />
       )}
-      {showSortOptionsSection && (
+      {state.showSortOptionsSection && (
         <ExpenseListSortOptionsSection
-          sortParams={sortParams}
-          handleClearParams={() => clearSortParams()}
-          handleChangeParam={(e) => handleChangeParam(e, setSortParams)}
+          sortParams={state.sortParams}
+          handleClearParams={() => {
+            dispatch({ type: expenseListOptionsActions.CLEAR_SORT_PARAMS });
+            dispatch({ type: expenseListOptionsActions.APPLY_SORT_OPTIONS });
+          }}
+          handleChangeParam={(e) =>
+            handleChangeParam(
+              e,
+              expenseListOptionsActions.SET_SORT_PARAMS,
+              () =>
+                dispatch({
+                  type: expenseListOptionsActions.APPLY_SORT_OPTIONS,
+                }),
+            )
+          }
         />
       )}
     </S.Container>
