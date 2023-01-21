@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <S.Footer>
       <span>
-        <strong>© 2022 Cashly app</strong> <br /> by Michał Gołda
+        <strong>© 2023 Cashly app</strong> <br /> by Michał Gołda
       </span>
     </S.Footer>
   );
