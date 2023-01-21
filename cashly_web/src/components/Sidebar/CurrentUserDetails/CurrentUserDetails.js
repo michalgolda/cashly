@@ -9,16 +9,12 @@ import * as S from './CurrentUserDetails.styled';
 export default function CurrentUserDetails({ user, logoutHandler, ...props }) {
   return user ? (
     <S.Container {...props}>
-      <Tooltip text={user.email}>
-        <S.UserAvatar letter={getLetterFromEmail(user.email)} />
-      </Tooltip>
-      <Tooltip text="Wyloguj się">
-        <IconButton
-          onClick={logoutHandler}
-          variant="text"
-          icon={faArrowRightFromBracket}
-        />
-      </Tooltip>
+      <S.UserAvatar letter={getLetterFromEmail(user.email)} />
+      <IconButton
+        onClick={logoutHandler}
+        variant="text"
+        icon={faArrowRightFromBracket}
+      />
     </S.Container>
   ) : (
     <S.Container>
