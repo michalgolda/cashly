@@ -16,3 +16,4 @@ export { default as DeleteListItemButton } from './DeleteListItemButton/DeleteLi
 export { default as EditListItemButton } from './EditListItemButton/EditListItemButton'
 export { default as AppToastContainer } from './AppToastContainer/AppToastContainer'
 export { default as LinkButton } from './LinkButton/LinkButton'
+export { default as PageMain } from './PageMain/PageMain'
