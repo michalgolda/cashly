@@ -1,5 +1,4 @@
-import { Button } from '@/components'
-
+import Button from '../Button/Button'
 import { StyledLink } from './LinkButton.styled'
 
 export default function LinkButton({ children, href, ...props }) {
