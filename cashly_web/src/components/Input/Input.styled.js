@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components'
 
-import { FormError } from '@/components'
+import FormError from '../FormError/FormError'
 
 export const StyledContainer = styled.div`
     width: 256px;
