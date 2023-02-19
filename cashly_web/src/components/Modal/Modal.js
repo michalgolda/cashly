@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { useRef } from 'react'
 import { CSSTransition } from 'react-transition-group'
 
-import { CloseButton } from '@/components'
+import CloseButton from '@/components/CloseButton/CloseButton'
 
 import './Modal.css'
 import {

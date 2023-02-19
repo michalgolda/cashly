@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { Button } from '@/components'
+import Button from '@/components/Button/Button'
 
 export const StyledIconButton = styled(Button)`
     padding: 10.42px;

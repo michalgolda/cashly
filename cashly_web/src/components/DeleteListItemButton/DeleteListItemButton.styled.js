@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import IconButton from '../IconButton/IconButton'
+import IconButton from '@/components/IconButton/IconButton'
 
 export const StyledActionButton = styled(IconButton)`
     color: white;
