@@ -16,6 +16,7 @@
     "@next/font": "13.1.6",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
+    "formik": "^2.2.9",
     "moment": "^2.29.4",
     "next": "13.1.6",
     "prop-types": "^15.8.1",
@@ -23,7 +24,8 @@
     "react-dom": "18.2.0",
     "react-toastify": "^9.1.1",
     "react-transition-group": "^4.4.5",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.6",
+    "yup": "^1.0.0"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.0.0",
