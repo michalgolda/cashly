@@ -1,4 +1,4 @@
-import { StyledContainer, StyledLogo, StyledWrapper } from './Auth.styled'
+import { StyledContainer, StyledLogo, StyledWrapper } from './AuthLayout.styled'
 
 export default function AuthLayout({ children, ...props }) {
     return (
