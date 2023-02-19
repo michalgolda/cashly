@@ -23,6 +23,7 @@ function Sidebar({ userEmail, onLogout }) {
             <StyledHeader>
                 <Image
                     src="/appIcon.svg"
+                    alt="app icon"
                     width={40.03}
                     height={40.3}
                     priority
