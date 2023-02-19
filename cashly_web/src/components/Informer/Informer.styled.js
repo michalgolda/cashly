@@ -1,13 +1,9 @@
+import Image from 'next/image'
 import styled from 'styled-components'
 
 export const StyledContainer = styled.div`
     text-align: center;
     padding: 0 32px 0 32px;
-`
-
-export const StyledIllustration = styled.img`
-    width: 100%;
-    max-width: 256px;
 `
 
 export const StyledText = styled.p`
