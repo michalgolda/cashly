@@ -17,7 +17,7 @@ function SessionDetails({ userEmail, onLogout, ...props }) {
                 {userEmail ? (
                     <>
                         <StyledUserAvatar
-                            letter={getLetterFromEmail(user.email)}
+                            letter={getLetterFromEmail(userEmail)}
                         />
                         <IconButton
                             onClick={onLogout}
