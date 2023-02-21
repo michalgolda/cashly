@@ -1,8 +1,9 @@
 import Head from 'next/head'
 
+import { withUnauthenticatedUser } from '@/lib/withUnauthentiactedUser'
 import Register from '@/views/Auth/Register/Register'
 
-export default function RegisterPage() {
+function RegisterPage() {
     return (
         <>
             <Head>
@@ -12,3 +13,5 @@ export default function RegisterPage() {
         </>
     )
 }
+
+export default withUnauthenticatedUser(RegisterPage)

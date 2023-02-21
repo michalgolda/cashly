@@ -4,6 +4,9 @@ const nextConfig = {
     compiler: {
         styledComponents: true,
     },
+    publicRuntimeConfig: {
+        apiURL: 'http://localhost:8000/',
+    },
 }
 
 module.exports = nextConfig

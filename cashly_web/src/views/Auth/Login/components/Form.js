@@ -1,4 +1,7 @@
 import { useFormik } from 'formik'
+import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/router'
+import { toast } from 'react-toastify'
 import * as yup from 'yup'
 
 import Button from '@/components/Button/Button'
@@ -6,7 +9,7 @@ import Input from '@/components/Input/Input'
 
 import BaseForm from '../../components/BaseForm/BaseForm'
 
-export default function LoginForm() {
+export default function Form() {
     const initialValues = {
         email: '',
         password: '',
@@ -20,10 +23,21 @@ export default function LoginForm() {
         password: yup.string().required('To pole jest wymagane'),
     })
 
+    const router = useRouter()
+
+    const onSubmit = (values = { email, password }) =>
+        signIn('credentials', {
+            ...values,
+            redirect: false,
+        }).then(({ ok, error }) => {
+            !ok && toast.warning(error)
+            ok && router.push('/')
+        })
+
     const formik = useFormik({
         initialValues,
         validationSchema,
-        onSubmit: (values) => console.log(values),
+        onSubmit,
     })
 
     return (

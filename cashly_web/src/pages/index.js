@@ -1,5 +1,14 @@
-import Sidebar from '@/components/Sidebar/Sidebar'
+import { useQuery } from 'react-query'
+
+import { expenseService } from '@/api/services'
+import MainLayout from '@/layouts/MainLayout/MainLayout'
 
 export default function Home() {
-    return <Sidebar />
+    const getAllExpensesQuery = useQuery(
+        'expenses',
+        expenseService.getAllExpenses
+    )
+    console.log(getAllExpensesQuery)
+
+    return <MainLayout />
 }
