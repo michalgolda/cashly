@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { withUnauthenticatedUser } from '@/lib/withUnauthentiactedUser'
 import Login from '@/views/Auth/Login/Login'
 
-function LoginPage() {
+export default function LoginPage() {
     return (
         <>
             <Head>
@@ -14,4 +14,4 @@ function LoginPage() {
     )
 }
 
-export default withUnauthenticatedUser(LoginPage)
+export const getServerSideProps = withUnauthenticatedUser()

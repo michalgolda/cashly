@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { withUnauthenticatedUser } from '@/lib/withUnauthentiactedUser'
 import Register from '@/views/Auth/Register/Register'
 
-function RegisterPage() {
+export default function RegisterPage() {
     return (
         <>
             <Head>
@@ -14,4 +14,4 @@ function RegisterPage() {
     )
 }
 
-export default withUnauthenticatedUser(RegisterPage)
+export const getServerSideProps = withUnauthenticatedUser()
