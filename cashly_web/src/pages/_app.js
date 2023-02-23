@@ -1,3 +1,4 @@
+import NiceModal from '@ebay/nice-modal-react'
 import { SessionProvider } from 'next-auth/react'
 import { useState } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
@@ -17,9 +18,11 @@ export default function App({
             <SessionProvider session={session}>
                 <ThemeProvider theme={theme}>
                     <QueryClientProvider client={queryClient}>
-                        <GlobalStyle />
-                        <Component {...pageProps} />
-                        <AppToastContainer />
+                        <NiceModal.Provider>
+                            <GlobalStyle />
+                            <Component {...pageProps} />
+                            <AppToastContainer />
+                        </NiceModal.Provider>
                     </QueryClientProvider>
                 </ThemeProvider>
             </SessionProvider>

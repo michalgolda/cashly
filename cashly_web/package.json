@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ebay/nice-modal-react": "^1.2.8",
     "@floating-ui/react": "^0.19.2",
     "@fortawesome/fontawesome-svg-core": "^6.3.0",
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
@@ -17,6 +18,7 @@
     "axios": "^1.3.3",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
+    "file-saver": "^2.0.5",
     "formik": "^2.2.9",
     "moment": "^2.29.4",
     "next": "13.1.6",
