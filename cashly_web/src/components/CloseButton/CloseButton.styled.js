@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 
 export const StyledCloseButton = styled.span`
+    width: 15px;
+    height: 24px;
     border: none;
     outline: none;
     cursor: pointer;
