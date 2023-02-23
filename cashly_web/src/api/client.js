@@ -16,7 +16,7 @@ apiClient.interceptors.request.use(async (config) => {
 })
 
 apiClient.interceptors.response.use(undefined, (error) => {
-    if (error.response && error.response.status)
+    if (error.response && error.response.status === 401)
         signOut({ callbackUrl: '/login' })
 
     return Promise.reject(error)
