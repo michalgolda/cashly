@@ -2,6 +2,7 @@ import { useQuery } from 'react-query'
 
 import { expenseService } from '@/api/services'
 import MainLayout from '@/layouts/MainLayout/MainLayout'
+import { withAuthenticatedUser } from '@/lib/withAuthenticatedUser'
 
 export default function Home() {
     const getAllExpensesQuery = useQuery(
@@ -12,3 +13,5 @@ export default function Home() {
 
     return <MainLayout />
 }
+
+export const getServerSideProps = withAuthenticatedUser()
