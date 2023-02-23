@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Button from '@/components/Button/Button'
 
 export const StyledIconButton = styled(Button)`
+    width: 32px;
     padding: 10.42px;
 
     svg {
