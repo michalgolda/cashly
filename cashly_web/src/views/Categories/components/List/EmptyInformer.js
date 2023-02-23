@@ -8,7 +8,7 @@ export default function EmptyInformer() {
     return (
         <Informer
             bottomElement={<AddButton />}
-            illustration={<img src="/void.svg" width={128} />}
+            illustration={<Image src="/void.svg" width={128} height={133.94} />}
             text={'Aktualnie lista kategorii wydatków jest pusta'}
         />
     )
