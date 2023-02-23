@@ -1,4 +1,4 @@
-import NiceModal, { bootstrapDialog, useModal } from '@ebay/nice-modal-react'
+import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { useMutation, useQueryClient } from 'react-query'
 import { toast } from 'react-toastify'
 
@@ -39,7 +39,7 @@ export default NiceModal.create(() => {
     }
 
     return (
-        <StyledModal {...bootstrapDialog(modal)}>
+        <StyledModal show={modal.visible} onHide={() => modal.hide()}>
             <StyledTextContainer>
                 <h2>Importuj wydatki</h2>
                 <p>

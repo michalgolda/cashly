@@ -1,4 +1,4 @@
-import NiceModal, { bootstrapDialog, useModal } from '@ebay/nice-modal-react'
+import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { useMutation, useQueryClient } from 'react-query'
 import { toast } from 'react-toastify'
 
@@ -42,7 +42,8 @@ export default NiceModal.create(
 
         return (
             <BaseModal
-                {...bootstrapDialog(modal)}
+                show={modal.visible}
+                onHide={() => modal.hide()}
                 title="Edycja wydatku"
                 description={`
                     Lorem ipsum dolor sit amet, 

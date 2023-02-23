@@ -1,4 +1,4 @@
-import NiceModal, { bootstrapDialog, useModal } from '@ebay/nice-modal-react'
+import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { saveAs } from 'file-saver'
 import { useFormik } from 'formik'
 import { useMutation } from 'react-query'
@@ -47,7 +47,7 @@ export default NiceModal.create(() => {
     })
 
     return (
-        <StyledModal {...bootstrapDialog(modal)}>
+        <StyledModal show={modal.visible} onHide={() => modal.hide()}>
             <StyledTextContainer>
                 <h2>Eksportuj wydatki</h2>
                 <p>
