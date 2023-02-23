@@ -1,7 +1,11 @@
-import { ActionsContainer } from '@/components/Header/Header.styled'
+import { StyledActionsContainer } from '@/components/Header/Header.styled'
 
-// import DatePeriodSelect from '../DatePeriodSelect/DatePeriodSelect'
+import DatePeriodSelect from '../DatePeriodSelect/DatePeriodSelect'
 
 export default function Actions() {
-    return <ActionsContainer>{/* <DatePeriodSelect /> */}</ActionsContainer>
+    return (
+        <StyledActionsContainer>
+            <DatePeriodSelect />
+        </StyledActionsContainer>
+    )
 }

@@ -1,6 +1,6 @@
 import Header from '@/components/Header/Header'
 
-// import Actions from './Actions'
+import Actions from './Actions'
 
 export default function PageHeader() {
     return (
@@ -13,7 +13,7 @@ export default function PageHeader() {
                 Phasellus commodo orci vitae venenatis consequat.
             `}
         >
-            {/* <Actions /> */}
+            <Actions />
         </Header>
     )
 }
