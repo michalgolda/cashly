@@ -31,7 +31,7 @@ export default function Form() {
             redirect: false,
         }).then(({ ok, error }) => {
             !ok && toast.warning(error)
-            ok && router.push('/')
+            ok && router.push('/expenses')
         })
 
     const formik = useFormik({
