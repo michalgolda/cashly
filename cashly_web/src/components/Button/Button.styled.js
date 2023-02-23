@@ -60,6 +60,8 @@ export const StyledTextButton = styled(StyledBaseButton)`
 `
 
 export const StyledBaseIconWrapper = styled.span`
+    width: auto;
+    height: 24px;
     display: inherit;
 `
 
