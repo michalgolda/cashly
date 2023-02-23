@@ -7,6 +7,15 @@ const nextConfig = {
     publicRuntimeConfig: {
         apiURL: 'http://localhost:8000/',
     },
+    async redirects() {
+        return [
+            {
+                source: '/',
+                destination: '/expenses',
+                permanent: true,
+            },
+        ]
+    },
 }
 
 module.exports = nextConfig
