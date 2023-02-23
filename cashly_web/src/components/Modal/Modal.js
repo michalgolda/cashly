@@ -4,9 +4,9 @@ import { CSSTransition } from 'react-transition-group'
 
 import CloseButton from '@/components/CloseButton/CloseButton'
 
-import './Modal.css'
 import {
     StyledBody,
+    StyledCSSTransitionWrapper,
     StyledHeader,
     StyledModal,
     StyledWrapper,
@@ -16,22 +16,24 @@ function Modal({ children, show, onHide, ...props }) {
     const nodeRef = useRef(null)
 
     return (
-        <CSSTransition
-            nodeRef={nodeRef}
-            in={show}
-            timeout={300}
-            classNames="modal"
-            unmountOnExit
-        >
-            <StyledWrapper ref={nodeRef}>
-                <StyledModal {...props}>
-                    <StyledHeader>
-                        <CloseButton onClick={onHide} />
-                    </StyledHeader>
-                    <StyledBody>{children}</StyledBody>
-                </StyledModal>
-            </StyledWrapper>
-        </CSSTransition>
+        <StyledCSSTransitionWrapper>
+            <CSSTransition
+                nodeRef={nodeRef}
+                in={show}
+                timeout={300}
+                classNames="modal"
+                unmountOnExit
+            >
+                <StyledWrapper ref={nodeRef}>
+                    <StyledModal {...props}>
+                        <StyledHeader>
+                            <CloseButton variant="dark" onClick={onHide} />
+                        </StyledHeader>
+                        <StyledBody>{children}</StyledBody>
+                    </StyledModal>
+                </StyledWrapper>
+            </CSSTransition>
+        </StyledCSSTransitionWrapper>
     )
 }
 

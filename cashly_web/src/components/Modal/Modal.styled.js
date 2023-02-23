@@ -1,5 +1,25 @@
 import styled from 'styled-components'
 
+export const StyledCSSTransitionWrapper = styled.div`
+    .modal-enter {
+        opacity: 0;
+    }
+
+    .modal-enter-active {
+        opacity: 1;
+        transition: opacity 300ms;
+    }
+
+    .modal-exit {
+        opacity: 1;
+    }
+
+    .modal-exit-active {
+        opacity: 0;
+        transition: opacity 300ms;
+    }
+`
+
 export const StyledWrapper = styled.div`
     top: 0;
     width: 100%;
