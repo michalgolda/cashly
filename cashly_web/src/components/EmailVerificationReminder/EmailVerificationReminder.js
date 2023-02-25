@@ -22,7 +22,6 @@ function EmailVerificationReminder({ email, onHide, isHidden }) {
         userService.sendEmailVerificationRequest,
         {
             onSuccess: () => {
-                onHide()
                 notifySendEmailVerificationRequestSuccess()
             },
             onError: () => notifyUnhandledError(),

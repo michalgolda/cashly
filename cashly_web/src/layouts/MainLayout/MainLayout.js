@@ -24,12 +24,13 @@ export default function MainLayout({ children, ...props }) {
         <StyledMain {...props}>
             <Sidebar userEmail={email} onLogout={onLogout} />
             <StyledContent>
-                <EmailVerificationReminder
-                    email={email}
-                    emailIsVerified={emailIsVerified}
-                    isHidden={emailVerificationReminder.isHidden}
-                    onHide={() => emailVerificationReminder.hide()}
-                />
+                {!emailIsVerified && (
+                    <EmailVerificationReminder
+                        email={email}
+                        onHide={() => emailVerificationReminder.hide()}
+                        isHidden={emailVerificationReminder.isHidden}
+                    />
+                )}
                 {children}
                 <Footer />
             </StyledContent>
