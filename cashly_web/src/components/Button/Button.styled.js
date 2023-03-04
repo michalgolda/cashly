@@ -4,24 +4,23 @@ export const StyledBaseButton = styled.button`
     border: none;
     outline: none;
     cursor: pointer;
-    line-height: 1.5;
-    padding: 6px 16px;
+    font-weight: 700;
+    padding: 8px 16px;
     position: relative;
-    border-radius: 2px;
+    font-size: 0.938rem;
     align-items: center;
     display: inline-flex;
     min-width: max-content;
     justify-content: center;
-    font-size: ${({ theme }) => theme.fontSizes.h5};
     font-family: ${({ theme }) => theme.fontFamily};
     transition: ${({ theme }) => theme.defaultTransition};
-    font-weight: ${({ theme }) => theme.fontWeights.regular};
 
     &:hover {
-        background-color: ${({ theme }) => theme.colors.primary500};
+        background-color: #292929;
     }
+
     &:active {
-        background-color: ${({ theme }) => theme.colors.primary300};
+        background-color: #3f3f3f;
     }
 
     ${({ fullWidth }) =>
@@ -37,9 +36,9 @@ export const StyledPrimaryButton = styled(StyledBaseButton)`
 `
 
 export const StyledPrimaryOutlinedButton = styled(StyledBaseButton)`
-    padding: 5px 15px;
+    padding: 6px 14px;
     background-color: transparent;
-    border: 1px solid ${({ theme }) => theme.colors.primary400};
+    border: 2px solid ${({ theme }) => theme.colors.primary400};
 
     &:hover {
         color: white;
@@ -47,6 +46,7 @@ export const StyledPrimaryOutlinedButton = styled(StyledBaseButton)`
 `
 
 export const StyledTextButton = styled(StyledBaseButton)`
+    padding: 8px;
     background-color: transparent;
     color: ${({ theme }) => theme.colors.primary400};
 
@@ -61,14 +61,14 @@ export const StyledTextButton = styled(StyledBaseButton)`
 
 export const StyledBaseIconWrapper = styled.span`
     width: auto;
-    height: 24px;
+    height: 20px;
     display: inherit;
 `
 
 export const StyledStartIconWrapper = styled(StyledBaseIconWrapper)`
-    margin-right: 16px;
+    margin-right: 8px;
 `
 
 export const StyledEndIconWrapper = styled(StyledBaseIconWrapper)`
-    margin-left: 16px;
+    margin-left: 8px;
 `

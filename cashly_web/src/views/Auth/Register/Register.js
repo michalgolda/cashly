@@ -2,21 +2,27 @@ import Link from 'next/link'
 
 import AuthLayout from '@/layouts/AuthLayout/AuthLayout'
 
-import Text from '../components/Text/Text'
+import Container from '../components/Container'
+import FormFooter from '../components/FormFooter'
+import FormHeader from '../components/FormHeader/FormHeader'
 import Form from './components/Form'
 
 export default function Register() {
     return (
         <AuthLayout>
-            <h2>Utwórz nowe konto</h2>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-            <Form />
-            <Text>
-                Posiadasz konto ? <Link href="/login">Zaloguj się</Link>
-            </Text>
+            <Container>
+                <FormHeader
+                    title="Rejestracja"
+                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                />
+                <Form />
+                <FormFooter>
+                    <p>
+                        Posiadasz juz konto ?{' '}
+                        <Link href="/login">Zaloguj się</Link>
+                    </p>
+                </FormFooter>
+            </Container>
         </AuthLayout>
     )
 }

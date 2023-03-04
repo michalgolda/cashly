@@ -2,24 +2,29 @@ import PropTypes from 'prop-types'
 
 import {
     StyledContainer,
-    StyledError,
     StyledInput,
-    StyledLabel,
+    StyledLabelContainer,
+    StyledLabelSeparator,
+    StyledLabelText,
 } from './Input.styled'
 
 function Input({ className, fullWidth, labelText, error, ...props }) {
     return (
-        <StyledContainer fullWidth={fullWidth}>
-            {labelText && (
-                <StyledLabel className="inputLabel">{labelText}</StyledLabel>
-            )}
-            <StyledInput
-                className={className}
-                isError={Boolean(error)}
-                labelText={Boolean(labelText)}
-                {...props}
-            />
-            {error && <StyledError>{error}</StyledError>}
+        <StyledContainer isError={Boolean(error)} fullWidth={fullWidth}>
+            <StyledLabelContainer>
+                <StyledLabelText className="labelText">
+                    {labelText}
+                </StyledLabelText>
+                {error && (
+                    <>
+                        <StyledLabelSeparator className="labelSeparator" />
+                        <StyledLabelText className="labelText">
+                            {error}
+                        </StyledLabelText>
+                    </>
+                )}
+            </StyledLabelContainer>
+            <StyledInput className={`${className} input`} {...props} />
         </StyledContainer>
     )
 }
@@ -27,7 +32,7 @@ function Input({ className, fullWidth, labelText, error, ...props }) {
 Input.propTypes = {
     error: PropTypes.string,
     fullWidth: PropTypes.bool,
-    labelText: PropTypes.string,
+    labelText: PropTypes.string.isRequired,
 }
 
 Input.defaultProps = { fullWidth: false }

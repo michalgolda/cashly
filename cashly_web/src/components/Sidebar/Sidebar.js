@@ -1,71 +1,102 @@
 import {
-    faChartPie,
+    faChartSimple,
     faGripVertical,
     faReceipt,
 } from '@fortawesome/free-solid-svg-icons'
+import { faSignOut } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Image from 'next/image'
 import PropTypes from 'prop-types'
 
+import SessionDetails from '../Header/SessionDetails/SessionDetails'
 import {
-    StyledHeader,
+    StyledLogoImage,
+    StyledLogoutButton,
     StyledMenu,
-    StyledMenuItem,
     StyledNav,
-    StyledSeparator,
+    StyledSessionDetails,
 } from './Sidebar.styled'
 import SidebarLinkButton from './SidebarLinkButton/SidebarLinkButton'
-import SidebarSessionDetails from './SidebarSessionDetails/SidebarSessionDetails'
-import SidebarTooltip from './SidebarTooltip/SidebarTooltip'
 
 function Sidebar({ userEmail, onLogout }) {
     return (
         <StyledNav>
-            <StyledHeader>
-                <Image
-                    src="/appIcon.svg"
-                    alt="app icon"
-                    width={40.03}
-                    height={40.3}
-                    priority
-                />
-            </StyledHeader>
-            <StyledSeparator />
+            <StyledLogoImage
+                className="logo"
+                src="logo.svg"
+                alt="logo"
+                width={150}
+                height={39}
+                priority
+            />
+            <Image
+                className="appIcon"
+                src="appIcon.svg"
+                alt="app icon"
+                width={50}
+                height={50}
+                priority
+            />
             <StyledMenu>
-                <StyledMenuItem>
-                    <SidebarTooltip text="Wydatki">
-                        <SidebarLinkButton
-                            text="Wydatki"
-                            href="/expenses"
-                            icon={faReceipt}
-                        />
-                    </SidebarTooltip>
-                </StyledMenuItem>
-                <StyledMenuItem>
-                    <SidebarTooltip text="Kategorie">
-                        <SidebarLinkButton
-                            href="/categories"
-                            icon={faGripVertical}
-                        />
-                    </SidebarTooltip>
-                </StyledMenuItem>
-                <StyledMenuItem>
-                    <SidebarTooltip text="Analityka">
-                        <SidebarLinkButton
-                            text="Analityka"
-                            href="/analytics"
-                            icon={faChartPie}
-                        />
-                    </SidebarTooltip>
-                </StyledMenuItem>
+                <li>
+                    <SidebarLinkButton
+                        className="linkButtonWithText"
+                        icon={faReceipt}
+                        href="/expenses"
+                    >
+                        Wydatki
+                    </SidebarLinkButton>
+                    <SidebarLinkButton
+                        className="linkButtonWithOnlyIcon"
+                        icon={faReceipt}
+                        href="/expenses"
+                    />
+                </li>
+                <li>
+                    <SidebarLinkButton
+                        className="linkButtonWithText"
+                        icon={faGripVertical}
+                        href="/categories"
+                    >
+                        Kategorie
+                    </SidebarLinkButton>
+                    <SidebarLinkButton
+                        className="linkButtonWithOnlyIcon"
+                        icon={faGripVertical}
+                        href="/categories"
+                    />
+                </li>
+                <li>
+                    <SidebarLinkButton
+                        className="linkButtonWithText"
+                        icon={faChartSimple}
+                        href="/analytics"
+                    >
+                        Analityka
+                    </SidebarLinkButton>
+                    <SidebarLinkButton
+                        className="linkButtonWithOnlyIcon"
+                        icon={faChartSimple}
+                        href="/analytics"
+                    />
+                </li>
             </StyledMenu>
-            <StyledSeparator />
-            <SidebarSessionDetails userEmail={userEmail} onLogout={onLogout} />
+            <SessionDetails userEmail={userEmail} />
+            <StyledLogoutButton
+                className="textLogoutButton"
+                onClick={onLogout}
+                variant="text"
+            >
+                Wyloguj się
+            </StyledLogoutButton>
+            <StyledLogoutButton className="iconLogoutButton" onClick={onLogout}>
+                <FontAwesomeIcon icon={faSignOut} />
+            </StyledLogoutButton>
         </StyledNav>
     )
 }
 
 Sidebar.propTypes = {
-    userEmail: PropTypes.string,
     onLogout: PropTypes.func,
 }
 

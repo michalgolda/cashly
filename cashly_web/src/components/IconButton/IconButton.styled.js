@@ -4,7 +4,7 @@ import Button from '@/components/Button/Button'
 
 export const StyledIconButton = styled(Button)`
     width: 32px;
-    padding: 10.42px;
+    padding: 10.42px !important;
 
     svg {
         width: ${({ theme }) => theme.fontSizes.h5} !important;

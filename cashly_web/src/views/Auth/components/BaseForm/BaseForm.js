@@ -6,7 +6,7 @@ import { StyledForm } from './BaseForm.styled'
 
 function BaseForm({ children, nonFieldError, ...props }) {
     return (
-        <StyledForm {...props}>
+        <StyledForm {...props} autoComplete="off" noValidate>
             {nonFieldError && <FormError>{nonFieldError}</FormError>}
             {children}
         </StyledForm>

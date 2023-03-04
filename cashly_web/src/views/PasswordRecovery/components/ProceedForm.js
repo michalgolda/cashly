@@ -7,7 +7,6 @@ import * as yup from 'yup'
 import { authService } from '@/api/services'
 import Button from '@/components/Button/Button'
 import Input from '@/components/Input/Input'
-import LinkButton from '@/components/LinkButton/LinkButton'
 import { notifyUnhandledError } from '@/utils/notifyUnhandledError'
 import BaseForm from '@/views/Auth/components/BaseForm/BaseForm'
 
@@ -56,39 +55,29 @@ export default function ProceedForm() {
     })
 
     return (
-        <>
-            <h2>Resetowanie hasła</h2>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-            <BaseForm onSubmit={formik.handleSubmit} noValidate>
-                <Input
-                    name="password"
-                    labelText="Nowe hasło"
-                    type="password"
-                    onChange={formik.handleChange}
-                    value={formik.values.password}
-                    error={formik.touched.password && formik.errors.password}
-                    fullWidth
-                />
-                <Input
-                    name="confirmPassword"
-                    labelText="Powtórz hasło"
-                    type="password"
-                    onChange={formik.handleChange}
-                    value={formik.values.confirmPassword}
-                    error={
-                        formik.touched.confirmPassword &&
-                        formik.errors.confirmPassword
-                    }
-                    fullWidth
-                />
-                <Button type="submit">Zresetuj hasło</Button>
-                <LinkButton variant="primaryOutlined" href="/login" fullWidth>
-                    Powrót
-                </LinkButton>
-            </BaseForm>
-        </>
+        <BaseForm onSubmit={formik.handleSubmit} noValidate>
+            <Input
+                name="password"
+                labelText="Nowe hasło"
+                type="password"
+                onChange={formik.handleChange}
+                value={formik.values.password}
+                error={formik.touched.password && formik.errors.password}
+                fullWidth
+            />
+            <Input
+                name="confirmPassword"
+                labelText="Powtórz hasło"
+                type="password"
+                onChange={formik.handleChange}
+                value={formik.values.confirmPassword}
+                error={
+                    formik.touched.confirmPassword &&
+                    formik.errors.confirmPassword
+                }
+                fullWidth
+            />
+            <Button type="submit">Zresetuj hasło</Button>
+        </BaseForm>
     )
 }

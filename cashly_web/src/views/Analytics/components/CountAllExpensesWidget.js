@@ -21,7 +21,7 @@ export default function CountAllExpensesWidget() {
     if (countAllExpensesQuery.isLoading || countAllExpensesQuery.isError)
         return (
             <Widget title="Liczba wydatków">
-                <Skeleton height={32} width={128} />
+                <Skeleton height={8} width={128} />
             </Widget>
         )
 

@@ -1,21 +1,23 @@
+import { useSession } from 'next-auth/react'
 import PropTypes from 'prop-types'
 
 import {
     StyledContainer,
-    StyledDescription,
     StyledHeader,
     StyledTextContainer,
+    StyledTitle,
+    StyledWrapper,
 } from './Header.styled'
+import SessionDetails from './SessionDetails/SessionDetails'
 
-function Header({ children, title, description, ...props }) {
+function Header({ children, title, ...props }) {
     return (
         <StyledHeader {...props}>
             <StyledContainer>
                 <StyledTextContainer>
-                    <h1>{title}</h1>
-                    <StyledDescription>{description}</StyledDescription>
+                    <StyledTitle>{title}</StyledTitle>
                 </StyledTextContainer>
-                {children}
+                <StyledWrapper>{children}</StyledWrapper>
             </StyledContainer>
         </StyledHeader>
     )
@@ -23,7 +25,6 @@ function Header({ children, title, description, ...props }) {
 
 Header.propTypes = {
     title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
 }
 
 export default Header

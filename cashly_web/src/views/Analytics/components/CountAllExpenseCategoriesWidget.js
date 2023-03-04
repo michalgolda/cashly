@@ -25,7 +25,7 @@ export default function CountAllExpenseCategoriesWidget() {
     )
         return (
             <Widget title="Liczba kategorii">
-                <Skeleton height={32} width={128} />
+                <Skeleton height={8} width={128} />
             </Widget>
         )
 

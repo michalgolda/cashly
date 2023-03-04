@@ -6,7 +6,7 @@ import TooltipContent from '../TooltipContent/TooltipContent'
 
 export default function Chart({ data }) {
     const tickFormatter = (tick) => {
-        return tick ? tick : 'Bez kategorii'
+        return tick ? tick : 'Brak kategorii'
     }
 
     return (
@@ -24,10 +24,10 @@ export default function Chart({ data }) {
                     dy={15}
                     interval={0}
                     dataKey="key"
-                    fill="#a5a5a5"
-                    stroke="#a5a5a5"
+                    fill="#858585"
+                    stroke="#858585"
                     tickLine={false}
-                    tick={{ fill: '#a5a5a5' }}
+                    tick={{ fill: '#858585' }}
                     tickFormatter={tickFormatter}
                 />
                 <Tooltip

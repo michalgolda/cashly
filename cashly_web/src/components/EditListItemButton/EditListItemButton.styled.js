@@ -4,13 +4,13 @@ import IconButton from '@/components/IconButton/IconButton'
 
 export const StyledActionButton = styled(IconButton)`
     color: white;
-    background-color: ${({ theme }) => theme.colors.blue400};
+    background-color: #2667ff;
 
     &:hover {
-        background-color: ${({ theme }) => theme.colors.blue500};
+        background-color: #3571ff;
     }
 
     &:active {
-        background-color: ${({ theme }) => theme.colors.blue300};
+        background-color: #4e80f7;
     }
 `

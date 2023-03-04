@@ -28,7 +28,7 @@ export const StyledCategory = styled.div`
 
 export const StyledCategoryName = styled.span`
     font-size: ${({ theme }) => theme.fontSizes.h6};
-    font-weight: ${({ theme }) => theme.fontWeights.semiBold};
+    font-weight: bold;
 `
 
 export const StyledActions = styled.div`

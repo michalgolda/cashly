@@ -35,7 +35,7 @@ function EmailVerificationReminder({ email, onHide, isHidden }) {
             <StyledWrapper>
                 <StyledTextContainer>
                     <StyledText>
-                        Twój adres email jest niezweryfikowany.
+                        Twój adres email jest niezweryfikowany
                     </StyledText>
                     <StyledResendEmailVerificationButton
                         onClick={() =>

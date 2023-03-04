@@ -35,14 +35,14 @@ function ListItem({ id, amount, category, realisedDate }) {
     })
 
     return (
-        <StyledListItem>
+        <StyledListItem color={category && category.color}>
             <StyledSpan>{defaultCurrencyFormat.format(amount)}</StyledSpan>
             {category ? (
                 <StyledCategory color={category.color}>
                     {category.name}
                 </StyledCategory>
             ) : (
-                <StyledCategory>Bez kategorii</StyledCategory>
+                <StyledCategory>Brak kategorii</StyledCategory>
             )}
             <StyledRealisedDate>
                 {defaultDateTimeFormat.format(new Date(realisedDate))}

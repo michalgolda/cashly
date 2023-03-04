@@ -19,14 +19,14 @@ const StyledWrapper = styled.div`
 
 const StyledTicks = styled.div`
     display: flex;
-    margin-left: 15px;
-    margin-right: 15px;
+    margin-left: 16px;
+    margin-right: 16px;
     align-content: center;
     justify-content: space-between;
 `
 
 const StyledTick = styled.p`
-    color: ${({ theme }) => theme.colors.gray600};
+    color: #858585;
 `
 
 export default function Chart({ data, labelFormatter }) {
@@ -60,9 +60,9 @@ export default function Chart({ data, labelFormatter }) {
                         dot={false}
                         dataKey="value"
                         strokeWidth={2}
-                        stroke="#582eff"
+                        stroke="#2667ff"
                     />
-                    <ReferenceLine y={0} stroke="#a5a5a5" />
+                    <ReferenceLine y={0} stroke="#858585" />
                 </LineChart>
             </ResponsiveContainer>
             <StyledTicks>

@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 export const StyledWrapper = styled.div`
+    flex: 1;
     padding: 32px;
 
     @media (min-width: 768px) {

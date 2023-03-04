@@ -1,14 +1,19 @@
-import { Sora } from '@next/font/google'
+import { Lato } from '@next/font/google'
 
-const font = Sora({
+// const openSansFont = Open_Sans({
+//     subsets: ['latin', 'latin-ext'],
+//     weight: ['700'],
+// })
+
+const latoFont = Lato({
     subsets: ['latin', 'latin-ext'],
-    weight: ['400', '600', '700', '800'],
+    weight: ['400', '700', '900'],
 })
 
 const theme = {
     colors: {
         primary500: '#2f2f2f',
-        primary400: '#2f3237',
+        primary400: '#000',
         primary300: '#4d4d4d',
         gray600: '#a5a5a5',
         gray400: '#eeeeee',
@@ -19,10 +24,10 @@ const theme = {
         blue400: '#582eff',
         blue300: '#7958ff',
         red500: '#e60053',
-        red400: '#ff005c',
+        red400: '#ff4848',
         red300: '#ff337d',
     },
-    fontFamily: font.style.fontFamily,
+    fontFamily: latoFont.style.fontFamily,
     fontSizes: {
         h1: '2.488rem',
         h2: '2.074rem',
@@ -33,9 +38,8 @@ const theme = {
     },
     fontWeights: {
         regular: 400,
-        semiBold: 600,
         bold: 700,
-        extraBold: 800,
+        black: 900,
     },
     defaultTransition: 'all .25s',
 }

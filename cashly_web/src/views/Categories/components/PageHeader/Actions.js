@@ -1,11 +1,11 @@
-import { ActionsContainer } from '@/components/Header/Header.styled'
+import { StyledActionsContainer } from '@/components/Header/Header.styled'
 
 import AddButton from '../AddButton'
 
-export default function CategoryPageHeaderActions() {
+export default function Actions() {
     return (
-        <ActionsContainer>
+        <StyledActionsContainer>
             <AddButton />
-        </ActionsContainer>
+        </StyledActionsContainer>
     )
 }

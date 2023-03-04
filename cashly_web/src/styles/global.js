@@ -1,4 +1,10 @@
+import { Open_Sans } from '@next/font/google'
 import { createGlobalStyle } from 'styled-components'
+
+const font = Open_Sans({
+    subsets: ['latin', 'latin-ext'],
+    weight: ['700'],
+})
 
 const GlobalStyle = createGlobalStyle`
     * {
@@ -9,19 +15,36 @@ const GlobalStyle = createGlobalStyle`
 
     body {
         font-size: 16px;
-        line-height: 1.6;
+        background-color: #f8f8f8;
         font-family: ${({ theme }) => theme.fontFamily};
+    }
+
+    h2 {
+        font-size: 1.25rem;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: ${font.style.fontFamily};
         color: ${({ theme }) => theme.colors.primary400};
-        background-color: ${({ theme }) => theme.colors.gray200};
-        font-weight: ${({ theme }) => theme.fontWeights.regular};
+    }
+
+    p {
+        color: #858585;
+        font-weight: 400;
+        font-size: 0.875;
+    }
+
+    a {
+        color: #2667FF;
+        font-weight: 700;
     }
 
     ::-webkit-scrollbar {
-        width: 8px;
+         width: 8px;
     }
 
     ::-webkit-scrollbar-track {
-        background-color: ${({ theme }) => theme.colors.gray400};
+        background-color: #fbfbfb;
     }
 
     ::-webkit-scrollbar-thumb {
@@ -29,13 +52,13 @@ const GlobalStyle = createGlobalStyle`
         background: ${({ theme }) => theme.colors.primary400}; 
     }
 
-    ::-webkit-scrollbar-thumb:hover {
-        background: ${({ theme }) => theme.colors.primary500}; 
-    }
+    // ::-webkit-scrollbar-thumb:hover {
+    //     background: ${({ theme }) => theme.colors.primary500}; 
+    // }
 
-    ::-webkit-scrollbar-thumb:focus {
-        background: ${({ theme }) => theme.colors.primary300}; 
-    }
+    // ::-webkit-scrollbar-thumb:focus {
+    //     background: ${({ theme }) => theme.colors.primary300}; 
+    // }
 `
 
 export default GlobalStyle

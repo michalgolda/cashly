@@ -10,11 +10,11 @@ export default function ImportButton() {
 
     return (
         <Button
-            variant="primaryOutlined"
-            onClick={() => modal.show()}
             startIcon={faFileImport}
+            variant="text"
+            onClick={() => modal.show()}
         >
-            Importuj wydatki
+            Importuj
         </Button>
     )
 }

@@ -22,7 +22,7 @@ export default function TotalAmountOfExpensesWidget() {
     return (
         <Widget title="Suma wydatków">
             {isLoading || isError ? (
-                <Skeleton height={32} width={128} />
+                <Skeleton height={8} width={128} />
             ) : (
                 <TotalAmountText>
                     {defaultCurrencyFormat.format(data.value)}

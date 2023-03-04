@@ -19,13 +19,14 @@ export const StyledWrapper = styled.div`
 
 export const StyledText = styled.p`
     color: white;
+    font-weight: bold;
     font-size: ${({ theme }) => theme.fontSizes.h6};
 `
 
 export const StyledResendEmailVerificationButton = styled.span`
     color: black;
-    padding: 2px 8px;
-    border-radius: 2px;
+    padding: 4px 8px;
+    font-weight: bold;
     background-color: white;
     font-size: ${({ theme }) => theme.fontSizes.h6};
 
@@ -37,7 +38,7 @@ export const StyledResendEmailVerificationButton = styled.span`
 export const StyledTextContainer = styled.div`
     width: 100%;
     display: flex;
-    column-gap: 8px;
+    column-gap: 16px;
     flex-direction: row;
     align-items: center;
     justify-content: center;

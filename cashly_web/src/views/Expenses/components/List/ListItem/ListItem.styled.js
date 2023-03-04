@@ -8,6 +8,8 @@ export const StyledListItem = styled(ListItem)`
     column-gap: 16px;
     align-items: center;
     grid-template-columns: 1fr;
+    border-left: 4px solid
+        ${({ theme, color }) => (color ? color : theme.colors.gray600)};
 
     @media (min-width: 768px) {
         grid-template-columns: repeat(4, 1fr);
@@ -21,6 +23,7 @@ export const StyledListItem = styled(ListItem)`
 export const StyledSpan = styled.span`
     overflow: hidden;
     line-height: 1.7;
+    font-weight: bold;
     text-align: center;
     white-space: nowrap;
     text-overflow: ellipsis;

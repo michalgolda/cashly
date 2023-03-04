@@ -67,7 +67,7 @@ export default function RegisterForm() {
     })
 
     return (
-        <BaseForm onSubmit={formik.handleSubmit} noValidate>
+        <BaseForm onSubmit={formik.handleSubmit}>
             <Input
                 name="email"
                 type="email"

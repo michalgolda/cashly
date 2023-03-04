@@ -1,5 +1,6 @@
 import { useModal } from '@ebay/nice-modal-react'
 import { faFileExport } from '@fortawesome/free-solid-svg-icons'
+import { faFile } from '@fortawesome/free-solid-svg-icons'
 
 import Button from '@/components/Button/Button'
 
@@ -10,11 +11,11 @@ export default function ExportButton() {
 
     return (
         <Button
-            variant="primaryOutlined"
-            onClick={() => modal.show()}
             startIcon={faFileExport}
+            variant="text"
+            onClick={() => modal.show()}
         >
-            Eksportuj wydatki
+            Eksportuj
         </Button>
     )
 }

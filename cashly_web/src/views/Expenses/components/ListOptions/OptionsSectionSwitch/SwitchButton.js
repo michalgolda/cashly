@@ -11,7 +11,6 @@ function SwitchButton({
     return (
         <Button
             variant={isCurrentOptionsSection ? 'primary' : 'primaryOutlined'}
-            endIcon={isCurrentOptionsSection ? faCaretDown : faCaretUp}
             {...props}
         >
             {optionsSectionName}

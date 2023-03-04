@@ -9,12 +9,8 @@ export default function AddButton() {
     const modal = useModal(AddModal)
 
     return (
-        <Button
-            variant="primaryOutlined"
-            onClick={() => modal.show()}
-            startIcon={faPlus}
-        >
-            Dodaj kategorię
+        <Button variant="text" onClick={() => modal.show()} startIcon={faPlus}>
+            Dodaj
         </Button>
     )
 }

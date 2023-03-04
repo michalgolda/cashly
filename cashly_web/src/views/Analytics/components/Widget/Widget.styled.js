@@ -2,23 +2,27 @@ import styled, { css } from 'styled-components'
 
 export const StyledWidget = styled.div`
     border-radius: 2px;
-    background-color: white;
-    border: 1px solid ${({ theme }) => theme.colors.gray400};
 `
 
 export const StyledHeader = styled.div`
-    padding: 15px;
-    border-bottom: 1px solid ${({ theme }) => theme.colors.gray400};
+    padding: 8px 16px;
+    width: fit-content;
+    background-color: white;
+    border-bottom: none;
+    border-left: 1px solid #f3f3f3;
+    border-top: 1px solid #f3f3f3;
+    border-right: 1px solid #f3f3f3;
 `
 
-export const StyledTitle = styled.p`
-    color: ${({ theme }) => theme.colors.gray600};
-    font-size: ${({ theme }) => theme.fontSizes.h5};
-    font-weight: ${({ theme }) => theme.fontWeights.bold};
+export const StyledTitle = styled.h4`
+    color: #000;
 `
 
 export const StyledBody = styled.div`
-    padding: 15px;
+    padding: 16px;
+    border: 1px solid #f3f3f3;
+    background-color: white;
+
     ${({ centerContent }) =>
         centerContent &&
         css`
