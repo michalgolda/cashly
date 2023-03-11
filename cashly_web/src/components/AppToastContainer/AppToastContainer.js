@@ -8,13 +8,13 @@ export default function AppToastContainer() {
         <StyledToastWrapper>
             <ToastContainer
                 limit={3}
-                theme="light"
+                theme="dark"
                 position="bottom-right"
                 rtl={false}
-                autoClose={1500}
+                autoClose={3500}
                 newestOnTop={false}
                 closeButton={false}
-                pauseOnHover
+                hideProgressBar
             />
         </StyledToastWrapper>
     )

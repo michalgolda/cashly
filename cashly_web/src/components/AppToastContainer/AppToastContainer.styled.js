@@ -1,13 +1,17 @@
 import styled from 'styled-components'
 
 export const StyledToastWrapper = styled.div`
-    --toastify-icon-color-success: #52f792;
-    --toastify-color-progress-success: #52f792;
-    --toastify-icon-color-error: ${({ theme }) => theme.colors.red400};
-    --toastify-color-progress-error: ${({ theme }) => theme.colors.red400};
+    --toastify-icon-color-error: #ff4e4e;
+    --toastify-icon-color-warning: #fede35;
+    --toastify-icon-color-success: #04ff68;
 
     .Toastify__toast {
-        border-radius: 2px;
-        color: ${({ theme }) => theme.colors.primary400};
+        color: white;
+        box-shadow: none;
+        background-color: #000;
+    }
+
+    .Toastify__toast-body {
+        padding: 8px 16px;
     }
 `
