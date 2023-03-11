@@ -1,4 +1,3 @@
-import { useSession } from 'next-auth/react'
 import PropTypes from 'prop-types'
 
 import {
@@ -8,7 +7,6 @@ import {
     StyledTitle,
     StyledWrapper,
 } from './Header.styled'
-import SessionDetails from './SessionDetails/SessionDetails'
 
 function Header({ children, title, ...props }) {
     return (
@@ -17,7 +15,7 @@ function Header({ children, title, ...props }) {
                 <StyledTextContainer>
                     <StyledTitle>{title}</StyledTitle>
                 </StyledTextContainer>
-                <StyledWrapper>{children}</StyledWrapper>
+                {children && <StyledWrapper>{children}</StyledWrapper>}
             </StyledContainer>
         </StyledHeader>
     )
