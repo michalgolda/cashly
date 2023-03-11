@@ -2,7 +2,7 @@ import Image from 'next/image'
 import styled from 'styled-components'
 
 import Button from '../Button/Button'
-import SessionDetails from '../Header/SessionDetails/SessionDetails'
+import SessionDetails from './SessionDetails/SessionDetails'
 
 export const StyledNav = styled.nav`
     width: 100%;

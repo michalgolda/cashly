@@ -8,13 +8,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Image from 'next/image'
 import PropTypes from 'prop-types'
 
-import SessionDetails from '../Header/SessionDetails/SessionDetails'
+import SessionDetails from './SessionDetails/SessionDetails'
 import {
     StyledLogoImage,
     StyledLogoutButton,
     StyledMenu,
     StyledNav,
-    StyledSessionDetails,
 } from './Sidebar.styled'
 import SidebarLinkButton from './SidebarLinkButton/SidebarLinkButton'
 
