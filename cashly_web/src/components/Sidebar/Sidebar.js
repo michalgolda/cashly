@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Image from 'next/image'
 import PropTypes from 'prop-types'
 
+import LinkButton from './LinkButton/LinkButton'
 import SessionDetails from './SessionDetails/SessionDetails'
 import {
     StyledLogoImage,
@@ -15,7 +16,6 @@ import {
     StyledMenu,
     StyledNav,
 } from './Sidebar.styled'
-import SidebarLinkButton from './SidebarLinkButton/SidebarLinkButton'
 
 function Sidebar({ userEmail, onLogout }) {
     return (
@@ -38,42 +38,42 @@ function Sidebar({ userEmail, onLogout }) {
             />
             <StyledMenu>
                 <li>
-                    <SidebarLinkButton
+                    <LinkButton
                         className="linkButtonWithText"
                         icon={faReceipt}
                         href="/expenses"
                     >
                         Wydatki
-                    </SidebarLinkButton>
-                    <SidebarLinkButton
+                    </LinkButton>
+                    <LinkButton
                         className="linkButtonWithOnlyIcon"
                         icon={faReceipt}
                         href="/expenses"
                     />
                 </li>
                 <li>
-                    <SidebarLinkButton
+                    <LinkButton
                         className="linkButtonWithText"
                         icon={faGripVertical}
                         href="/categories"
                     >
                         Kategorie
-                    </SidebarLinkButton>
-                    <SidebarLinkButton
+                    </LinkButton>
+                    <LinkButton
                         className="linkButtonWithOnlyIcon"
                         icon={faGripVertical}
                         href="/categories"
                     />
                 </li>
                 <li>
-                    <SidebarLinkButton
+                    <LinkButton
                         className="linkButtonWithText"
                         icon={faChartSimple}
                         href="/analytics"
                     >
                         Analityka
-                    </SidebarLinkButton>
-                    <SidebarLinkButton
+                    </LinkButton>
+                    <LinkButton
                         className="linkButtonWithOnlyIcon"
                         icon={faChartSimple}
                         href="/analytics"

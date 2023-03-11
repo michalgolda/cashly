@@ -1,13 +1,9 @@
 import { useRouter } from 'next/router'
 import PropTypes from 'prop-types'
 
-import {
-    StyledIcon,
-    StyledLink,
-    StyledLinkButton,
-} from './SidebarLinkButton.styled'
+import { StyledIcon, StyledLink, StyledLinkButton } from './LinkButton.styled'
 
-function SidebarLinkButton({ children, href, icon, ...props }) {
+function LinkButton({ children, href, icon, ...props }) {
     const router = useRouter()
     const isActive = router.pathname === href
 
@@ -21,9 +17,9 @@ function SidebarLinkButton({ children, href, icon, ...props }) {
     )
 }
 
-SidebarLinkButton.propTypes = {
+LinkButton.propTypes = {
     href: PropTypes.string.isRequired,
     icon: PropTypes.object.isRequired,
 }
 
-export default SidebarLinkButton
+export default LinkButton
