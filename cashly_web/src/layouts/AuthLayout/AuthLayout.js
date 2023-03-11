@@ -1,8 +1,7 @@
-import Footer from '@/components/Footer/Footer'
-
 import {
     StyledContainer,
     StyledFlexCenter,
+    StyledFooter,
     StyledLogo,
 } from './AuthLayout.styled'
 
@@ -15,7 +14,7 @@ export default function AuthLayout({ children, ...props }) {
                     {children}
                 </StyledContainer>
             </StyledFlexCenter>
-            <Footer />
+            <StyledFooter />
         </>
     )
 }

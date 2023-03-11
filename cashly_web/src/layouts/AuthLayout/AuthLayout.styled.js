@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 import FlexCenter from '@/components/FlexCenter'
+import Footer from '@/components/Footer/Footer'
 import Logo from '@/components/Logo/Logo'
 
 export const StyledFlexCenter = styled(FlexCenter)`
@@ -20,4 +21,8 @@ export const StyledContainer = styled.div`
 
 export const StyledLogo = styled(Logo)`
     margin: 0 auto;
+`
+
+export const StyledFooter = styled(Footer)`
+    background-color: #fff;
 `
