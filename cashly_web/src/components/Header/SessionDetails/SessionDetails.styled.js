@@ -17,6 +17,6 @@ export const StyledEmail = styled.p`
     text-overflow: ellipsis;
 
     @media (min-width: 768px) {
-        display: inherit;
+        display: block;
     }
 `
