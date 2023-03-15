@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 
 import EmptyInformer from './EmptyInformer/EmptyInformer'
-import { StyledList, StyledText } from './List.styled'
+import { StyledList, StyledNotFoundExpenses } from './List.styled'
 import ListItem from './ListItem/ListItem'
 import ListSkeleton from './ListSkeleton'
 
@@ -14,9 +14,9 @@ function List({ data, isEmpty, isLoading }) {
             {!isLoading && (
                 <>
                     {data.length === 0 ? (
-                        <StyledText>
+                        <StyledNotFoundExpenses>
                             Brak wydatków spełniających wybrane kryteria
-                        </StyledText>
+                        </StyledNotFoundExpenses>
                     ) : (
                         <>
                             {data.map((item, index) => {
