@@ -38,8 +38,12 @@ export const StyledModal = styled.div`
     max-width: 512px;
     border-radius: 2px;
     background-color: white;
-    margin: -128px 32px 32px 32px;
+    margin: -64px 32px 32px 32px;
     border: 1px solid ${({ theme }) => theme.colors.gray400};
+
+    @media (${({ theme }) => theme.mediaQueries.mobile}) {
+        margin: -64px 8px 8px 8px;
+    }
 `
 
 export const StyledHeader = styled.div`
