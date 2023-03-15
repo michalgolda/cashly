@@ -12,11 +12,11 @@ export const StyledGroup = styled.div`
     grid-column-gap: 32px;
     grid-template-columns: 1fr 1fr;
 
-    @media (min-width: 768px) {
+    @media (${({ theme }) => theme.mediaQueries.tablet}) {
         grid-template-columns: 1fr 1fr 1fr;
     }
 
-    @media (max-width: 375px) {
+    @media (${({ theme }) => theme.mediaQueries.mobile}) {
         grid-template-columns: 1fr;
     }
 `
