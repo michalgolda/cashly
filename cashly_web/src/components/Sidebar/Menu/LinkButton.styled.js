@@ -53,6 +53,34 @@ export const StyledLinkButton = styled.button`
                 background-color: #3f3f3f;
             }
         `}
+
+    ${({ iconOnly }) =>
+        iconOnly
+            ? css`
+                  display: inline-flex;
+
+                  @media (${({ theme }) => theme.mediaQueries.tablet}) {
+                      display: none;
+                  }
+
+                  @media (${({ theme }) => theme.mediaQueries.mobile}) {
+                      display: none;
+                  }
+              `
+            : css`
+                  display: none;
+
+                  @media (${({ theme }) => theme.mediaQueries.tablet}) {
+                      display: inline-flex;
+                  }
+
+                  @media (${({ theme }) => theme.mediaQueries.mobile}) {
+                      width: 100%;
+                      max-width: 256px;
+                      column-gap: 16px;
+                      display: inline-flex;
+                  }
+              `}
 `
 
 export const StyledIcon = styled(FontAwesomeIcon)`

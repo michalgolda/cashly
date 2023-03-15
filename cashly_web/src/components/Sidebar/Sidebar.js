@@ -1,96 +1,57 @@
-import {
-    faChartSimple,
-    faGripVertical,
-    faReceipt,
-} from '@fortawesome/free-solid-svg-icons'
-import { faSignOut } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faSignOut, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Image from 'next/image'
 import PropTypes from 'prop-types'
+import { useState } from 'react'
 
-import LinkButton from './LinkButton/LinkButton'
+import Menu from './Menu/Menu'
 import SessionDetails from './SessionDetails/SessionDetails'
 import {
-    StyledLogoImage,
-    StyledLogoutButton,
-    StyledMenu,
+    StyledAppIcon,
+    StyledContainer,
+    StyledIconLogoutButton,
+    StyledLogo,
     StyledNav,
+    StyledTextLogoutButton,
+    StyledToggleMenuButton,
 } from './Sidebar.styled'
 
 function Sidebar({ userEmail, onLogout }) {
+    const [isHidden, setIsHidden] = useState(true)
+    const toggle = () => {
+        window.scrollTo(0, 0)
+        setIsHidden(!isHidden)
+    }
+
     return (
         <StyledNav>
-            <StyledLogoImage
-                className="logo"
+            <StyledLogo
                 src="logo.svg"
                 alt="logo"
                 width={150}
                 height={39}
                 priority
             />
-            <Image
-                className="appIcon"
+            <StyledAppIcon
                 src="appIcon.svg"
                 alt="app icon"
                 width={50}
                 height={50}
                 priority
             />
-            <StyledMenu>
-                <li>
-                    <LinkButton
-                        className="linkButtonWithText"
-                        icon={faReceipt}
-                        href="/expenses"
-                    >
-                        Wydatki
-                    </LinkButton>
-                    <LinkButton
-                        className="linkButtonWithOnlyIcon"
-                        icon={faReceipt}
-                        href="/expenses"
-                    />
-                </li>
-                <li>
-                    <LinkButton
-                        className="linkButtonWithText"
-                        icon={faGripVertical}
-                        href="/categories"
-                    >
-                        Kategorie
-                    </LinkButton>
-                    <LinkButton
-                        className="linkButtonWithOnlyIcon"
-                        icon={faGripVertical}
-                        href="/categories"
-                    />
-                </li>
-                <li>
-                    <LinkButton
-                        className="linkButtonWithText"
-                        icon={faChartSimple}
-                        href="/analytics"
-                    >
-                        Analityka
-                    </LinkButton>
-                    <LinkButton
-                        className="linkButtonWithOnlyIcon"
-                        icon={faChartSimple}
-                        href="/analytics"
-                    />
-                </li>
-            </StyledMenu>
-            <SessionDetails userEmail={userEmail} />
-            <StyledLogoutButton
-                className="textLogoutButton"
-                onClick={onLogout}
-                variant="text"
-            >
-                Wyloguj się
-            </StyledLogoutButton>
-            <StyledLogoutButton className="iconLogoutButton" onClick={onLogout}>
-                <FontAwesomeIcon icon={faSignOut} />
-            </StyledLogoutButton>
+            <StyledContainer isHidden={isHidden}>
+                <Menu />
+                <SessionDetails userEmail={userEmail} />
+                <StyledTextLogoutButton onClick={onLogout} variant="text">
+                    Wyloguj się
+                </StyledTextLogoutButton>
+                <StyledIconLogoutButton onClick={onLogout}>
+                    <FontAwesomeIcon icon={faSignOut} />
+                </StyledIconLogoutButton>
+            </StyledContainer>
+            <StyledToggleMenuButton
+                onClick={() => toggle()}
+                icon={isHidden ? faBars : faXmark}
+            />
         </StyledNav>
     )
 }
