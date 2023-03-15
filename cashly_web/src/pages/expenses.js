@@ -7,7 +7,7 @@ export default function ExpensesPage() {
     return (
         <>
             <Head>
-                <title>Cashly - wydatki</title>
+                <title>Cashly - Wydatki</title>
             </Head>
             <Expenses />
         </>

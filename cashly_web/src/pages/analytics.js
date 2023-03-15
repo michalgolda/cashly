@@ -7,7 +7,7 @@ export default function AnalyticsPage() {
     return (
         <>
             <Head>
-                <title>Cashly - analityka</title>
+                <title>Cashly - Analityka</title>
             </Head>
             <Analytics />
         </>

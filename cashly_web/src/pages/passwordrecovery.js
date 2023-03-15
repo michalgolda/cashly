@@ -7,7 +7,7 @@ export default function PasswordRecoveryPage() {
     return (
         <>
             <Head>
-                <title>Cashly - resetowanie hasła</title>
+                <title>Cashly - Resetowanie hasła</title>
             </Head>
             <PasswordRecovery />
         </>

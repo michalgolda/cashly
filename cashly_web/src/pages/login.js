@@ -7,7 +7,7 @@ export default function LoginPage() {
     return (
         <>
             <Head>
-                <title>Cashly - logowanie</title>
+                <title>Cashly - Logowanie</title>
             </Head>
             <Login />
         </>

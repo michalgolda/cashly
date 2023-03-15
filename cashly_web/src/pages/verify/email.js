@@ -6,7 +6,7 @@ export default function VerifyEmailPage() {
     return (
         <>
             <Head>
-                <title>Cashly - weryfikacja adresu e-mail</title>
+                <title>Cashly - Weryfikacja adresu e-mail</title>
             </Head>
             <VerifyEmail />
         </>

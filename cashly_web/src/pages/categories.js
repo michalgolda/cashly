@@ -7,7 +7,7 @@ export default function CategoriesPage() {
     return (
         <>
             <Head>
-                <title>Cashly - kategorie</title>
+                <title>Cashly - Kategorie</title>
             </Head>
             <Categories />
         </>

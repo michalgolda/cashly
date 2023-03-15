@@ -7,7 +7,7 @@ export default function RegisterPage() {
     return (
         <>
             <Head>
-                <title>Cashly - rejestracja</title>
+                <title>Cashly - Rejestracja</title>
             </Head>
             <Register />
         </>
