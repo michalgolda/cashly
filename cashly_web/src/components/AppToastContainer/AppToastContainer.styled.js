@@ -6,10 +6,11 @@ export const StyledToastWrapper = styled.div`
     --toastify-icon-color-success: #04ff68;
 
     .Toastify__toast {
-        margin: 0;
         color: white;
         box-shadow: none;
+        border-radius: 0;
         background-color: #000;
+        margin: 0px 16px 16px 16px;
     }
 
     .Toastify__toast-body {
@@ -21,7 +22,11 @@ export const StyledToastWrapper = styled.div`
     }
 
     .Toastify__toast-container--bottom-right {
-        right: 16px;
-        bottom: 16px;
+        right: 0;
+        bottom: 0;
+    }
+
+    .Toastify__toast-icon {
+        margin-right: 16px;
     }
 `
