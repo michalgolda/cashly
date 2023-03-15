@@ -11,12 +11,16 @@ export const StyledContainer = styled.div`
 `
 
 export const StyledEmail = styled.p`
-    font-weight: bold;
-    overflow: hidden;
     display: none;
+    overflow: hidden;
+    font-weight: bold;
     text-overflow: ellipsis;
 
-    @media (min-width: 768px) {
+    @media (${({ theme }) => theme.mediaQueries.tablet}) {
+        display: block;
+    }
+
+    @media (${({ theme }) => theme.mediaQueries.mobile}) {
         display: block;
     }
 `
