@@ -3,13 +3,16 @@ import PropTypes from 'prop-types'
 import {
     StyledBottomElementWrapper,
     StyledContainer,
+    StyledIllustrationWrapper,
     StyledText,
 } from './Informer.styled'
 
 function Informer({ text, bottomElement, illustration, ...props }) {
     return (
         <StyledContainer {...props}>
-            {illustration}
+            <StyledIllustrationWrapper>
+                {illustration}
+            </StyledIllustrationWrapper>
             <StyledText>{text}</StyledText>
             {bottomElement && (
                 <StyledBottomElementWrapper>
