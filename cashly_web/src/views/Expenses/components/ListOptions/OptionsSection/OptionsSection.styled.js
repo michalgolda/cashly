@@ -9,7 +9,11 @@ export const StyledContainer = styled(StyledBox)`
     align-items: end;
     border-top-left-radius: 0;
 
-    @media (min-width: 768px) {
+    @media (${({ theme }) => theme.mediaQueries.tablet}) {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    @media (${({ theme }) => theme.mediaQueries.desktop}) {
         grid-template-columns: 1fr 1fr 1fr;
     }
 `
