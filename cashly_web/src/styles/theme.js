@@ -42,6 +42,11 @@ const theme = {
         black: 900,
     },
     defaultTransition: 'all .25s',
+    mediaQueries: {
+        mobile: '(max-width: 425px)',
+        tablet: '(min-width: 768px)',
+        desktop: '(min-width: 1024px)',
+    },
 }
 
 export default theme
