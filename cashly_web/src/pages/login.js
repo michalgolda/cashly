@@ -1,14 +1,11 @@
-import Head from 'next/head'
-
+import Meta from '@/components/Meta'
 import { withUnauthenticatedUser } from '@/lib/withUnauthentiactedUser'
 import Login from '@/views/Auth/Login/Login'
 
 export default function LoginPage() {
     return (
         <>
-            <Head>
-                <title>Cashly - Logowanie</title>
-            </Head>
+            <Meta title="Logowanie" />
             <Login />
         </>
     )

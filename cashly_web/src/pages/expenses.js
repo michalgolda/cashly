@@ -1,14 +1,11 @@
-import Head from 'next/head'
-
+import Meta from '@/components/Meta'
 import { withAuthenticatedUser } from '@/lib/withAuthenticatedUser'
 import Expenses from '@/views/Expenses/Expenses'
 
 export default function ExpensesPage() {
     return (
         <>
-            <Head>
-                <title>Cashly - Wydatki</title>
-            </Head>
+            <Meta title="Wydatki" />
             <Expenses />
         </>
     )

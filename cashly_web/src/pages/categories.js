@@ -1,14 +1,11 @@
-import Head from 'next/head'
-
+import Meta from '@/components/Meta'
 import { withAuthenticatedUser } from '@/lib/withAuthenticatedUser'
 import Categories from '@/views/Categories/Categories'
 
 export default function CategoriesPage() {
     return (
         <>
-            <Head>
-                <title>Cashly - Kategorie</title>
-            </Head>
+            <Meta title="Kategorie" />
             <Categories />
         </>
     )

@@ -1,14 +1,11 @@
-import Head from 'next/head'
-
+import Meta from '@/components/Meta'
 import { withUnauthenticatedUser } from '@/lib/withUnauthentiactedUser'
 import Register from '@/views/Auth/Register/Register'
 
 export default function RegisterPage() {
     return (
         <>
-            <Head>
-                <title>Cashly - Rejestracja</title>
-            </Head>
+            <Meta title="Rejestracja" />
             <Register />
         </>
     )

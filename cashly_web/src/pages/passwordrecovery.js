@@ -1,14 +1,11 @@
-import Head from 'next/head'
-
+import Meta from '@/components/Meta'
 import { withUnauthenticatedUser } from '@/lib/withUnauthentiactedUser'
 import PasswordRecovery from '@/views/PasswordRecovery/PasswordRecovery'
 
 export default function PasswordRecoveryPage() {
     return (
         <>
-            <Head>
-                <title>Cashly - Resetowanie hasła</title>
-            </Head>
+            <Meta title="Resetowanie hasła" />
             <PasswordRecovery />
         </>
     )
