@@ -8,7 +8,7 @@ import { notifyUnhandledError } from '@/utils/notifyUnhandledError'
 
 export default function VerifyEmail() {
     const notifyVerifyEmailSuccess = () =>
-        toast.success('Adres email został pomyślnie potwierdzony')
+        toast.success('Adres email został pomyślnie zweryfikowany')
 
     const verifyEmailMutation = useMutation(userService.verifyEmail, {
         onSuccess: () => {
