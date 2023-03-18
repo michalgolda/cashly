@@ -51,7 +51,17 @@ export default function MainLayout({ children, ...props }) {
         <StyledMain {...props}>
             <Sidebar userEmail={email} onLogout={onLogout} />
             <StyledContent>
-                {emailIsVerified ? children : <UnVerified userEmail={email} />}
+                {session ? (
+                    <>
+                        {emailIsVerified ? (
+                            children
+                        ) : (
+                            <UnVerified userEmail={email} />
+                        )}
+                    </>
+                ) : (
+                    children
+                )}
                 <Footer />
             </StyledContent>
         </StyledMain>
