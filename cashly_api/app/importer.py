@@ -26,7 +26,6 @@ class ParsedExpense(TypedDict):
 class ExpensesImporter(Importer[ParsedExpense]):
     def make(self, file: BytesIO) -> List[ParsedExpense]:
         parsed_expenses = []
-        print(file)
         data_frame = pd.read_csv(file)
         data_frame = data_frame.replace({np.nan: None})
 
@@ -48,3 +47,26 @@ class ExpensesImporter(Importer[ParsedExpense]):
             )
 
         return parsed_expenses
+
+
+class ParsedExpenseCategory(TypedDict):
+    name: str
+    color: str
+
+
+class ExpenseCategoryImporter(Importer[ParsedExpenseCategory]):
+    def make(self, file: BytesIO) -> List[ParsedExpenseCategory]:
+        parsed_expense_categories = []
+        data_frame = pd.read_csv(file)
+
+        row_count = len(data_frame.axes[0])
+        data_frame = data_frame.to_dict(orient="list")
+
+        for row in range(row_count):
+            name = data_frame["nazwa"][row]
+            color = data_frame["kolor"][row]
+
+            parsed_expense_categories.append(
+                ParsedExpenseCategory(name=name, color=color)
+            )
+        return parsed_expense_categories

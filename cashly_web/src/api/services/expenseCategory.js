@@ -14,3 +14,17 @@ export const updateExpenseCategory = (payload = { id, name, color }) =>
 
 export const getAllExpenseCategories = () =>
     apiClient.get('/expense_categories').then((res) => res.data)
+
+export const importExpenseCategories = (payload = { file }) => {
+    const formData = new FormData()
+    formData.append('file', payload.file)
+
+    return apiClient.post('/expense_categories/import', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    })
+}
+
+export const exportExpenseCategories = (payload = { fileFormat }) =>
+    apiClient.get(
+        `/expense_categories/export?file_format=${payload.fileFormat}`
+    )

@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import List, NoReturn
 from uuid import UUID
+from io import BytesIO
 
 from app.entities import ExpenseCategory, User
 from app.exceptions import (
@@ -9,6 +10,8 @@ from app.exceptions import (
 )
 from app.repositories import ExpenseCategoryRepository
 from app.usecases import UseCase
+from app.importer import ExpenseCategoryImporter
+from app.exporter import ExpenseCategoryExporter
 
 
 @dataclass(frozen=True)
@@ -133,3 +136,64 @@ class DeleteExpenseCategoryUseCase(
             raise ExpenseCategoryNotFoundError()
 
         self._expense_category_repo.delete(existing_expense_category)
+
+
+@dataclass(frozen=True)
+class ImportExpenseCategoriesUseCaseInput:
+    user: User
+    uploaded_file: BytesIO
+
+
+class ImportExpenseCategoriesUseCase(
+    UseCase[ImportExpenseCategoriesUseCaseInput, NoReturn]
+):
+    def __init__(
+        self,
+        expense_category_repo: ExpenseCategoryRepository,
+        expense_categories_importer: ExpenseCategoryImporter,
+    ) -> None:
+        self._expense_category_repo = expense_category_repo
+        self._expense_categories_importer = expense_categories_importer
+
+    def execute(self, input: ImportExpenseCategoriesUseCaseInput) -> NoReturn:
+        parsed_expense_categories = self._expense_categories_importer.make(
+            input.uploaded_file
+        )
+
+        for expense_category in parsed_expense_categories:
+            self._expense_category_repo.add(
+                ExpenseCategory(
+                    user=input.user,
+                    name=expense_category.get("name"),
+                    color=expense_category.get("color"),
+                ),
+            )
+
+
+@dataclass(frozen=True)
+class ExportExpenseCategoriesUseCaseInput:
+    user: User
+
+
+@dataclass(frozen=True)
+class ExportExpenseCategoriesUseCaseOutput:
+    exported_file: BytesIO
+
+
+class ExportExpenseCategoriesUseCase(
+    UseCase[ExportExpenseCategoriesUseCaseInput, ExportExpenseCategoriesUseCaseOutput]
+):
+    def __init__(
+        self,
+        expense_category_repo: ExpenseCategoryRepository,
+        expense_categories_exporter: ExpenseCategoryExporter,
+    ) -> None:
+        self._expense_category_repo = expense_category_repo
+        self._expense_categories_exporter = expense_categories_exporter
+
+    def execute(
+        self, input: ExportExpenseCategoriesUseCaseInput
+    ) -> ExportExpenseCategoriesUseCaseOutput:
+        expenses = self._expense_category_repo.get_all_by_user_id(input.user.id)
+        exported_file = self._expense_categories_exporter.export(expenses)
+        return ExportExpenseCategoriesUseCaseOutput(exported_file)

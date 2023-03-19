@@ -4,7 +4,7 @@ from typing import Generic, List, TypeVar
 
 import pandas as pd
 
-from app.entities import Expense
+from app.entities import Expense, ExpenseCategory
 
 TExportEntity = TypeVar("TExportEntity")
 
@@ -23,6 +23,25 @@ class ExpensesExporter(Exporter[Expense]):
                     "kwota": expense.amount,
                     "kategoria": expense.category.name if expense.category else None,
                     "data realizacji": expense.realised_date,
+                },
+                entities,
+            )
+        )
+        file_buffer = BytesIO()
+        data_frame = pd.DataFrame(data)
+        data_frame.to_csv(file_buffer, index_label="lp")
+        file_buffer.seek(0)
+
+        return file_buffer
+
+
+class ExpenseCategoryExporter(Exporter[ExpenseCategory]):
+    def export(self, entities: List[ExpenseCategory]) -> BytesIO:
+        data = list(
+            map(
+                lambda expense_category: {
+                    "nazwa": expense_category.name,
+                    "kolor": expense_category.color,
                 },
                 entities,
             )
