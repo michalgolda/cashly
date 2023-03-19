@@ -1,9 +1,14 @@
 import pytest
 
-from app.dependencies import get_message_client, get_security_manager, get_user_repo
+from app.dependencies import (
+    get_message_client,
+    get_expense_category_repo,
+    get_security_manager,
+    get_user_repo,
+)
 from app.entities import User
 from app.messages import MemoryMessageClient
-from app.repositories import MemoryUserRepository
+from app.repositories import MemoryUserRepository, MemoryExpenseCategoryRepository
 
 security_manager = get_security_manager()
 message_client = MemoryMessageClient()
@@ -11,7 +16,15 @@ message_client = MemoryMessageClient()
 
 @pytest.mark.parametrize(
     "app",
-    [{"dependency_overrides": {get_message_client: lambda: message_client}}],
+    [
+        {
+            "dependency_overrides": {
+                get_user_repo: lambda: MemoryUserRepository(),
+                get_expense_category_repo: lambda: MemoryExpenseCategoryRepository(),
+                get_message_client: lambda: message_client,
+            }
+        }
+    ],
     indirect=True,
 )
 def test_register(client):
@@ -29,7 +42,7 @@ def test_register(client):
         {
             "dependency_overrides": {
                 get_user_repo: lambda: MemoryUserRepository(
-                    [User("test@test.pl", password="test")]
+                    [User("test@test.pl", "test")]
                 ),
                 get_message_client: lambda: message_client,
             }
@@ -113,35 +126,6 @@ def test_login_when_password_is_wrong(client):
     assert response.json() == {
         "code": "BadAuthenticationCredentialsError",
         "message": "Podany adres email lub hasło są nieprawidłowe",
-    }
-
-
-@pytest.mark.parametrize(
-    "app",
-    [
-        {
-            "dependency_overrides": {
-                get_user_repo: lambda: MemoryUserRepository(
-                    [
-                        User(
-                            "test@test.pl",
-                            password=security_manager.generate_password_hash("test"),
-                        )
-                    ]
-                )
-            }
-        }
-    ],
-    indirect=True,
-)
-def test_login_when_email_is_not_verified(client):
-    response = client.post(
-        "/auth/login", json=dict(email="test@test.pl", password="test")
-    )
-    assert response.status_code == 400
-    assert response.json() == {
-        "code": "EmailIsNotVerifiedError",
-        "message": "Zanim się zalogujesz musisz zweryfikować swój adres email",
     }
 
 

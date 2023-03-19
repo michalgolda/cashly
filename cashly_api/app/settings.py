@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import List
 
 from pydantic import BaseSettings
 
@@ -27,6 +28,15 @@ class Settings(BaseSettings):
     MAIL_USE_CREDENTIALS: bool = True
     MAIL_VALIDATE_CERTS: bool = True
     MAIL_TEMPLATES_PATH: str = str(Path(__file__).parent / "templates")
+
+    DEFAULT_EXPENSE_CATEGORIES: List[dict] = [
+        {"name": "Jedzenie", "color": "#dfff40"},
+        {"name": "Paliwo", "color": "#7dff45"},
+        {"name": "Internet", "color": "#00eaff"},
+        {"name": "Prąd", "color": "#6f00ff"},
+        {"name": "Gaz", "color": "#ff6a00"},
+        {"name": "Woda", "color": "#003cff"},
+    ]
 
 
 settings = Settings()

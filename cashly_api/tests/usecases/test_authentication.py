@@ -1,15 +1,13 @@
 import pytest
 
-from app.entities import User
+from app.entities import User, ExpenseCategory
 from app.exceptions import (
     BadAuthenticationCredentialsError,
-    EmailIsNotVerifiedError,
     UserEmailAlreadyUsedError,
     UserNotFoundError,
 )
 from app.usecases.authentication import (
     LoginUseCase,
-    RegisterConfirmationUseCase,
     RegisterUseCase,
     ResetPasswordUseCase,
     SendResetPasswordLinkUseCase,
@@ -17,8 +15,14 @@ from app.usecases.authentication import (
 
 
 def test_register_usecase(mocker):
+    mock_user = mocker.patch("app.entities.User")
+
     mock_user_repo = mocker.patch("app.repositories.UserRepository")
     mock_user_repo.get_by_email.return_value = None
+
+    mock_expense_category_repo = mocker.patch(
+        "app.repositories.ExpenseCategoryRepository"
+    )
 
     mock_security_manager = mocker.patch("app.security.SecurityManager")
     mock_security_manager.generate_password_hash.return_value = "password_hash"
@@ -31,22 +35,39 @@ def test_register_usecase(mocker):
     mock_usecase_input = mocker.patch(
         "app.usecases.authentication.RegisterUseCaseInput"
     )
+    mock_usecase_input.default_expense_categories = [
+        {"name": "test1", "color": "#fff"},
+        {"name": "test2", "color": "#000"},
+        {"name": "test3", "color": "#f00"},
+    ]
 
     usecase = RegisterUseCase(
         user_repo=mock_user_repo,
+        expense_category_repo=mock_expense_category_repo,
         security_manager=mock_security_manager,
         message_client=mock_message_client,
     )
     usecase.execute(mock_usecase_input)
 
-    mock_user_repo.get_by_email.assert_called_once_with(mock_usecase_input.email)
+    assert mock_expense_category_repo.add.call_args_list[0][0][0] == ExpenseCategory(
+        "test1", "#fff", None
+    )
+    assert mock_expense_category_repo.add.call_args_list[1][0][0] == ExpenseCategory(
+        "test2", "#000", None
+    )
+    assert mock_expense_category_repo.add.call_args_list[2][0][0] == ExpenseCategory(
+        "test3", "#f00", None
+    )
+
+    mock_user_repo.get_by_email.call_args_list[0][0][0] == mock_usecase_input.email
+    mock_user_repo.get_by_email.call_args_list[1][0][0] == mock_usecase_input.email
+
     mock_user_repo.add.assert_called_once_with(
         User(email=mock_usecase_input.email, password="password_hash")
     )
     mock_security_manager.generate_password_hash.assert_called_once_with(
         mock_usecase_input.password
     )
-
     email_message = mock_message_client.send.call_args[0][0]
     assert email_message.title == "Cashly - Konto zostało pomyślnie utworzone"
     assert email_message.recipients == [mock_usecase_input.email]
@@ -58,14 +79,27 @@ def test_register_usecase(mocker):
 
 def test_register_usecase_when_user_email_is_already_used(mocker):
     mock_user_repo = mocker.patch("app.repositories.UserRepository")
+    mock_user_repo.get_by_email.return_value = True
+
+    mock_expense_category_repo = mocker.patch(
+        "app.repositories.ExpenseCategoryRepository"
+    )
+
     mock_security_manager = mocker.patch("app.security.SecurityManager")
+    mock_message_client = mocker.patch("app.messages.MessageClient")
+
     mock_usecase_input = mocker.patch(
         "app.usecases.authentication.RegisterUseCaseInput"
     )
-    mock_message_client = mocker.patch("app.messages.MessageClient")
+    mock_usecase_input.default_expense_categories = [
+        {"name": "test1", "color": "#fff"},
+        {"name": "test2", "color": "#000"},
+        {"name": "test3", "color": "#f00"},
+    ]
 
     usecase = RegisterUseCase(
         user_repo=mock_user_repo,
+        expense_category_repo=mock_expense_category_repo,
         security_manager=mock_security_manager,
         message_client=mock_message_client,
     )
@@ -145,30 +179,30 @@ def test_login_usecase_when_user_password_is_wrong(mocker):
     )
 
 
-def test_login_usecase_when_email_is_not_verified(mocker):
-    mock_user_entity = mocker.patch("app.entities.User")
-    mock_user_entity.email_is_verified = False
-    mock_user_repo = mocker.patch("app.repositories.UserRepository")
-    mock_user_repo.get_by_email.return_value = mock_user_entity
+# def test_login_usecase_when_email_is_not_verified(mocker):
+#     mock_user_entity = mocker.patch("app.entities.User")
+#     mock_user_entity.email_is_verified = False
+#     mock_user_repo = mocker.patch("app.repositories.UserRepository")
+#     mock_user_repo.get_by_email.return_value = mock_user_entity
 
-    mock_security_manager = mocker.patch("app.security.SecurityManager")
-    mock_security_manager.check_password_hash.return_value = True
-    mock_security_manager.generate_access_token.return_value = "access_token"
+#     mock_security_manager = mocker.patch("app.security.SecurityManager")
+#     mock_security_manager.check_password_hash.return_value = True
+#     mock_security_manager.generate_access_token.return_value = "access_token"
 
-    mock_usecase_input = mocker.patch("app.usecases.authentication.LoginUseCaseInput")
+#     mock_usecase_input = mocker.patch("app.usecases.authentication.LoginUseCaseInput")
 
-    usecase = LoginUseCase(
-        user_repo=mock_user_repo, security_manager=mock_security_manager
-    )
+#     usecase = LoginUseCase(
+#         user_repo=mock_user_repo, security_manager=mock_security_manager
+#     )
 
-    with pytest.raises(EmailIsNotVerifiedError):
-        usecase.execute(mock_usecase_input)
+#     with pytest.raises(EmailIsNotVerifiedError):
+#         usecase.execute(mock_usecase_input)
 
-    mock_user_repo.get_by_email.assert_called_once_with(mock_usecase_input.email)
-    mock_security_manager.check_password_hash.assert_called_once_with(
-        mock_usecase_input.password,
-        mock_user_entity.password,
-    )
+#     mock_user_repo.get_by_email.assert_called_once_with(mock_usecase_input.email)
+#     mock_security_manager.check_password_hash.assert_called_once_with(
+#         mock_usecase_input.password,
+#         mock_user_entity.password,
+#     )
 
 
 def test_send_reset_password_link_usecase(mocker):

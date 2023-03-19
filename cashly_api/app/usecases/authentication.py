@@ -1,34 +1,42 @@
 from dataclasses import dataclass
-from typing import NoReturn
+from typing import NoReturn, TypedDict, List
 
-from app.entities import User
+from app.entities import User, ExpenseCategory
 from app.exceptions import (
     BadAuthenticationCredentialsError,
     UserEmailAlreadyUsedError,
     UserNotFoundError,
 )
 from app.messages import EmailMessage, MessageClient
-from app.repositories import UserRepository
+from app.repositories import UserRepository, ExpenseCategoryRepository
 from app.security import SecurityManager
 from app.usecases import UseCase
+
+
+class DefaultExpenseCategory(TypedDict):
+    name: str
+    color: str
 
 
 @dataclass(frozen=True)
 class RegisterUseCaseInput:
     email: str
     password: str
+    default_expense_categories: List[DefaultExpenseCategory]
 
 
 class RegisterUseCase(UseCase[RegisterUseCaseInput, NoReturn]):
     def __init__(
         self,
         user_repo: UserRepository,
+        expense_category_repo: ExpenseCategoryRepository,
         security_manager: SecurityManager,
         message_client: MessageClient,
     ) -> NoReturn:
         self._user_repo = user_repo
         self._security_manager = security_manager
         self._message_client = message_client
+        self._expense_category_repo = expense_category_repo
 
     def _check_email(self, email: str) -> NoReturn:
         existing_user = self._user_repo.get_by_email(email)
@@ -39,6 +47,19 @@ class RegisterUseCase(UseCase[RegisterUseCaseInput, NoReturn]):
         hashed_password = self._security_manager.generate_password_hash(password)
         user = User(email=email, password=hashed_password)
         self._user_repo.add(user)
+
+    def _create_default_expense_categories(
+        self, email: str, default_expense_categories: DefaultExpenseCategory
+    ):
+        user = self._user_repo.get_by_email(email)
+        for expense_category in default_expense_categories:
+            self._expense_category_repo.add(
+                ExpenseCategory(
+                    name=expense_category.get("name"),
+                    color=expense_category.get("color"),
+                    user=user,
+                )
+            )
 
     def _send_email_verification_token(self, email: str) -> NoReturn:
         email_verification_token = (
@@ -56,9 +77,10 @@ class RegisterUseCase(UseCase[RegisterUseCaseInput, NoReturn]):
     def execute(self, input: RegisterUseCaseInput) -> NoReturn:
         email = input.email
         password = input.password
+        default_expense_categories = input.default_expense_categories
 
-        self._check_email(email)
         self._create_user(email, password)
+        self._create_default_expense_categories(email, default_expense_categories)
         self._send_email_verification_token(email)
 
 

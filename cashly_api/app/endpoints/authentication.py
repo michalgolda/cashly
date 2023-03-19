@@ -1,8 +1,14 @@
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends
+from app.settings import settings
 
-from app.dependencies import get_message_client, get_security_manager, get_user_repo
+from app.dependencies import (
+    get_message_client,
+    get_security_manager,
+    get_user_repo,
+    get_expense_category_repo,
+)
 from app.messages import MessageClient
-from app.repositories import UserRepository
+from app.repositories import UserRepository, ExpenseCategoryRepository
 from app.schemas.authentication import (
     AuthenticationCredentials,
     PasswordRecoveryProceedPayload,
@@ -27,13 +33,20 @@ authentication_router = APIRouter()
 def register(
     credentials: AuthenticationCredentials,
     user_repo: UserRepository = Depends(get_user_repo),
+    expense_category_repo: ExpenseCategoryRepository = Depends(
+       get_expense_category_repo 
+    ),
     security_manager: SecurityManager = Depends(get_security_manager),
     message_client: MessageClient = Depends(get_message_client),
 ):
     usecase_input = RegisterUseCaseInput(
-        email=credentials.email, password=credentials.password
+        email=credentials.email,
+        password=credentials.password,
+        default_expense_categories=settings.DEFAULT_EXPENSE_CATEGORIES,
     )
-    usecase = RegisterUseCase(user_repo, security_manager, message_client)
+    usecase = RegisterUseCase(
+        user_repo, expense_category_repo, security_manager, message_client
+    )
     usecase.execute(usecase_input)
 
 
