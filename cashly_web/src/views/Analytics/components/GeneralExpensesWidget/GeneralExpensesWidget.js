@@ -3,6 +3,7 @@ import { useQuery } from 'react-query'
 import { analyticsService } from '@/api/services'
 import Skeleton from '@/components/Skeleton/Skeleton'
 import { defaultDateTimeFormat } from '@/utils/defaultDateTimeFormat'
+import { monthDateTimeFormat } from '@/utils/monthDateTimeFormat'
 
 import { useDatePeriod } from '../DatePeriodSelect/hooks/useDatePeriod'
 import Widget from '../Widget/Widget'
@@ -22,12 +23,17 @@ export default function GeneralExpensesWidget() {
 
     const labelFormatter = (stringDate) => {
         const [datePartOne, datePartTwo] = stringDate.split('/')
+        const formater =
+            currentPeriod.unit === 'M'
+                ? monthDateTimeFormat
+                : defaultDateTimeFormat
+
         const dateWithoutRange = () =>
-            `${defaultDateTimeFormat.format(new Date(datePartOne))}`
+            `${formater.format(new Date(datePartOne))}`
         const dateWithRange = () =>
-            `${defaultDateTimeFormat.format(
-                new Date(datePartOne)
-            )} - ${defaultDateTimeFormat.format(new Date(datePartTwo))}`
+            `${formater.format(new Date(datePartOne))} - ${formater.format(
+                new Date(datePartTwo)
+            )}`
         return datePartOne && datePartTwo ? dateWithRange() : dateWithoutRange()
     }
 
