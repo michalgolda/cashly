@@ -48,7 +48,8 @@ export default NiceModal.create(({ id, name, color }) => {
 
     return (
         <BaseModal
-            {...bootstrapDialog(modal)}
+            show={modal.visible}
+            onHide={() => modal.hide()}
             onSubmit={onSubmit}
             title="Edycja kategorii"
             submitText="Zapisz zmiany"
