@@ -14,6 +14,7 @@ export default function DatePeriodSelect() {
     return (
         <Input
             as="select"
+            labelText="Zakres"
             defaultValue="lastTwentyMonths"
             onChange={handleChangePeriod}
             fullWidth
