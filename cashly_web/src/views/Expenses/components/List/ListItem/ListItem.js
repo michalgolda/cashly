@@ -54,7 +54,9 @@ function ListItem({ id, amount, category, realisedDate }) {
                             id,
                             amount,
                             realisedDate,
-                            expenseCategoryId: category ? category.id : null,
+                            expenseCategoryId: category
+                                ? category.id
+                                : undefined,
                         })
                     }}
                 />
