@@ -69,7 +69,11 @@ function BaseModal({
                     labelText="Kategoria"
                     name="expenseCategoryId"
                     onChange={formik.handleChange}
-                    value={formik.values.expenseCategoryId}
+                    value={
+                        formik.values.expenseCategoryId
+                            ? formik.values.expenseCategoryId
+                            : ''
+                    }
                     error={
                         formik.touched.expenseCategoryId &&
                         formik.errors.expenseCategoryId
