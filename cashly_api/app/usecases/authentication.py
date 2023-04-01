@@ -67,7 +67,7 @@ class RegisterUseCase(UseCase[RegisterUseCaseInput, NoReturn]):
         )
         self._message_client.send(
             EmailMessage(
-                title="Cashly - Konto zostało pomyślnie utworzone",
+                title="Cashly - Potwierdzenie rejestracji",
                 recipients=[email],
                 template_name="welcome-new-user.html",
                 payload={"email_verification_token": email_verification_token},
