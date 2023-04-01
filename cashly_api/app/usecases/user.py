@@ -62,7 +62,7 @@ class VerifyEmailUseCase(UseCase[VerifyEmailUseCaseInput, NoReturn]):
     def _send_message(self, email: str) -> NoReturn:
         self._message_client.send(
             EmailMessage(
-                "Cashly - Adres email został pomyślnie zweryfikowany!",
+                "Cashly - Potwierdzenie weryfikacji adresu e-mail",
                 [email],
                 "email-verification-success.html",
             )
