@@ -198,7 +198,7 @@ class ResetPasswordUseCase(UseCase[ResetPasswordUseCaseInput, NoReturn]):
 
         self._message_client.send(
             EmailMessage(
-                title="Cashly - Hasło zostało pomyślnie zmienione!",
+                title="Cashly - Potwierdzenie zmiany hasła",
                 recipients=[existing_user.email],
                 template_name="password-recovery-success.html",
             )
