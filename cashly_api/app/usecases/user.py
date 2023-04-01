@@ -104,7 +104,7 @@ class SendEmailVerificationRequestUseCase(
         )
         self._message_client.send(
             EmailMessage(
-                "Cashly - Weryfikacja adresu email!",
+                "Cashly - Weryfikacja adresu e-mail",
                 [email],
                 "email-verification-request.html",
                 {"email_verification_token": email_verification_token},
