@@ -54,10 +54,11 @@ export default NiceModal.create(() => {
     return (
         <StyledModal show={modal.visible} onHide={() => modal.hide()}>
             <StyledTextContainer>
-                <h2>Eksportuj kategorie wydatków</h2>
+                <h2>Eksportowanie kategorii</h2>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt.
+                    Wygenerowany plik zostanie automatycznie zabezpieczony
+                    hasłem. Hasło zostanie wysłane na Twój adres email, abyś
+                    mógł/mogła mieć pewność, że Twoje dane są bezpieczne.
                 </p>
             </StyledTextContainer>
             <StyledForm onSubmit={formik.handleSubmit}>

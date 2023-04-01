@@ -13,7 +13,8 @@ export default function Register() {
             <Container>
                 <FormHeader
                     title="Rejestracja"
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    description={`
+                        Witaj! Nasza aplikacja pomoże Ci w zarządzaniu finansami i śledzeniu wydatków.`}
                 />
                 <Form />
                 <FormFooter>

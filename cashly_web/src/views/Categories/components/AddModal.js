@@ -53,12 +53,10 @@ export default NiceModal.create(() => {
             submitText="Utwórz"
             onSubmit={onSubmit}
             initialValues={initialValues}
-            title="Stwórz nową kategorię"
+            title="Dodawanie kategorii"
             description={`
-				Lorem ipsum dolor sit amet, 
-				consectetur adipiscing elit, 
-				sed do eiusmod tempor incididunt.
-			`}
+                Jeśli chcesz dodać nową kategorię, możesz to zrobić poprzez ponniższy formularz.
+            `}
         />
     )
 })

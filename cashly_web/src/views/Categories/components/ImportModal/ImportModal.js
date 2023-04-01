@@ -45,10 +45,10 @@ export default NiceModal.create(() => {
     return (
         <StyledModal show={modal.visible} onHide={() => modal.hide()}>
             <StyledTextContainer>
-                <h2>Importuj kategorie wydatków</h2>
+                <h2>Importowanie kategorii</h2>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt.
+                    Jeśli masz już listę swoich kategorii, możesz łatwo je
+                    zaimportować. Wystarczy, że przygotujesz plik danymi.
                 </p>
             </StyledTextContainer>
             <StyledForm onSubmit={handleSubmit}>

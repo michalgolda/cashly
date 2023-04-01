@@ -14,7 +14,7 @@ export default function Login() {
             <Container>
                 <FormHeader
                     title="Logowanie"
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    description="Witaj ponownie! Cieszymy się, że jesteś z nami."
                 />
                 <Form />
                 <FormFooter>

@@ -41,10 +41,10 @@ export default NiceModal.create(() => {
     return (
         <StyledModal show={modal.visible} onHide={() => modal.hide()}>
             <StyledTextContainer>
-                <h2>Importuj wydatki</h2>
+                <h2>Importowanie wydatków</h2>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt.
+                    Jeśli masz już listę swoich wydatków, możesz łatwo je
+                    zaimportować. Wystarczy, że przygotujesz plik z danymi.
                 </p>
             </StyledTextContainer>
             <StyledForm onSubmit={handleSubmit}>

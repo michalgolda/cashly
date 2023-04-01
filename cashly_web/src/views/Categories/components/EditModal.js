@@ -51,13 +51,11 @@ export default NiceModal.create(({ id, name, color }) => {
             show={modal.visible}
             onHide={() => modal.hide()}
             onSubmit={onSubmit}
-            title="Edycja kategorii"
+            title="Edytowanie kategorii"
             submitText="Zapisz zmiany"
             initialValues={initialValues}
             description={`
-				Lorem ipsum dolor sit amet, 
-				consectetur adipiscing elit, 
-				sed do eiusmod tempor incididunt.
+                Jeśli chcesz zmienić parametry kategorii, możesz to zrobić poprzez ponniższy formularz.
 			`}
         />
     )

@@ -44,11 +44,9 @@ export default NiceModal.create(
             <BaseModal
                 show={modal.visible}
                 onHide={() => modal.hide()}
-                title="Edycja wydatku"
+                title="Edytowanie wydatku"
                 description={`
-                    Lorem ipsum dolor sit amet, 
-                    consectetur adipiscing elit, 
-                    sed do eiusmod tempor incididunt.
+                    Jeśli chcesz zmienić parametry wydatku, możesz to zrobić poprzez ponniższy formularz.
                 `}
                 onSubmit={onSubmit}
                 submitText="Zapisz zmiany"

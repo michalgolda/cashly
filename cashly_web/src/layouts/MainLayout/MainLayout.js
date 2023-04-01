@@ -25,7 +25,7 @@ function UnVerified({ userEmail }) {
     return (
         <PageMain>
             <Informer
-                text="Twoje konto jest niezweryfikowane. Aby móc w pełni korzystać z aplikacji musisz zweryfikować swoje konto poprzez kliknięcie w link, który zostanie przesłany po kliknięciu w ponniższy przycisk"
+                text="Aby móc w pełni korzystać z aplikacji musisz zweryfikować swoje konto poprzez kliknięcie w link, który zostanie przesłany po kliknięciu w ponniższy przycisk"
                 illustration={<Image src="email.svg" alt="email" fill />}
                 bottomElement={
                     <Button

@@ -41,11 +41,9 @@ export default NiceModal.create(() => {
         <BaseModal
             show={modal.visible}
             onHide={() => modal.hide()}
-            title="Dodaj wydatek"
+            title="Dodawanie wydatku"
             description={`
-                Lorem ipsum dolor sit amet, 
-                consectetur adipiscing elit, 
-                sed do eiusmod tempor incididunt.
+                Jeśli chcesz dodać nowy wydatek, możesz to zrobić poprzez ponniższy formularz.
             `}
             onSubmit={onSubmit}
             submitText="Dodaj"

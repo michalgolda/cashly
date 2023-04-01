@@ -29,7 +29,10 @@ export default function PasswordRecovery() {
                         <>
                             <FormHeader
                                 title="Resetowanie hasła"
-                                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                                description={`
+                                    Na podany adres zostanie wysłana wiadomość z
+                                    odnośnikiem, który przekieruje Cię do formularza zmiany hasła.
+                                `}
                             />
                             <RequestForm />
                             <FormFooter>
@@ -41,7 +44,8 @@ export default function PasswordRecovery() {
                         <>
                             <FormHeader
                                 title="Resetowanie hasła"
-                                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                                description={`
+                                    Wprowadź nowe hasło, które chcesz ustawić. Upewnij się, że używasz silnego hasła.`}
                             />
                             <ProceedForm />
                             <FormFooter>

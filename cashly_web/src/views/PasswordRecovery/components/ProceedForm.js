@@ -77,7 +77,7 @@ export default function ProceedForm() {
                 }
                 fullWidth
             />
-            <Button type="submit">Zresetuj hasło</Button>
+            <Button type="submit">Zmień hasło</Button>
         </BaseForm>
     )
 }
