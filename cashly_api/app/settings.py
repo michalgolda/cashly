@@ -6,9 +6,7 @@ from pydantic import BaseSettings
 
 class Settings(BaseSettings):
     SECRET_KEY: str = ""
-    DATABASE_URL: str = "sqlite:///" + str(
-        Path(__file__).parents[1] / "database.sqlite"
-    )
+    DATABASE_URL: str = "sqlite:///" + str(Path(__file__).parents[1] / "cashly.sqlite")
 
     JWT_TOKEN_ALGORITHM: str = "HS256"
 
