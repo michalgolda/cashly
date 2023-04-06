@@ -44,7 +44,7 @@ function Sidebar({ userEmail, onLogout }) {
                 <StyledTextLogoutButton onClick={onLogout} variant="text">
                     Wyloguj się
                 </StyledTextLogoutButton>
-                <StyledIconLogoutButton onClick={onLogout}>
+                <StyledIconLogoutButton onClick={onLogout} variant="text">
                     <FontAwesomeIcon icon={faSignOut} />
                 </StyledIconLogoutButton>
             </StyledContainer>

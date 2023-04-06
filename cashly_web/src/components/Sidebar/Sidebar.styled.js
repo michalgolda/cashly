@@ -51,19 +51,8 @@ export const StyledAppIcon = styled(Image)`
 `
 
 export const StyledTextLogoutButton = styled(Button)`
-    padding: 0;
     display: none;
     margin: 32px auto;
-
-    &:hover {
-        color: #292929;
-        background-color: transparent !important;
-    }
-
-    &:active {
-        color: #3f3f3f;
-        background-color: transparent !important;
-    }
 
     @media (${({ theme }) => theme.mediaQueries.tablet}) {
         display: inline-flex;
@@ -82,16 +71,6 @@ export const StyledIconLogoutButton = styled(Button)`
     margin: 32px auto;
     display: inline-flex;
     background-color: transparent;
-
-    &:hover {
-        color: #292929;
-        background-color: transparent !important;
-    }
-
-    &:active {
-        color: #3f3f3f;
-        background-color: transparent !important;
-    }
 
     svg {
         width: 20px;
@@ -113,6 +92,7 @@ export const StyledToggleMenuButton = styled(IconButton)`
     height: 50px;
     z-index: 998;
     display: none;
+    color: white;
     position: fixed;
     background-color: #2667ff;
 

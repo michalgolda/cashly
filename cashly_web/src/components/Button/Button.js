@@ -2,22 +2,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PropTypes from 'prop-types'
 
 import {
+    StyledButton,
     StyledEndIconWrapper,
-    StyledPrimaryButton,
-    StyledPrimaryOutlinedButton,
     StyledStartIconWrapper,
-    StyledTextButton,
 } from './Button.styled'
 
-function Button({ children, variant, startIcon, endIcon, ...props }) {
-    const ButtonVariant = {
-        text: StyledTextButton,
-        primary: StyledPrimaryButton,
-        primaryOutlined: StyledPrimaryOutlinedButton,
-    }[variant]
-
+function Button({ children, startIcon, endIcon, ...props }) {
     return (
-        <ButtonVariant {...props}>
+        <StyledButton {...props}>
             {startIcon && (
                 <StyledStartIconWrapper>
                     <FontAwesomeIcon icon={startIcon} />
@@ -29,7 +21,7 @@ function Button({ children, variant, startIcon, endIcon, ...props }) {
                     <FontAwesomeIcon icon={endIcon} />
                 </StyledEndIconWrapper>
             )}
-        </ButtonVariant>
+        </StyledButton>
     )
 }
 

@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components'
+import { variant } from 'styled-system'
 
 export const StyledBaseButton = styled.button`
     border: none;
@@ -6,56 +7,54 @@ export const StyledBaseButton = styled.button`
     cursor: pointer;
     font-weight: 700;
     padding: 8px 16px;
-    position: relative;
     font-size: 0.938rem;
     align-items: center;
     display: inline-flex;
     min-width: max-content;
     justify-content: center;
     font-family: ${({ theme }) => theme.fontFamily};
+`
 
-    &:hover {
-        background-color: #292929;
-    }
-
-    &:active {
-        background-color: #3f3f3f;
-    }
-
+export const StyledButton = styled(StyledBaseButton)`
     ${({ fullWidth }) =>
         fullWidth &&
         css`
             width: 100%;
         `};
-`
 
-export const StyledPrimaryButton = styled(StyledBaseButton)`
-    color: white;
-    background-color: ${({ theme }) => theme.colors.primary400};
-`
-
-export const StyledPrimaryOutlinedButton = styled(StyledBaseButton)`
-    padding: 6px 14px;
-    background-color: transparent;
-    border: 2px solid ${({ theme }) => theme.colors.primary400};
-
-    &:hover {
-        color: white;
-    }
-`
-
-export const StyledTextButton = styled(StyledBaseButton)`
-    padding: 8px;
-    background-color: transparent;
-    color: ${({ theme }) => theme.colors.primary400};
-
-    &:hover {
-        background-color: ${({ theme }) => theme.colors.gray100};
-    }
-
-    &:active {
-        background-color: ${({ theme }) => theme.colors.gray300};
-    }
+    ${variant({
+        variants: {
+            primary: {
+                color: 'white',
+                backgroundColor: '#000',
+                border: '2px solid #000',
+                '&:hover': {
+                    backgroundColor: '#292929',
+                },
+                '&:active': {
+                    backgroundColor: '#3f3f3f',
+                },
+            },
+            primaryOutlined: {
+                backgroundColor: 'transparent',
+                border: '2px solid #000',
+                '&:hover': {
+                    color: '#000',
+                },
+            },
+            text: {
+                padding: '8px',
+                backgroundColor: 'transparent',
+                color: '#000',
+                '&:hover': {
+                    backgroundColor: 'gray100',
+                },
+                '&:active': {
+                    backgroundColor: 'gray300',
+                },
+            },
+        },
+    })}
 `
 
 export const StyledBaseIconWrapper = styled.span`

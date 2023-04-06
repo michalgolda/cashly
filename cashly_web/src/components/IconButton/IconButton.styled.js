@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 
-import Button from '@/components/Button/Button'
+import { StyledBaseButton } from '@/components/Button/Button.styled'
 
-export const StyledIconButton = styled(Button)`
+export const StyledIconButton = styled(StyledBaseButton)`
     width: 32px;
     padding: 10.42px !important;
 
