@@ -1,10 +1,5 @@
 import { Lato } from '@next/font/google'
 
-// const openSansFont = Open_Sans({
-//     subsets: ['latin', 'latin-ext'],
-//     weight: ['700'],
-// })
-
 const latoFont = Lato({
     subsets: ['latin', 'latin-ext'],
     weight: ['400', '700', '900'],
@@ -41,7 +36,6 @@ const theme = {
         bold: 700,
         black: 900,
     },
-    defaultTransition: 'all .25s',
     mediaQueries: {
         mobile: '(max-width: 425px)',
         tablet: '(min-width: 768px)',

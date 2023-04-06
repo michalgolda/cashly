@@ -10,7 +10,6 @@ export const StyledCloseButton = styled.span`
     user-select: none;
     background-color: transparent;
     font-size: ${({ theme }) => theme.fontSizes.h4};
-    transition: ${({ theme }) => theme.defaultTransition};
     color: ${({ variant }) => (variant === 'light' ? 'white' : 'inherit')};
 
     &:hover {

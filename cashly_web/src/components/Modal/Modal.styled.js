@@ -61,7 +61,6 @@ export const StyledHideButton = styled.span`
     user-select: none;
     background-color: transparent;
     font-size: ${({ theme }) => theme.fontSizes.h4};
-    transition: ${({ theme }) => theme.defaultTransition};
 
     &:hover {
         transform: rotate(180deg);

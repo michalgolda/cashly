@@ -13,7 +13,6 @@ export const StyledBaseButton = styled.button`
     min-width: max-content;
     justify-content: center;
     font-family: ${({ theme }) => theme.fontFamily};
-    transition: ${({ theme }) => theme.defaultTransition};
 
     &:hover {
         background-color: #292929;

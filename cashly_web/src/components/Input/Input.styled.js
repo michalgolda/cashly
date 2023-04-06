@@ -60,7 +60,6 @@ export const StyledInput = styled.input`
     border: 2px solid #cdcdcd;
     font-family: ${({ theme }) => theme.fontFamily};
     color: ${({ theme }) => theme.colors.primary400};
-    transition: ${({ theme }) => theme.defaultTransition};
 
     &:focus {
         border-color: ${({ theme }) => theme.colors.primary400};
@@ -89,5 +88,4 @@ export const StyledLabelText = styled.span`
     font-weight: 700;
     width: fit-content;
     font-size: 0.75rem;
-    transition: ${({ theme }) => theme.defaultTransition};
 `

@@ -17,7 +17,6 @@ export const StyledLinkButton = styled.button`
     font-size: 0.938rem;
     align-items: center;
     display: inline-flex;
-    transition: all 0.25s;
     justify-content: center;
     background-color: white;
     font-family: ${({ theme }) => theme.fontFamily};
