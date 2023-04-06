@@ -1,7 +1,11 @@
-<img src="https://i.ibb.co/dknMNNr/screencapture-localhost-3000-expenses-2022-02-03-21-25-57.png" />
-<br />
-<br />
-<img src="https://i.ibb.co/MgvfMtJ/screencapture-localhost-3000-categories-2022-02-03-21-24-00.png" />
-<br />
-<br />
-<img src="https://i.ibb.co/tqVV7dd/screencapture-localhost-3000-analytics-2022-02-03-21-26-45.png" />
+<br>
+<br>
+<p align="center">
+  <img src="https://cdn.discordapp.com/attachments/1012701830809141329/1092165177610338404/logo.svg" height="64">
+</p>
+<br>
+<br>
+
+<p aling="center">
+  <img src="https://cdn.discordapp.com/attachments/1012701830809141329/1092183815822245978/Slide_16_9_-_1.jpg">
+</p>
