@@ -6,7 +6,7 @@ import Container from '../components/Container'
 import FormFooter from '../components/FormFooter'
 import FormHeader from '../components/FormHeader/FormHeader'
 import Separator from '../components/Separator/Separator'
-import Form from './components/Form'
+import Form from './components/Form/Form'
 
 export default function Login() {
     return (

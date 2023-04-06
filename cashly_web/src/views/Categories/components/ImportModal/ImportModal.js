@@ -1,37 +1,18 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
-import { useMutation, useQueryClient } from 'react-query'
-import { toast } from 'react-toastify'
 
-import { expenseCategoryService } from '@/api/services'
 import Button from '@/components/Button/Button'
 import Input from '@/components/Input/Input'
-import { notifyUnhandledError } from '@/utils/notifyUnhandledError'
 
 import {
     StyledForm,
     StyledModal,
     StyledTextContainer,
 } from './ImportModal.styled'
+import { useImportExpenseCategoriesMutation } from './useImportExpenseCategoriesMutation'
 
 export default NiceModal.create(() => {
     const modal = useModal()
-
-    const queryClient = useQueryClient()
-
-    const notifySuccess = () =>
-        toast.success('Kategorie wydatków zostały pomyślnie zaimportowane')
-
-    const mutation = useMutation(
-        expenseCategoryService.importExpenseCategories,
-        {
-            onSuccess: () => {
-                modal.hide()
-                queryClient.invalidateQueries('categories')
-                notifySuccess()
-            },
-            onError: () => notifyUnhandledError(),
-        }
-    )
+    const mutation = useImportExpenseCategoriesMutation()
 
     const handleSubmit = (e) => {
         e.preventDefault()

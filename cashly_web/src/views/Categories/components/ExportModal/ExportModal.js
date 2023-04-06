@@ -1,55 +1,18 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
-import { saveAs } from 'file-saver'
-import { useFormik } from 'formik'
-import { useMutation } from 'react-query'
-import { toast } from 'react-toastify'
 
-import { expenseCategoryService } from '@/api/services'
 import Button from '@/components/Button/Button'
 import Input from '@/components/Input/Input'
-import { defaultDateTimeFormat } from '@/utils/defaultDateTimeFormat'
-import { notifyUnhandledError } from '@/utils/notifyUnhandledError'
 
 import {
     StyledForm,
     StyledModal,
     StyledTextContainer,
 } from './ExportModal.styled'
+import { useForm } from './useForm'
 
 export default NiceModal.create(() => {
+    const form = useForm()
     const modal = useModal()
-
-    const notifySuccess = () =>
-        toast.success('Kategorie wydatków zostały pomyślnie wyeksportowane')
-
-    const mutation = useMutation(
-        expenseCategoryService.exportExpenseCategories,
-        {
-            onSuccess: ({ data }) => {
-                modal.hide()
-
-                const blob = new Blob([data], { type: 'text/csv' })
-                saveAs(
-                    blob,
-                    `Kategorie wydatków - ${defaultDateTimeFormat.format(
-                        new Date()
-                    )}`
-                )
-
-                notifySuccess()
-            },
-            onError: () => notifyUnhandledError(),
-        }
-    )
-
-    const onSubmit = (values) => mutation.mutate(values)
-
-    const initialValues = { fileFormat: 'CSV' }
-
-    const formik = useFormik({
-        onSubmit,
-        initialValues,
-    })
 
     return (
         <StyledModal show={modal.visible} onHide={() => modal.hide()}>
@@ -61,13 +24,13 @@ export default NiceModal.create(() => {
                     mógł/mogła mieć pewność, że Twoje dane są bezpieczne.
                 </p>
             </StyledTextContainer>
-            <StyledForm onSubmit={formik.handleSubmit}>
+            <StyledForm onSubmit={form.handleSubmit}>
                 <Input
                     as="select"
                     name="fileFormat"
-                    onChange={formik.handleChange}
+                    onChange={form.handleChange}
                     labelText="Format pliku"
-                    value={formik.values.fileFormat}
+                    value={form.values.fileFormat}
                     fullWidth
                 >
                     <option value="CSV">CSV</option>

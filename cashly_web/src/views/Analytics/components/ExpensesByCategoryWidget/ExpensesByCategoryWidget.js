@@ -6,19 +6,10 @@ import Skeleton from '@/components/Skeleton/Skeleton'
 import { useDatePeriod } from '../DatePeriodSelect/hooks/useDatePeriod'
 import Widget from '../Widget/Widget'
 import Chart from './Chart'
+import { useGetExpensesByCategoryQuery } from './useGetExpensesByCategoryQuery'
 
 export default function ExpensesByCategoryWidget() {
-    const { currentPeriod } = useDatePeriod()
-    const { data, isLoading, isError } = useQuery(
-        ['expensesByCategory', { currentPeriod }],
-        () =>
-            analyticsService.getExpensesByCategory({
-                unit: currentPeriod.unit,
-                startDate: currentPeriod.start_date,
-                endDate: currentPeriod.end_date,
-            })
-    )
-    const dataIsAvailable = Boolean(data && data.length)
+    const { isLoading, isError, data } = useGetExpensesByCategoryQuery()
 
     return (
         <Widget title="Wydatki na kategorię">
@@ -26,7 +17,7 @@ export default function ExpensesByCategoryWidget() {
                 <Skeleton height={256} />
             ) : (
                 <>
-                    {dataIsAvailable ? (
+                    {data && data.length ? (
                         <Chart data={data} />
                     ) : (
                         <p>Brak danych</p>

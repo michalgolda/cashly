@@ -1,34 +1,15 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { useMutation } from 'react-query'
-import { toast } from 'react-toastify'
 
-import { userService } from '@/api/services'
-import { notifyUnhandledError } from '@/utils/notifyUnhandledError'
+import { useVerifyEmailMutation } from './useVerifyEmailMutation'
 
 export default function VerifyEmail() {
-    const notifyVerifyEmailSuccess = () =>
-        toast.success('Adres email został pomyślnie zweryfikowany')
-
-    const verifyEmailMutation = useMutation(userService.verifyEmail, {
-        onSuccess: () => {
-            router.push('/expenses').then(() => {
-                router.reload()
-                notifyVerifyEmailSuccess()
-            })
-        },
-        onError: () => {
-            notifyUnhandledError()
-            router.push('/expenses')
-        },
-    })
-
     const router = useRouter()
+    const mutation = useVerifyEmailMutation()
 
     useEffect(() => {
         const { emailVerificationToken } = router.query
-        emailVerificationToken &&
-            verifyEmailMutation.mutate({ emailVerificationToken })
+        emailVerificationToken && mutation.mutate({ emailVerificationToken })
     }, [router.query])
 
     return null

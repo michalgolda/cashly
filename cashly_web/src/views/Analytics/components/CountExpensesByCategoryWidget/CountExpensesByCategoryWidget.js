@@ -1,23 +1,11 @@
-import { useQuery } from 'react-query'
-
-import { analyticsService } from '@/api/services'
 import Skeleton from '@/components/Skeleton/Skeleton'
 
-import { useDatePeriod } from '../DatePeriodSelect/hooks/useDatePeriod'
 import Widget from '../Widget/Widget'
 import Chart from './Chart'
+import { useGetCountExpensesByCategoryQuery } from './useGetCountExpensesByCategoryQuery'
 
 export default function CountExpensesByCategoryWidget() {
-    const { currentPeriod } = useDatePeriod()
-    const { data, isLoading, isError } = useQuery(
-        ['countExpensesByCategory', { currentPeriod }],
-        () =>
-            analyticsService.getCountExpensesByCategory({
-                startDate: currentPeriod.start_date,
-                endDate: currentPeriod.end_date,
-            })
-    )
-    const dataIsAvailable = Boolean(data && data.length)
+    const { isLoading, isError, data } = useGetCountExpensesByCategoryQuery()
 
     return (
         <Widget title="Liczba wydatków na kategorię">
@@ -25,7 +13,7 @@ export default function CountExpensesByCategoryWidget() {
                 <Skeleton height={256} />
             ) : (
                 <>
-                    {dataIsAvailable ? (
+                    {data && data.length ? (
                         <Chart data={data} />
                     ) : (
                         <p>Brak danych</p>

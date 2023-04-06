@@ -1,31 +1,12 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
-import { useMutation, useQueryClient } from 'react-query'
-import { toast } from 'react-toastify'
 
-import { expenseService } from '@/api/services'
-import { notifyUnhandledError } from '@/utils/notifyUnhandledError'
-
-import BaseModal from './BaseModal/BaseModal'
+import BaseModal from '../BaseModal/BaseModal'
+import { useUpdateExpenseMutation } from './useUpdateExpenseMutation'
 
 export default NiceModal.create(
     ({ id, amount, realisedDate, expenseCategoryId }) => {
         const modal = useModal()
-        const queryClient = useQueryClient()
-
-        const notifyEditExpenseSuccess = () =>
-            toast.success('Wydatek został pomyślnie zaktualizowany')
-
-        const updateExpenseMutation = useMutation(
-            expenseService.updateExpense,
-            {
-                onSuccess: () => {
-                    modal.hide()
-                    queryClient.invalidateQueries('expenses')
-                    notifyEditExpenseSuccess()
-                },
-                onError: () => notifyUnhandledError(),
-            }
-        )
+        const mutation = useUpdateExpenseMutation()
 
         const initialValues = {
             amount,
@@ -37,7 +18,7 @@ export default NiceModal.create(
             values.expenseCategoryId = values.expenseCategoryId
                 ? values.expenseCategoryId
                 : null
-            updateExpenseMutation.mutate({ id, ...values })
+            mutation.mutate({ id, ...values })
         }
 
         return (

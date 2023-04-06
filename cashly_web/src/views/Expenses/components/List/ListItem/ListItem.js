@@ -10,7 +10,7 @@ import { defaultCurrencyFormat } from '@/utils/defaultCurrencyFormat'
 import { defaultDateTimeFormat } from '@/utils/defaultDateTimeFormat'
 import { notifyUnhandledError } from '@/utils/notifyUnhandledError'
 
-import EditModal from '../../EditModal'
+import EditModal from '../../EditModal/EditModal'
 import {
     StyledActions,
     StyledCategory,

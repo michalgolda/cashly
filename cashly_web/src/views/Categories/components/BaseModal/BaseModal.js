@@ -1,6 +1,4 @@
-import { useFormik } from 'formik'
 import PropTypes from 'prop-types'
-import * as yup from 'yup'
 
 import Button from '@/components/Button/Button'
 import Input from '@/components/Input/Input'
@@ -11,6 +9,7 @@ import {
     StyledModal,
     StyledTextContainer,
 } from './BaseModal.styled'
+import { useForm } from './useForm'
 
 function BaseModal({
     title,
@@ -20,19 +19,7 @@ function BaseModal({
     initialValues,
     ...props
 }) {
-    const validationSchema = yup.object().shape({
-        name: yup
-            .string()
-            .required('Nazwa kategorii jest wymagana.')
-            .max(25, 'Nazwa kategorii może mieć maksymalnie 25 znaków.'),
-    })
-
-    const formik = useFormik({
-        onSubmit,
-        initialValues,
-        validationSchema,
-        enableReinitialize: true,
-    })
+    const form = useForm({ onSubmit, initialValues })
 
     return (
         <StyledModal {...props}>
@@ -40,23 +27,23 @@ function BaseModal({
                 <h2>{title}</h2>
                 <p>{description}</p>
             </StyledTextContainer>
-            <StyledForm onSubmit={formik.handleSubmit}>
+            <StyledForm onSubmit={form.handleSubmit}>
                 <Input
                     type="text"
                     name="name"
                     labelText="Nazwa"
-                    value={formik.values.name}
-                    onChange={formik.handleChange}
-                    error={formik.touched.name && formik.errors.name}
+                    value={form.values.name}
+                    onChange={form.handleChange}
+                    error={form.touched.name && form.errors.name}
                     fullWidth
                 />
                 <StyledColorInput
                     type="color"
                     name="color"
                     labelText="Kolor"
-                    value={formik.values.color}
-                    onChange={formik.handleChange}
-                    error={formik.touched.color && formik.errors.color}
+                    value={form.values.color}
+                    onChange={form.handleChange}
+                    error={form.touched.color && form.errors.color}
                     fullWidth
                 />
                 <Button type="submit" fullWidth>

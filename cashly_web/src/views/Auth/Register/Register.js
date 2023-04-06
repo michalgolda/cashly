@@ -5,7 +5,7 @@ import AuthLayout from '@/layouts/AuthLayout/AuthLayout'
 import Container from '../components/Container'
 import FormFooter from '../components/FormFooter'
 import FormHeader from '../components/FormHeader/FormHeader'
-import Form from './components/Form'
+import Form from './components/Form/Form'
 
 export default function Register() {
     return (

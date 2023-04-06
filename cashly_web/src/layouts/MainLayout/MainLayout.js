@@ -1,10 +1,7 @@
 import { useSession } from 'next-auth/react'
 import { signOut } from 'next-auth/react'
 import Image from 'next/image'
-import { useMutation } from 'react-query'
-import { toast } from 'react-toastify'
 
-import { userService } from '@/api/services'
 import Button from '@/components/Button/Button'
 import Footer from '@/components/Footer/Footer'
 import Informer from '@/components/Informer/Informer'
@@ -12,15 +9,10 @@ import PageMain from '@/components/PageMain/PageMain'
 import Sidebar from '@/components/Sidebar/Sidebar'
 
 import { StyledContent, StyledMain } from './MainLayout.styled'
+import { useSendEmailVerificationRequestMutation } from './useSendEmailVerificationRequestMutation'
 
 function UnVerified({ userEmail }) {
-    const notifySuccess = () =>
-        toast.success('Link weryfikacyjny został wysłany')
-
-    const mutation = useMutation(userService.sendEmailVerificationRequest, {
-        onSuccess: () => notifySuccess(),
-        onError: () => notifyUnhandledError(),
-    })
+    const mutation = useSendEmailVerificationRequestMutation()
 
     return (
         <PageMain>

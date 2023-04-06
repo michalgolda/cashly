@@ -1,33 +1,18 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
-import { useMutation, useQueryClient } from 'react-query'
-import { toast } from 'react-toastify'
 
-import { expenseService } from '@/api/services'
 import Button from '@/components/Button/Button'
 import Input from '@/components/Input/Input'
-import { notifyUnhandledError } from '@/utils/notifyUnhandledError'
 
 import {
     StyledForm,
     StyledModal,
     StyledTextContainer,
 } from './ImportModal.styled'
+import { useImportExpenseMutation } from './useImportExpensesMutation'
 
 export default NiceModal.create(() => {
     const modal = useModal()
-    const queryClient = useQueryClient()
-
-    const notifyImportExpensesSuccess = () =>
-        toast.success('Wydatki zostały pomyślnie zaimportowane')
-
-    const importExpensesMutation = useMutation(expenseService.importExpenses, {
-        onSuccess: () => {
-            modal.hide()
-            queryClient.invalidateQueries('expenses')
-            notifyImportExpensesSuccess()
-        },
-        onError: () => notifyUnhandledError(),
-    })
+    const mutation = useImportExpenseMutation()
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -35,7 +20,7 @@ export default NiceModal.create(() => {
         const formData = new FormData(e.target)
         const file = formData.get('file')
 
-        importExpensesMutation.mutate({ file })
+        mutation.mutate({ file })
     }
 
     return (

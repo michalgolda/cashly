@@ -8,7 +8,7 @@ import DeleteListItemButton from '@/components/DeleteListItemButton/DeleteListIt
 import EditListItemButton from '@/components/EditListItemButton/EditListItemButton'
 import { notifyUnhandledError } from '@/utils/notifyUnhandledError'
 
-import EditModal from '../../EditModal'
+import EditModal from '../../EditModal/EditModal'
 import {
     StyledActions,
     StyledCategory,

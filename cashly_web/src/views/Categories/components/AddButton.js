@@ -3,7 +3,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import Button from '@/components/Button/Button'
 
-import AddModal from './AddModal'
+import AddModal from './AddModal/AddModal'
 
 export default function AddButton() {
     const modal = useModal(AddModal)

@@ -6,10 +6,10 @@ import AuthLayout from '@/layouts/AuthLayout/AuthLayout'
 import Container from '../Auth/components/Container'
 import FormFooter from '../Auth/components/FormFooter'
 import FormHeader from '../Auth/components/FormHeader/FormHeader'
-import ProceedForm from './components/ProceedForm'
-import RequestForm from './components/RequestForm'
+import ProceedForm from './components/ProceedForm/ProceedForm'
+import RequestForm from './components/RequestForm/RequestForm'
 import { PasswordRecoveryProvider } from './context'
-import { usePasswordRecoveryProvider } from './hooks/usePasswordRecoveryProvider'
+import { usePasswordRecoveryProvider } from './usePasswordRecoveryProvider'
 
 export default function PasswordRecovery() {
     const router = useRouter()

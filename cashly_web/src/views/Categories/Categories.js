@@ -1,22 +1,14 @@
-import { useQuery } from 'react-query'
-
-import { expenseCategoryService } from '@/api/services'
 import PageMain from '@/components/PageMain/PageMain'
 import MainLayout from '@/layouts/MainLayout/MainLayout'
 
 import List from './components/List/List'
 import PageHeader from './components/PageHeader/PageHeader'
+import { useGetAllExpenseCategoriesQuery } from './useGetAllExpenseCategoriesQuery'
 
 export default function Categories() {
-    const getAllExpenseCategoriesQuery = useQuery(
-        'categories',
-        expenseCategoryService.getAllExpenseCategories
-    )
+    const { isLoading, isError, data } = useGetAllExpenseCategoriesQuery()
 
-    const isEmpty = !Boolean(
-        getAllExpenseCategoriesQuery.data &&
-            getAllExpenseCategoriesQuery.data.length
-    )
+    const isEmpty = !Boolean(data && data.length)
     const showHeaderActions = !isEmpty
 
     return (
@@ -24,12 +16,9 @@ export default function Categories() {
             <PageHeader showActions={showHeaderActions} />
             <PageMain>
                 <List
-                    data={getAllExpenseCategoriesQuery.data}
+                    data={data}
                     isEmpty={isEmpty}
-                    isLoading={
-                        getAllExpenseCategoriesQuery.isLoading ||
-                        getAllExpenseCategoriesQuery.isError
-                    }
+                    isLoading={isLoading || isError}
                 />
             </PageMain>
         </MainLayout>
