@@ -15,12 +15,12 @@ export const useImportExpenseMutation = () => {
         toast.success('Wydatki zostały pomyślnie zaimportowane')
 
     return useMutation(expenseService.importExpenses, {
-        onSuccess() {
+        onSuccess: () => {
             modal.hide()
             queryClient.invalidateQueries('expenses')
             notifySuccess()
         },
-        onError() {
+        onError: () => {
             notifyUnhandledError()
         },
     })

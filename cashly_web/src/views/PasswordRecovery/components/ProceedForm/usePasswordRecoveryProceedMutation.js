@@ -11,11 +11,11 @@ export const usePasswordProceedMutation = () => {
         toast.success('Hasło zostało pomyślnie zmienione')
 
     return useMutation(authService.passwordRecoveryProceed, {
-        onSuccess() {
+        onSuccess: () => {
             router.push('/login')
             notifySuccess()
         },
-        onError() {
+        onError: () => {
             notifyUnhandledError()
         },
     })

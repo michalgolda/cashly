@@ -14,12 +14,12 @@ export const useCreateExpenseMutation = () => {
     const notifySuccess = () => toast.success('Wydatek został pomyślnie dodany')
 
     return useMutation(expenseService.createExpense, {
-        onSuccess() {
+        onSuccess: () => {
             modal.hide()
             queryClient.invalidateQueries('expenses')
             notifySuccess()
         },
-        onError() {
+        onError: () => {
             notifyUnhandledError()
         },
     })

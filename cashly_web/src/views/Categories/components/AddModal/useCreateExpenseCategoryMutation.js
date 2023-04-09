@@ -15,12 +15,12 @@ export const useCreateExpenseCategoryMutation = () => {
         toast.success('Kategoria została pomyślnie dodana')
 
     return useMutation(expenseCategoryService.createExpenseCategory, {
-        onSuccess() {
+        onSuccess: () => {
             modal.hide()
             queryClient.invalidateQueries('categories')
             notifySuccess()
         },
-        onError() {
+        onError: () => {
             modal.hide()
             notifyUnhandledError()
         },

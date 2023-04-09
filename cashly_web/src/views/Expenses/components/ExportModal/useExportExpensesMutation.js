@@ -16,7 +16,7 @@ export const useExportExpensesMutation = () => {
         toast.success('Wydatki zostały pomyślnie wyeksportowane')
 
     return useMutation(expenseService.exportExpenses, {
-        onSuccess({ data }) {
+        onSuccess: ({ data }) => {
             modal.hide()
 
             const blob = new Blob([data], { type: 'text/csv' })
@@ -27,7 +27,7 @@ export const useExportExpensesMutation = () => {
 
             notifySuccess()
         },
-        onError() {
+        onError: () => {
             notifyUnhandledError()
         },
     })

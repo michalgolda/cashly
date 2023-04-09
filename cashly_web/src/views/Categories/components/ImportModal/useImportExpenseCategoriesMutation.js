@@ -16,12 +16,12 @@ export const useImportExpenseCategoriesMutation = () => {
         toast.success('Kategorie wydatków zostały pomyślnie zaimportowane')
 
     return useMutation(expenseCategoryService.importExpenseCategories, {
-        onSuccess() {
+        onSuccess: () => {
             modal.hide()
             queryClient.invalidateQueries('categories')
             notifySuccess()
         },
-        onError() {
+        onError: () => {
             notifyUnhandledError()
         },
     })

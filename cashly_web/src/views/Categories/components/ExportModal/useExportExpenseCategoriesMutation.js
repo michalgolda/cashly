@@ -16,7 +16,7 @@ export const useExportExpenseCategoriesMutation = () => {
         toast.success('Kategorie wydatków zostały pomyślnie wyeksportowane')
 
     return useMutation(expenseCategoryService.exportExpenseCategories, {
-        onSuccess({ data }) {
+        onSuccess: ({ data }) => {
             modal.hide()
 
             const blob = new Blob([data], { type: 'text/csv' })
@@ -29,7 +29,7 @@ export const useExportExpenseCategoriesMutation = () => {
 
             notifySuccess()
         },
-        onError() {
+        onError: () => {
             notifyUnhandledError()
         },
     })

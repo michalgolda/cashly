@@ -11,13 +11,13 @@ export const useVerifyEmailMutation = () => {
         toast.success('Adres email został pomyślnie zweryfikowany')
 
     return useMutation(userService.verifyEmail, {
-        onSuccess() {
+        onSuccess: () => {
             router.push('/expenses').then(() => {
                 router.reload()
                 notifySuccess()
             })
         },
-        onError() {
+        onError: () => {
             notifyUnhandledError()
             router.push('/expenses')
         },

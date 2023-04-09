@@ -16,12 +16,12 @@ export const useUpdateExpenseMutation = () => {
         toast.success('Wydatek został pomyślnie zaktualizowany')
 
     return useMutation(expenseService.updateExpense, {
-        onSuccess() {
+        onSuccess: () => {
             modal.hide()
             queryClient.invalidateQueries('expenses')
             notifySuccess()
         },
-        onError() {
+        onError: () => {
             notifyUnhandledError()
         },
     })

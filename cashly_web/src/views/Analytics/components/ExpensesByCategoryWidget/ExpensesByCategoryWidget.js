@@ -1,9 +1,5 @@
-import { useQuery } from 'react-query'
-
-import { analyticsService } from '@/api/services'
 import Skeleton from '@/components/Skeleton/Skeleton'
 
-import { useDatePeriod } from '../DatePeriodSelect/hooks/useDatePeriod'
 import Widget from '../Widget/Widget'
 import Chart from './Chart'
 import { useGetExpensesByCategoryQuery } from './useGetExpensesByCategoryQuery'

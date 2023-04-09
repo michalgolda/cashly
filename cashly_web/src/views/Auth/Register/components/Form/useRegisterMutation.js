@@ -15,11 +15,11 @@ export const useRegisterMutation = () => {
     return useMutation(
         (payload = { email, password }) => authService.register(payload),
         {
-            onSuccess() {
+            onSuccess: () => {
                 router.push('/login')
                 notifyRegisterSuccess()
             },
-            onError({ response }) {
+            onError: ({ response }) => {
                 if (response) {
                     const { code, message } = response.data
                     if (code === 'UserEmailAlreadyUsedError') {
