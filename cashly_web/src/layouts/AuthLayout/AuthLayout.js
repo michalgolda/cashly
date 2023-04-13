@@ -1,19 +1,19 @@
 import {
     StyledContainer,
-    StyledFlexCenter,
     StyledFooter,
     StyledLogo,
+    StyledWrapper,
 } from './AuthLayout.styled'
 
 export default function AuthLayout({ children, ...props }) {
     return (
         <>
-            <StyledFlexCenter {...props}>
+            <StyledWrapper {...props}>
                 <StyledContainer>
                     <StyledLogo />
                     {children}
                 </StyledContainer>
-            </StyledFlexCenter>
+            </StyledWrapper>
             <StyledFooter />
         </>
     )
