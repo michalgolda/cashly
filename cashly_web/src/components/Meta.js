@@ -1,6 +1,7 @@
 import Head from 'next/head'
+import PropTypes from 'prop-types'
 
-export default function Meta({ children, title }) {
+function Meta({ children, title }) {
     return (
         <Head>
             <title>{`Cash.ly - ${title}`}</title>
@@ -8,3 +9,9 @@ export default function Meta({ children, title }) {
         </Head>
     )
 }
+
+Meta.propTypes = {
+    title: PropTypes.string.isRequired,
+}
+
+export default Meta
