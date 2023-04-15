@@ -10,7 +10,11 @@ import {
 
 function Input({ className, fullWidth, labelText, error, ...props }) {
     return (
-        <StyledContainer isError={Boolean(error)} fullWidth={fullWidth}>
+        <StyledContainer
+            isError={Boolean(error)}
+            fullWidth={fullWidth}
+            data-testid="input-component"
+        >
             <StyledLabelContainer>
                 <StyledLabelText className="labelText">
                     {labelText}
@@ -24,7 +28,11 @@ function Input({ className, fullWidth, labelText, error, ...props }) {
                     </>
                 )}
             </StyledLabelContainer>
-            <StyledInput className={`${className} input`} {...props} />
+            <StyledInput
+                className={`${className} input`}
+                {...props}
+                data-testid="input-element"
+            />
         </StyledContainer>
     )
 }

@@ -7,7 +7,7 @@ export const StyledIconButton = styled(StyledBaseButton)`
     padding: 10.42px !important;
 
     svg {
-        width: ${({ theme }) => theme.fontSizes.h5} !important;
-        height: ${({ theme }) => theme.fontSizes.h5} !important;
+        width: 1.2rem !important;
+        height: 1.2rem !important;
     }
 `

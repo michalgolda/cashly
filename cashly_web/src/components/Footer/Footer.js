@@ -4,7 +4,7 @@ import { StyledFooter, StyledGithubLink, StyledText } from './Footer.styled'
 
 export default function Footer(props) {
     return (
-        <StyledFooter {...props}>
+        <StyledFooter {...props} data-testid="footer-component">
             <StyledText>© 2023 Cash.ly</StyledText>
             <StyledGithubLink href="https://github.com/michalgolda">
                 <Image

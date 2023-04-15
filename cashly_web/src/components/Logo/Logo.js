@@ -9,6 +9,7 @@ export default function Logo(props) {
             height={55}
             priority
             {...props}
+            data-testid="logo-component"
         />
     )
 }

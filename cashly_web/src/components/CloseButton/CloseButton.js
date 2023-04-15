@@ -6,7 +6,11 @@ import { StyledCloseButton } from './CloseButton.styled'
 
 function CloseButton({ variant, ...props }) {
     return (
-        <StyledCloseButton variant={variant} {...props}>
+        <StyledCloseButton
+            variant={variant}
+            {...props}
+            data-testid="close-button"
+        >
             <FontAwesomeIcon icon={faTimes} />
         </StyledCloseButton>
     )

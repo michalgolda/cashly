@@ -16,7 +16,7 @@ function Modal({ children, show, onHide, ...props }) {
     const nodeRef = useRef(null)
 
     return (
-        <StyledCSSTransitionWrapper>
+        <StyledCSSTransitionWrapper data-testid="modal-component">
             <CSSTransition
                 nodeRef={nodeRef}
                 in={show}

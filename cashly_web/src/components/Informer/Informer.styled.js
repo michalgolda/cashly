@@ -20,8 +20,8 @@ export const StyledIllustrationWrapper = styled.div`
 
 export const StyledText = styled.p`
     margin-top: 16px;
-    font-size: ${({ theme }) => theme.fontSizes.h5};
-    font-weight: ${({ theme }) => theme.fontWeights.semiBold};
+    font-size: 1.2rem;
+    font-weight: 700;
 `
 
 export const StyledBottomElementWrapper = styled.div`

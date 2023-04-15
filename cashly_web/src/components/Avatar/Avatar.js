@@ -4,7 +4,7 @@ import { StyledContainer, StyledLetter } from './Avatar.styled'
 
 function Avatar({ letter, ...props }) {
     return (
-        <StyledContainer {...props}>
+        <StyledContainer {...props} data-testid="avatar">
             <StyledLetter>{letter}</StyledLetter>
         </StyledContainer>
     )

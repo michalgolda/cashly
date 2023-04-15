@@ -9,7 +9,7 @@ import {
 
 function Informer({ text, bottomElement, illustration, ...props }) {
     return (
-        <StyledContainer {...props}>
+        <StyledContainer {...props} data-testid="informer-component">
             <StyledIllustrationWrapper>
                 {illustration}
             </StyledIllustrationWrapper>

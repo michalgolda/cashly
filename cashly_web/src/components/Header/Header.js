@@ -10,7 +10,7 @@ import {
 
 function Header({ children, title, ...props }) {
     return (
-        <StyledHeader {...props}>
+        <StyledHeader {...props} data-testid="header-component">
             <StyledContainer>
                 <StyledTextContainer>
                     <StyledTitle>{title}</StyledTitle>

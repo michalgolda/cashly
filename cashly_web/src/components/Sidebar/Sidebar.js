@@ -23,7 +23,7 @@ function Sidebar({ userEmail, onLogout }) {
     }
 
     return (
-        <StyledNav>
+        <StyledNav data-testid="sidebar-component">
             <StyledLogo
                 src="logo.svg"
                 alt="logo"
