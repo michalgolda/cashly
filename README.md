@@ -10,11 +10,33 @@
   <img src="https://cdn.discordapp.com/attachments/1012701830809141329/1092183815822245978/Slide_16_9_-_1.jpg">
 </p>
 
+<br>
+
+# Table of Contents
+<details open>
+  <summary>(click to expand or hide)</summary>
+  <ol>
+    <li>
+      <a href="#requirements">Requirements</a>
+    </li>
+    <li>
+      <a href="#installation">Installation</a>
+    </li>
+    <li>
+      <a href="#run">Run</a>
+    </li>
+  </ol>
+</details>
+
+<br>
+
 ## Requirements
 <code><img height="50" src="https://user-images.githubusercontent.com/25181517/192108372-f71d70ac-7ae6-4c0d-8395-51d8870c2ef0.png" alt="Git" title="Git" /></code>
 <code><img height="50" src="https://user-images.githubusercontent.com/25181517/183568594-85e280a7-0d7e-4d1a-9028-c8c2209e073c.png" alt="Node.js" title="Node.js" /></code>
 <code><img height="50" src="https://user-images.githubusercontent.com/25181517/117207330-263ba280-adf4-11eb-9b97-0ac5b40bc3be.png" alt="Docker" title="Docker" /></code>
-  
+ 
+<br>
+
 ## Installation
 1. Clone the repository
    ```sh
@@ -48,6 +70,8 @@
    MAIL_VALIDATE_CERTS=False
    ```
    
+<br>
+
 ## Run
 When you done previous steps you can run the project using a docker-compose command
    ```sh
