@@ -49,7 +49,7 @@
    ```
    
 ## Run
-When you do previous steps you can run the project using a docker-compose command
+When you done previous steps you can run the project using a docker-compose command
    ```sh
    docker-compose up api mail
    ```
