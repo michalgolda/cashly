@@ -67,7 +67,7 @@ def test_verify_email_usecase(mocker):
     assert mock_user_entity.email_is_verified == True
 
     email_message = mock_message_client.send.call_args[0][0]
-    assert email_message.title == "Cashly - Adres email został pomyślnie zweryfikowany!"
+    assert email_message.title == "Cashly - Potwierdzenie weryfikacji adresu e-mail"
     assert email_message.recipients == [mock_user_entity.email]
     assert email_message.template_name == "email-verification-success.html"
 
@@ -103,7 +103,7 @@ def test_send_email_verification_request(mocker):
     mock_user_repo.get_by_email.assert_called_once_with(mock_usecase_input.email)
 
     email_message = mock_message_client.send.call_args[0][0]
-    assert email_message.title == "Cashly - Weryfikacja adresu email!"
+    assert email_message.title == "Cashly - Weryfikacja adresu e-mail"
     assert email_message.recipients == [mock_usecase_input.email]
     assert email_message.template_name == "email-verification-request.html"
     assert email_message.payload == {

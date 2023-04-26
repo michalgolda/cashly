@@ -79,6 +79,7 @@ class RegisterUseCase(UseCase[RegisterUseCaseInput, NoReturn]):
         password = input.password
         default_expense_categories = input.default_expense_categories
 
+        self._check_email(email)
         self._create_user(email, password)
         self._create_default_expense_categories(email, default_expense_categories)
         self._send_email_verification_token(email)

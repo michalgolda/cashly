@@ -60,6 +60,8 @@ def test_get_current_user(client):
     indirect=True,
 )
 def test_verify_email(client):
+    message_client.output = []
+
     email_verification_token = security_manager.generate_email_verification_token(
         "test@test.pl"
     )
@@ -69,7 +71,6 @@ def test_verify_email(client):
     )
     assert response.status_code == 200
     assert len(message_client.output) == 1
-    message_client.output = []
 
 
 @pytest.mark.parametrize(
@@ -87,13 +88,14 @@ def test_verify_email(client):
     indirect=True,
 )
 def test_send_email_verification_request(client):
+    message_client.output = []
+
     response = client.post(
         "/users/verify/email/request",
         json={"email": "test@test.pl"},
     )
     assert response.status_code == 200
     assert len(message_client.output) == 1
-    message_client.output = []
 
 
 @pytest.mark.parametrize(
@@ -113,6 +115,8 @@ def test_send_email_verification_request(client):
     indirect=True,
 )
 def test_send_email_verification_request_when_user_email_is_already_verified(client):
+    message_client.output = []
+
     response = client.post(
         "/users/verify/email/request",
         json={"email": "test@test.pl"},

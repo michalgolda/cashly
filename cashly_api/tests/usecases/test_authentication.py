@@ -59,6 +59,8 @@ def test_register_usecase(mocker):
         "test3", "#f00", None
     )
 
+    print(mock_user_repo.get_by_email.call_args_list)
+
     mock_user_repo.get_by_email.call_args_list[0][0][0] == mock_usecase_input.email
     mock_user_repo.get_by_email.call_args_list[1][0][0] == mock_usecase_input.email
 
@@ -69,7 +71,7 @@ def test_register_usecase(mocker):
         mock_usecase_input.password
     )
     email_message = mock_message_client.send.call_args[0][0]
-    assert email_message.title == "Cashly - Konto zostało pomyślnie utworzone"
+    assert email_message.title == "Cashly - Potwierdzenie rejestracji"
     assert email_message.recipients == [mock_usecase_input.email]
     assert email_message.template_name == "welcome-new-user.html"
     assert email_message.payload == {
@@ -179,32 +181,6 @@ def test_login_usecase_when_user_password_is_wrong(mocker):
     )
 
 
-# def test_login_usecase_when_email_is_not_verified(mocker):
-#     mock_user_entity = mocker.patch("app.entities.User")
-#     mock_user_entity.email_is_verified = False
-#     mock_user_repo = mocker.patch("app.repositories.UserRepository")
-#     mock_user_repo.get_by_email.return_value = mock_user_entity
-
-#     mock_security_manager = mocker.patch("app.security.SecurityManager")
-#     mock_security_manager.check_password_hash.return_value = True
-#     mock_security_manager.generate_access_token.return_value = "access_token"
-
-#     mock_usecase_input = mocker.patch("app.usecases.authentication.LoginUseCaseInput")
-
-#     usecase = LoginUseCase(
-#         user_repo=mock_user_repo, security_manager=mock_security_manager
-#     )
-
-#     with pytest.raises(EmailIsNotVerifiedError):
-#         usecase.execute(mock_usecase_input)
-
-#     mock_user_repo.get_by_email.assert_called_once_with(mock_usecase_input.email)
-#     mock_security_manager.check_password_hash.assert_called_once_with(
-#         mock_usecase_input.password,
-#         mock_user_entity.password,
-#     )
-
-
 def test_send_reset_password_link_usecase(mocker):
     mock_user_entity = mocker.patch("app.entities.User")
     mock_user_repo = mocker.patch("app.repositories.UserRepository")
@@ -298,7 +274,7 @@ def test_reset_password_usecase(mocker):
     mock_user_repo.save.assert_called_once_with(mock_user_entity)
 
     email_message = mock_message_client.send.call_args[0][0]
-    assert email_message.title == "Cashly - Hasło zostało pomyślnie zmienione!"
+    assert email_message.title == "Cashly - Potwierdzenie zmiany hasła"
     assert email_message.recipients == [mock_user_entity.email]
     assert email_message.template_name == "password-recovery-success.html"
 
