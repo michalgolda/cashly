@@ -72,6 +72,12 @@
    
 <br>
 
+## Tests
+You can run tests using pytest module.
+   ```sh
+   python -m pytest
+   ```
+
 ## Run
 When you done previous steps you can run the project using a docker-compose command
    ```sh
