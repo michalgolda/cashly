@@ -76,7 +76,7 @@
 <br>
 
 ## Tests
-You can run tests using pytest module.
+You can run tests using pytest module
    ```sh
    python -m pytest
    ```
