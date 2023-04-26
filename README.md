@@ -23,6 +23,9 @@
       <a href="#installation">Installation</a>
     </li>
     <li>
+      <a href="#tests">Tests</a>
+    </li>
+    <li>
       <a href="#run">Run</a>
     </li>
   </ol>
