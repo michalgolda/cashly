@@ -5,7 +5,7 @@ const nextConfig = {
         styledComponents: true,
     },
     publicRuntimeConfig: {
-        apiURL: 'http://localhost:8000/',
+        apiURL: process.env.API_URL,
     },
     async redirects() {
         return [
