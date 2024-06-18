@@ -20,7 +20,7 @@ from sqlalchemy.types import CHAR, TypeDecorator
 from app.entities import Expense, ExpenseCategory, User
 from app.settings import settings
 
-engine = create_engine(settings.DATABASE_URL, connect_args={"check_same_thread": False})
+engine = create_engine(settings.DATABASE_URL)
 session_factory = scoped_session(
     sessionmaker(bind=engine, autoflush=False, autocommit=False)
 )
