@@ -28,7 +28,7 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
         allow_credentials=True,
-        allow_origins=["http://localhost:3000"],
+        allow_origins=["https://cashly.vercel.app"],
     )
 
     app.add_event_handler("startup", run_mappers)
