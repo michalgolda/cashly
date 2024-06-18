@@ -49,7 +49,6 @@ class Settings(BaseSettings):
         {"name": "alkohol", "color": "#990000"},
         {"name": "obuwie", "color": "#9966ff"},
         {"name": "biżuteria", "color": "#ffcc99"},
-        {"name": "akcesoria do samochodu", "color": "#9999cc"},
         {"name": "remont", "color": "#ff33cc"},
         {"name": "telewizja", "color": "#cc6600"},
         {"name": "internet", "color": "#00cc66"},
@@ -59,12 +58,9 @@ class Settings(BaseSettings):
         {"name": "zwierzęta", "color": "#ff9933"},
         {"name": "praca", "color": "#33cc99"},
         {"name": "inne", "color": "#666666"},
-        {"name": "meble ogrodowe", "color": "#669933"},
-        {"name": "artykuły spożywcze", "color": "#ccff33"},
-        {"name": "artykuły kosmetyczne", "color": "#ff33ff"},
-        {"name": "artykuły higieniczne", "color": "#ccffcc"},
-        {"name": "artykuły papiernicze", "color": "#cc00ff"},
     ]
 
+    class Config:
+        env_file = ".env"
 
 settings = Settings()
